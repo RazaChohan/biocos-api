@@ -1,0 +1,10 @@
+/vendor
+.env
+*.csv
+.idea/
+composer.lock
+public/images
+_ide_helper.php
+public/stats
+public/uploads
+nohup.out
