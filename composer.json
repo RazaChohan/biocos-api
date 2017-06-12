@@ -1,0 +1,51 @@
+{
+    "name": "laravel/lumen",
+    "description": "The Laravel Lumen Framework.",
+    "keywords": ["framework", "laravel", "lumen"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=5.5.9",
+        "laravel/lumen-framework": "5.3.*",
+        "vlucas/phpdotenv": "~2.2",
+        "basicit/lumen-vendor-publish": "^1.0",
+        "maatwebsite/excel": " ~2.1.0",
+        "jeremeamia/superclosure": "~2.2",
+        "illuminate/container": "5.3.*",
+        "phpdocumentor/reflection-docblock": "3.1.*",
+        "dingo/blueprint": "0.2.x-dev",
+        "dingo/api": "1.0.x-dev",
+        "mlntn/lumen-artisan-serve": "~1",
+        "illuminate/mail":"5.3.*",
+        "doctrine/dbal": "v2.4.2",
+        "illuminate/view": "5.3.*",
+        "laravelcollective/html": "5.3.*",
+        "zendframework/zendservice-apple-apns": "^1.2",
+        "zendframework/zendservice-google-gcm": "^2.0",
+        "illuminate/redis": "5.3.*"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "~1.4",
+        "phpunit/phpunit": "~4.0",
+        "barryvdh/laravel-ide-helper": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files":[
+            "app/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/",
+            "database/"
+        ]
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "php -r \"copy('.env.example', '.env');\""
+        ]
+    }
+}
