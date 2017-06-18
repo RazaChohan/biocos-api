@@ -19,6 +19,7 @@ class JobsTable extends Migration
             $table->integer('region_id');
             $table->dateTime('date');
             $table->integer('customer_id');
+            $table->integer('user_id');
             $table->enum('status', ['Pending', 'Completed', 'Postponed']);
             $table->dateTime('completed_on');
             $table->string('employee_location');

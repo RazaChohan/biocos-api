@@ -21,4 +21,9 @@ $api->version('v1', function ($api) {
      * Register Route
      */
     $api->post('/register', 'App\Http\Controllers\AuthController@register');
+    /***
+     * List jobs call
+     */
+    $api->get('/list-jobs', 'App\Http\Controllers\JobController@listJobs');
+
 });
