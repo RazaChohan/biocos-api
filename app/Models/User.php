@@ -41,6 +41,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         if(array_key_exists('user_type', $input)) {
             $this->user_type = $input['user_type'];
         }
+        $this->username = $input['username'];
         $this->save();
         return $this;
     }
@@ -57,10 +58,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public static function validationRules( $attributes = null ){
 
         $rules = [
+            'username'  => 'required|unique:users,username',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|unique:users,email',
             'password' => 'required',
+            'user_type' => 'required'
 
         ];
 

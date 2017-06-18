@@ -6,11 +6,12 @@
 Returns token for authorization of user after logging in the user to the system and returns the user object.
 
 ## Parameters
+- **username** — username (unique)
 - **firstname** — First name of user
 - **lastname** — Last name of user
 - **email**	  — email of user
 - **password** — password of user,
-- **user_type** — type of user
+- **user_type** — type of user,
 
 ## Return format
 A collection JSON objects containing keys **token** , **user object**
@@ -26,6 +27,7 @@ A collection JSON objects containing keys **token** , **user object**
 **Json Body**
 ``` json
 {
+ "username"  : "razachohan",
  "firstname" :  "Muhammad",
  "lastname"  :  "Raza",
  "email"	 :  "razachohan@gmail.com",
@@ -42,6 +44,7 @@ A collection JSON objects containing keys **token** , **user object**
         "token": "243e5fb9-15c9-47b4-9b98-de02437d1669",
         "user": {
             "id": 2,
+            "username" : "razachohan",
             "firstname": "Muhammad",
             "lastname": "Raza",
             "email": "razachohan@gmail.com",

@@ -79,7 +79,8 @@ class AuthController extends BaseController
                 unset( $user->remember_token );
                 unset( $user->tokens );
 
-                $returnUser = User::where('id', $user->id)->first(['id','firstname', 'lastname', 'email',
+                $returnUser = User::where('id', $user->id)->first(['id','username','firstname',
+                                                                    'lastname', 'email',
                                                                    'profile_image', 'reset_token']);
 
                 return API::response ()->array ( [ 'success' => true, 'data' => [ 'token' => $token, 'user' => $returnUser ] ], 200 );
