@@ -48,6 +48,48 @@ A collection JSON objects containing keys **token** , **user object**
             "phone_2": "",
             "parent_id": 0
         }
+        "regions": [
+                        {
+                            "id": 1,
+                            "agency_id": null,
+                            "name": "Islamabad",
+                            "city": "Islamabad",
+                            "latitude": 2213.3,
+                            "longitude": 23.3,
+                            "country": "Pakistan",
+                            "parent_id": 0,
+                            "created_by": 1,
+                            "updated_by": 1,
+                            "deleted_by": 1,
+                            "created_at": "2017-06-18 17:07:52",
+                            "updated_at": "2017-06-18 17:07:56",
+                            "deleted_at": null,
+                            "pivot": {
+                                "user_id": 2,
+                                "region_id": 1
+                            }
+                        },
+                        {
+                            "id": 2,
+                            "agency_id": null,
+                            "name": "Lahore",
+                            "city": "Lahore",
+                            "latitude": 22.3,
+                            "longitude": 23.44,
+                            "country": "Pakistan",
+                            "parent_id": 0,
+                            "created_by": 1,
+                            "updated_by": 1,
+                            "deleted_by": 1,
+                            "created_at": "2017-06-18 17:18:20",
+                            "updated_at": "2017-06-18 17:18:26",
+                            "deleted_at": null,
+                            "pivot": {
+                                "user_id": 2,
+                                "region_id": 2
+                            }
+                        }
+                    ]
     }
 }
 ```

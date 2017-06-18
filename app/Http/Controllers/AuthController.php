@@ -23,7 +23,9 @@ class AuthController extends BaseController
         if (empty($username) || empty($password)) {
             return API::response()->array(['success' => false, 'message' => 'Required parameters username or password missing!', 'error' => 'Login Failed, Please try again later!'], 400);
         }
-        $user = User::where('username', '=', $username)->first();
+        $user = User::with('regions')
+                    ->where('username', '=', $username)
+                    ->first();
         if (!empty($user)) {
             $flag = (Hash::check($password, $user->password));
 

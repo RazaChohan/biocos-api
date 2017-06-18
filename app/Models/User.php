@@ -82,4 +82,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $newRules;
     }
 
+    public function regions() {
+        return $this->belongsToMany('App\Models\Region', 'user_regions', 'user_id', 'region_id');
+    }
+
 }
