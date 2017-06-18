@@ -7,6 +7,7 @@ use App\Models\Token;
 use Dingo\Api\Facade\API;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends BaseController
 {
@@ -22,7 +23,7 @@ class AuthController extends BaseController
         if (empty($username) || empty($password)) {
             return API::response()->array(['success' => false, 'message' => 'Required parameters username or password missing!', 'error' => 'Login Failed, Please try again later!'], 400);
         }
-        $user = User::where('email', '=', $username)->first();
+        $user = User::where('username', '=', $username)->first();
         if (!empty($user)) {
             $flag = (Hash::check($password, $user->password));
 
