@@ -25,5 +25,9 @@ $api->version('v1', function ($api) {
      * List jobs call
      */
     $api->get('/list-jobs', 'App\Http\Controllers\JobController@listJobs');
+    /***
+     * List region call
+     */
+    $api->get('/list-regions', 'App\Http\Controllers\RegionController@listRegions');
 
 });

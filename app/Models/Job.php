@@ -30,10 +30,10 @@ class Job extends Model
     public function getUserJobs($userId, $date, $regionId, $status, $subRegion)
     {
         $regionIds = [];
-        if($subRegion == true) {
+        if($subRegion == 'true') {
             $regionModel = new Region();
             $regionIds = $regionModel->getSubRegions($regionId, true);
-            array_push($regionIds, $regionId);
+            array_push($regionIds, intval($regionId));
         }
         $query = $this->where('user_id', '=', $userId);
         if(count($regionIds) > 0) {

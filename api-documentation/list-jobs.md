@@ -1,6 +1,6 @@
 # List Jobs
 
-    POST /api/login
+    GET /api/list-jobs
 
 ## Description
 Returns list of jobs depending upon the parameters/filters passed
