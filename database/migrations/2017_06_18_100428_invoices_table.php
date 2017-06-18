@@ -15,6 +15,7 @@ class InvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('agency_id')->nullable();
             $table->integer('order_id');
             $table->double('amount');
             $table->double('discounted_percentage');

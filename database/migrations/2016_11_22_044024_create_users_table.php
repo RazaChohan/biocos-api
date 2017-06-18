@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->string('reset_token', 100)->nullable()->default(null);
             $table->string('profile_image')->nullable()->default(null);
+            $table->integer('agency_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

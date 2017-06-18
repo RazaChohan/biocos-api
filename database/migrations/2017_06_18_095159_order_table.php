@@ -15,6 +15,7 @@ class OrderTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('agency_id')->nullable();
             $table->integer('customer_id');
             $table->enum('status',['booked', 'confirmed', 'processed',
                          'ready', 'delivered', 'cleared']);

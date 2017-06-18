@@ -38,6 +38,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->lastname = $input['lastname'];
         $this->email = $input['email'];
         $this->password = Hash::make($input['password']);
+        if(array_key_exists('user_type', $input)) {
+            $this->user_type = $input['user_type'];
+        }
         $this->save();
         return $this;
     }

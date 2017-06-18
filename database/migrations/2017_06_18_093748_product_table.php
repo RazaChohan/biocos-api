@@ -15,6 +15,7 @@ class ProductTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('agency_id')->nullable();
             $table->string('name');
             $table->string('product_code');
             $table->enum('category', ['accessories', 'color cosmetics',

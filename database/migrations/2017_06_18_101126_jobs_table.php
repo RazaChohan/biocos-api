@@ -15,6 +15,7 @@ class JobsTable extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('agency_id')->nullable();
             $table->integer('region_id');
             $table->dateTime('date');
             $table->integer('customer_id');

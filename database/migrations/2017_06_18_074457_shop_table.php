@@ -15,6 +15,7 @@ class ShopTable extends Migration
     {
         Schema::create('shops', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('agency_id')->nullable();
             $table->string('name');
             $table->integer('proprietor_id');
             $table->integer('contact_person_id');
