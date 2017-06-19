@@ -66,4 +66,19 @@ class Region extends Model
         }
         return $regions;
     }
+
+    /***
+     * get user region ids
+     *
+     * @param $userId
+     * @return mixed
+     */
+    public function getUserRegionIds($userId) {
+        $regionIds = DB::table('user_regions')
+                        ->where('user_id', $userId)
+                        ->get(['region_id'])
+                        ->pluck('region_id')
+                        ->toArray();
+        return $regionIds;
+    }
 }

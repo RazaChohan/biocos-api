@@ -52,7 +52,7 @@ class JobController extends BaseController
             return API::response()->array(['success' => false, 'message' => 'Exception',
                 'message' => $e->getTraceAsString()], 400);
         }
-        return API::response()->array(['success' => false, 'message' => 'Jobs found',
+        return API::response()->array(['success' => true, 'message' => 'Jobs found',
                                        'data' => $jobs], 200);
     }
 }

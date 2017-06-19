@@ -2,53 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Region;
+use App\Models\Customer;
 use Dingo\Api\Facade\API;
 use Illuminate\Http\Request;
 use League\Flysystem\Exception;
 
-class RegionController extends BaseController
+class CustomerController extends BaseController
 {
     /***
-     * @var Region
+     * @var Customer
      */
-    private $_regionModel;
+    private $_customerModel;
 
     /***
      * Constructor
      *
      * @param $request
-     * @param Region $regionModel
+     * @param Customer $customerModel
      */
-    public function __construct(Request $request, Region $regionModel)
+    public function __construct(Request $request, Customer $customerModel)
     {
         parent::__construct($request);
-        $this->_regionModel = $regionModel;
+        $this->_customerModel = $customerModel;
     }
 
     /***
-     *List regions
+     * List customers
      *
      * @param $request
      * @return mixed
      */
-    public function listRegions(Request $request)
+    public function listCustomers(Request $request)
     {
         try {
             $userId = $request->get('user_id');
             $regionId = $request->get('region_id');
             $subRegion = $request->get('sub_region');
+
             if(IsNullOrEmptyString($userId)) {
                 $userId = $this->getUserIdFromToken($request);
             }
-            $regions = $this->_regionModel->getUserRegions($userId, $regionId, $subRegion);
+            $customers = $this->_customerModel->getCustomers($userId, $regionId, $subRegion);
         }
         catch(Exception $e)
         {
             return API::response()->array(['success' => false, 'message' => 'Exception',
                 'message' => $e->getTraceAsString()], 400);
         }
-        return API::response()->array(['success' => true, 'message' => 'Regions found',
-            'data' => $regions], 200);
+        return API::response()->array(['success' => true, 'message' => 'Customers found',
+            'data' => $customers], 200);
     }
 }

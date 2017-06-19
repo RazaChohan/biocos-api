@@ -29,5 +29,8 @@ $api->version('v1', function ($api) {
      * List region call
      */
     $api->get('/list-regions', 'App\Http\Controllers\RegionController@listRegions');
-
+    /***
+     * List Customer call
+     */
+    $api->get('/list-customer', 'App\Http\Controllers\CustomerController@listCustomers');
 });
