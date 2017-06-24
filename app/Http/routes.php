@@ -10,7 +10,9 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
+$app->get('/', function () {
+    return 'Hi, I am biocos API!!!';
+});
 $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', function ($api) {
     /***
