@@ -24,7 +24,7 @@ A collection JSON objects containing keys **customers**
 ## Example
 **Request**
 
-    /api/list-customer?user_id=1&region_id=1sub_region=true
+    /api/list-customers?user_id=1&region_id=1sub_region=true
 
 **Return** __shortened for example purpose__
 ``` json

@@ -34,5 +34,9 @@ $api->version('v1', function ($api) {
     /***
      * List Customer call
      */
-    $api->get('/list-customer', 'App\Http\Controllers\CustomerController@listCustomers');
+    $api->get('/list-customers', 'App\Http\Controllers\CustomerController@listCustomers');
+    /***
+     * List products call
+     */
+    $api->get('/list-products', 'App\Http\Controllers\ProductController@listProducts');
 });

@@ -86,4 +86,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->belongsToMany('App\Models\Region', 'user_regions', 'user_id', 'region_id');
     }
 
+    /***
+     * Get agency id of user
+     * @param $userId
+     * @return integer
+     */
+    public function getUserAgencyId($userId) {
+        $user = $this->where('id', '=', $userId)
+                     ->first(['agency_id']);
+        return !is_null($user) ? $user->agency_id : 0;
+    }
 }
