@@ -43,4 +43,8 @@ $api->version('v1', function ($api) {
      * Get Product Details
      */
     $api->get('/product-details/{productId}', 'App\Http\Controllers\ProductController@productDetail');
+    /***
+     * Get User details api call
+     */
+    $api->get('/user-info/{userId?}', 'App\Http\Controllers\UserController@userInfo');
 });

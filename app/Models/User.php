@@ -48,7 +48,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      /***
      * Get email against faceebook id
      *
-     * @param Request $request
+     * @param $fbId
      * @return mixed
      */
     public function fetchEmail($fbId){
@@ -95,5 +95,20 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $user = $this->where('id', '=', $userId)
                      ->first(['agency_id']);
         return !is_null($user) ? $user->agency_id : 0;
+    }
+
+    /***
+     * Get User Info With Regions
+     *
+     * @param $filtersWithValues
+     * @return Model|null|static
+     */
+    public function getUserInfoWithRegions($filtersWithValues)
+    {
+        $query = $this->with('regions');
+        foreach($filtersWithValues as $filter => $value) {
+            $query->where($filter, '=', $value);
+        }
+        return $query->first();
     }
 }
