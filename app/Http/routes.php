@@ -39,4 +39,8 @@ $api->version('v1', function ($api) {
      * List products call
      */
     $api->get('/list-products', 'App\Http\Controllers\ProductController@listProducts');
+    /***
+     * Get Product Details
+     */
+    $api->get('/product-details/{productId}', 'App\Http\Controllers\ProductController@productDetail');
 });

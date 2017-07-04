@@ -38,4 +38,18 @@ class Product extends Model
         $shops =  $query->get();
         return $shops;
     }
+
+    /***
+     * Get product detail using id
+     *
+     * @param $productId
+     * @return mixed
+     */
+    public function getProductDetail($productId)
+    {
+        $product = $this->where('id', '=', $productId)
+                        ->first();
+        return $product;
+
+    }
 }
