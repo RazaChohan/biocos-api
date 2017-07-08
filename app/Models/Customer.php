@@ -44,10 +44,8 @@ class Customer extends Model
         } else {
             $regionIds [] = $regionId;
         }
-
         if($subRegion == 'true') {
-            $regionIds = $regionModel->getSubRegions($regionIds, true);
-            $regionIds = array_merge($regionIds, $this->getSubRegions($regionIds, true));
+            $regionIds = array_merge($regionIds, $regionModel->getSubRegions($regionIds, true));
         }
         $shops = $this->with('images')
                       ->whereIn('region_id', $regionIds)
