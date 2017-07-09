@@ -59,4 +59,8 @@ $api->version('v1', function ($api) {
      * Add or Update Customer
      */
     $api->put('/add-update-customer/{customerId?}', 'App\Http\Controllers\CustomerController@addOrUpdateCustomer');
+    /***
+     * Get Customer Details
+     */
+    $api->get('/customer-details/{customerId}', 'App\Http\Controllers\CustomerController@getCustomerDetails');
 });

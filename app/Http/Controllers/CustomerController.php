@@ -87,4 +87,23 @@ class CustomerController extends BaseController
                 'message' => $e->getTraceAsString()], 400);
         }
     }
+
+    /***
+     * Get Customer Details
+     *
+     * @param $customerId
+     * @return mixed
+     */
+    public function getCustomerDetails($customerId)
+    {
+        try {
+            $customer = $this->_customerModel->getCustomerDetail($customerId);
+        } catch(Exception $e) {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+        return API::response()->array(['success' => true,
+            'message' => is_null($customer) ? 'Customer not found' : 'Customer found',
+            'data' => $customer], 200);
+    }
 }
