@@ -46,8 +46,8 @@ class CustomerController extends BaseController
         }
         catch(Exception $e)
         {
-            return API::response()->array(['success' => false, 'message' => 'Exception',
-                'message' => $e->getTraceAsString()], 400);
+            return API::response()->array(['success' => false,
+                                           'message' => $e->getTraceAsString()], 400);
         }
         return API::response()->array(['success' => true, 'message' => 'Customers found',
             'data' => $customers], 200);

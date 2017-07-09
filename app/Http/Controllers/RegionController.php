@@ -45,10 +45,11 @@ class RegionController extends BaseController
         }
         catch(Exception $e)
         {
-            return API::response()->array(['success' => false, 'message' => 'Exception',
-                'message' => $e->getTraceAsString()], 400);
+            return API::response()->array(['success' => false,
+                                           'message' => $e->getTraceAsString()], 400);
         }
-        return API::response()->array(['success' => true, 'message' => 'Regions found',
-            'data' => $regions], 200);
+        return API::response()->array(['success' => true,
+                                       'message' => 'Regions found',
+                                       'data' => $regions], 200);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Dingo\Api\Facade\API;
 use Illuminate\Http\Request;
+use League\Flysystem\Exception;
 
 class OrderController extends BaseController
 {
@@ -54,5 +55,26 @@ class OrderController extends BaseController
         return API::response()->array(['success' => true,
             'message' => 'Order ' . (($orderId > 0) ? 'Updated' : 'Created'),
             'data' => $order], 200);
+    }
+
+    /***
+     * Get Order Details
+     *
+     * @param $orderId
+     * @return mixed
+     */
+    public function getOrderDetails($orderId)
+    {
+        try {
+            $order = $this->_orderModel->getOrderDetails($orderId);
+        }
+        catch(Exception $e)
+        {
+            return API::response()->array(['success' => false,
+                                           'message' => $e->getTraceAsString()], 400);
+        }
+        return API::response()->array(['success' => true,
+                                       'message' => is_null($order) ? 'Order not found' : 'Order found',
+                                       'data' => $order], 200);
     }
 }

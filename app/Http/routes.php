@@ -51,4 +51,8 @@ $api->version('v1', function ($api) {
      * Put Book or update order
      */
     $api->put('/book-update-order/{orderId?}', 'App\Http\Controllers\OrderController@bookOrUpdateOrder');
+    /***
+     * Get Order Details
+     */
+    $api->get('/order-details/{orderId}', 'App\Http\Controllers\OrderController@getOrderDetails');
 });

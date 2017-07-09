@@ -50,8 +50,8 @@ class ProductController extends BaseController
         }
         catch(Exception $e)
         {
-            return API::response()->array(['success' => false, 'message' => 'Exception',
-                'message' => $e->getTraceAsString()], 400);
+            return API::response()->array(['success' => false,
+                                           'message' => $e->getTraceAsString()], 400);
         }
         return API::response()->array(['success' => true, 'message' => 'Products found',
             'data' => $products], 200);
@@ -70,10 +70,11 @@ class ProductController extends BaseController
         }
         catch(Exception $e)
         {
-            return API::response()->array(['success' => false, 'message' => 'Exception',
-                'message' => $e->getTraceAsString()], 400);
+            return API::response()->array(['success' => false,
+                                           'message' => $e->getTraceAsString()], 400);
         }
-        return API::response()->array(['success' => true, 'message' => is_null($product) ? 'Product not found' : 'Product found',
-            'data' => $product], 200);
+        return API::response()->array(['success' => true,
+                                       'message' => is_null($product) ? 'Product not found' : 'Product found',
+                                       'data' => $product], 200);
     }
 }

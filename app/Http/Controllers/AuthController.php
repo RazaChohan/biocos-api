@@ -21,7 +21,9 @@ class AuthController extends BaseController
         $username = $this->getParam('username');
         $password = $this->getParam('password');
         if (empty($username) || empty($password)) {
-            return API::response()->array(['success' => false, 'message' => 'Required parameters username or password missing!', 'error' => 'Login Failed, Please try again later!'], 400);
+            return API::response()->array(['success' => false,
+                                           'message' => 'Required parameters username or password missing!',
+                                            'error' => 'Login Failed, Please try again later!'], 400);
         }
         $userModel = new User();
         $user = $userModel->getUserInfoWithRegions(['username' => $username]);
@@ -46,12 +48,17 @@ class AuthController extends BaseController
                 unset($user->remember_token);
                 unset($user->tokens);
 
-                return API::response()->array(['success' => true, 'data' => ['token' => $token, 'user' => $user]], 200);
+                return API::response()->array(['success' => true, 'data' =>
+                                              ['token' => $token, 'user' => $user]], 200);
 
             }
-            return API::response()->array(['success' => false, 'message' => 'Invalid Credentials', 'error' => 'Login Failed, Please try again later!'], 400);
+            return API::response()->array(['success' => false,
+                                           'message' => 'Invalid Credentials',
+                                           'error' => 'Login Failed, Please try again later!'], 400);
         } else {
-            return API::response()->array(['success' => false, 'message' => 'User Not Registered', 'error' => 'Login Failed, Please try again later!'], 400);
+            return API::response()->array(['success' => false,
+                                           'message' => 'User Not Registered',
+                                            'error' => 'Login Failed, Please try again later!'], 400);
         }
     }
     /**
