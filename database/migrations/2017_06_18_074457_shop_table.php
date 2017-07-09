@@ -27,7 +27,7 @@ class ShopTable extends Migration
             $table->string('email');
             $table->enum('type',['wholesaler', 'Retail Saler']);
             $table->enum('industry', ['Super store', 'General store', 'Cosmetic Shops', 'Mobiler']);
-            $table->enum('discount percentage', ['wholesaler', 'retail saler ']);
+            $table->enum('discount_percentage', ['wholesaler', 'retail saler ']);
             $table->double('biocos_ratting');
             $table->integer('region_id');
             $table->enum('status', ['approved', 'pending', 'rejected']);

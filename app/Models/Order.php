@@ -27,8 +27,8 @@ class Order extends Model
      * @param null $attributes
      * @return array
      */
-    public static function validationRules( $attributes = null ){
-
+    public function validationRules( $attributes = null )
+    {
         $rules = [
             'customer_id'  => 'required|integer',
             'status'          => [ 'required', Rule::in(['booked','confirmed','processed','ready','delivered','cleared']) ],
@@ -95,7 +95,6 @@ class Order extends Model
             }
           $orderObj->products()->sync($products);
         }
-        $orderObj->save();
         return $this->getOrderDetails($orderObj->id);
     }
 

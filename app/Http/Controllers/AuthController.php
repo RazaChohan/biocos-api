@@ -65,9 +65,10 @@ class AuthController extends BaseController
      * Register a User
      *
      */
-    public function register(Request $request){
-
-        $validator = \Validator::make($this->input, User::validationRules());
+    public function register(Request $request)
+    {
+        $user = new User();
+        $validator = \Validator::make($this->input, $user->validationRules());
 
         if ($validator->fails()) {
             return API::response()->array(['success' => false,'error' => 'Required parameters are missing or incorrect!','message' => $validator->errors()->first()], 400);

@@ -62,8 +62,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @param null $attributes
      * @return array
      */
-    public static function validationRules( $attributes = null ){
-
+    public function validationRules( $attributes = null )
+    {
         $rules = [
             'username'  => 'required|unique:users,username',
             'firstname' => 'required|string|max:255',
