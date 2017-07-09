@@ -81,4 +81,83 @@ class Region extends Model
                         ->toArray();
         return $regionIds;
     }
+    /***
+     * Validation rules for add region
+     *
+     * @param null $attributes
+     * @return array
+     */
+    public function validationRules( $attributes = null )
+    {
+        $rules = [
+            'name'            => 'required',
+            'city'            => 'required',
+            'latitude'        => 'required|numeric',
+            'longitude'       => 'required|numeric',
+            'country'         => 'required'
+        ];
+
+        // no list is provided
+        if(!$attributes)
+            return $rules;
+
+        // a single attribute is provided
+        if(!is_array($attributes))
+            return [ $attributes => $rules[$attributes] ];
+
+        // a list of attributes is provided
+        $newRules = [];
+        foreach ( $attributes as $attr )
+            $newRules[$attr] = $rules[$attr];
+        return $newRules;
+    }
+
+    /***
+     * Add or update region
+     *
+     * @param $region
+     * @param int $regionId
+     * @return mixed
+     */
+    public function addOrUpdateRegion($region, $regionId = 0)
+    {
+        $regionObj = new $this();
+        if($regionId > 0) {
+            $regionObj = $this->where('id', $regionId)
+                              ->first();
+            //Region not found
+            if(is_null($regionObj)) {
+                return $regionObj;
+            }
+            $regionObj->updated_by = $region['user_id'];
+        } else {
+            $regionObj->created_by = $region['user_id'];
+            $regionObj->agency_id  = $region['agency_id'];
+        }
+        $regionObj->name       = $region['name'];
+        $regionObj->city       = $region['city'];
+        $regionObj->latitude   = $region['latitude'];
+        $regionObj->longitude  = $region['longitude'];
+        $regionObj->country    = $region['country'];
+
+        //Parent ID
+        if(array_key_exists('parent_id', $region)) {
+            $regionObj->parent_id = $region['parent_id'];
+        }
+
+        $regionObj->save();
+        return $this->getRegionDetail($regionObj->id);
+    }
+    /***
+     * Get Region Detail
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function getRegionDetail($id)
+    {
+        $region = $this->where('id', $id)
+                       ->first();
+        return $region;
+    }
 }
