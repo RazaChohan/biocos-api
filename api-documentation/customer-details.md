@@ -26,34 +26,6 @@ A JSON object containing key **data**
 
 **Return** __shortened for example purpose__
 ``` json
-# Get Order Details
-
-    GET /api/order-details/{ID}
-
-## Description
-Returns object of order depending upon the ID of order passed as parameters
-
-## Headers
-- **X-Auth-Token** — Authorization token of user
-
-
-## Parameters
-- **Order Id** — ID of order for which details are required
-
-
-## Return format
-A JSON object containing key **data**
-
-- **Data** — Order object
-
-
-## Example
-**Request**
-
-    /api/order-details/1
-
-**Return** __shortened for example purpose__
-``` json
 {
     "success": true,
     "message": "Customer found",
