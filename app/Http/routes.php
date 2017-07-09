@@ -47,4 +47,8 @@ $api->version('v1', function ($api) {
      * Get User details api call
      */
     $api->get('/user-info/{userId?}', 'App\Http\Controllers\UserController@userInfo');
+    /***
+     * Put Book or update order
+     */
+    $api->put('/book-update-order/{orderId?}', 'App\Http\Controllers\OrderController@bookOrUpdateOrder');
 });

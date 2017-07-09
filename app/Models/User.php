@@ -55,6 +55,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->where('fb_id','=',$fbId)
                     ->select('email')->first();
     }
+
+    /***
+     * Validation rules for add user
+     *
+     * @param null $attributes
+     * @return array
+     */
     public static function validationRules( $attributes = null ){
 
         $rules = [

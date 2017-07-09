@@ -103,6 +103,13 @@ class BaseController extends Controller
 		return isset($this->input[$key])?$this->input[$key]:NULL;
 	}
 
+    /***
+     * Get user id from token
+     *
+     * @param $request
+     * @param bool $isWholeUserObjectNeeded
+     * @return null
+     */
 	public function getUserIdFromToken($request, $isWholeUserObjectNeeded=false){
 		$data = null;
 
