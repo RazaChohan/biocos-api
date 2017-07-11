@@ -126,31 +126,14 @@ class Order extends Model
     /***
      * Order list
      * @param $userId
-     * @param int $regionId
-     * @param bool $subRegion
      * @param int $page
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getOrders($userId, $regionId = 0, $subRegion = false, $page = 1)
+    public function getOrders($userId, $page = 1)
     {
-        $regionModel = new Region();
         $query = $this->with('products');
-        $regionIds = [];
         if($userId > 0) {
             $query->where('booked_by', $userId);
-        }
-        //Set regionIds
-        if($regionId > 0 && $userId > 0) {
-            $regionIds = $regionModel->getUserRegionIds($userId);
-        } elseif($regionId > 0) {
-            $regionIds [] = $regionId;
-        }
-        if($subRegion == 'true' && count($regionIds) > 0) {
-            $regionIds = array_merge($regionIds, $regionModel->getSubRegions($regionIds, true));
-        }
-
-        if(count($regionIds) > 0) {
-            $query->where('region_id', $regionIds);
         }
         if($page > 0) {
             $offset = calculate_offset($page);

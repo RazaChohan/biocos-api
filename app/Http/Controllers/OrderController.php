@@ -93,13 +93,11 @@ class OrderController extends BaseController
     {
         try {
             $userId = $request->get('user_id');
-            $regionId = $request->get('region_id');
-            $subRegion = $request->get('sub_region');
             $page = $request->get('page', 1);
             if(IsNullOrEmptyString($userId)) {
                 $userId = $this->getUserIdFromToken($request);
             }
-            $orders = $this->_orderModel->getOrders($userId, $regionId, $subRegion, $page);
+            $orders = $this->_orderModel->getOrders($userId, $page);
         }
         catch(Exception $e)
         {

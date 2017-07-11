@@ -11,8 +11,6 @@ Returns list of orders depending upon the parameters/filters passed
 
 ## Parameters
 - **user_id** — user id of user for which orders booked needs to be fetched (If this parameter is not passed user id will be used from X-Auth-Token)
-- **region_id** — region Id for which orders needs to be fetched
-- **sub_region** — sub region (true/false) fetch orders for sub regions as well
 - **page** — Page number for pagination
 
 
@@ -25,7 +23,7 @@ A collection JSON objects containing keys **customers**
 ## Example
 **Request**
 
-    /api/list-orders?user_id=1&region_id=1&sub_region=true&page=2
+    /api/list-orders?user_id=1&page=2
 
 **Return** __shortened for example purpose__
 ``` json
