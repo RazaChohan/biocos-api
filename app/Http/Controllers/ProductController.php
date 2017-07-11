@@ -38,6 +38,7 @@ class ProductController extends BaseController
         try {
             $userId = $request->get('user_id');
             $agencyId = $request->get('agency_id');
+            $page = $request->get('page', 1);
 
             if(IsNullOrEmptyString($userId)) {
                 $userId = $this->getUserIdFromToken($request);
@@ -46,7 +47,7 @@ class ProductController extends BaseController
                 $userModel = new User();
                 $agencyId = $userModel->getUserAgencyId($userId);
             }
-            $products = $this->_productModel->getProducts($agencyId);
+            $products = $this->_productModel->getProducts($agencyId, $page);
         }
         catch(Exception $e)
         {

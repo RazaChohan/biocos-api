@@ -13,6 +13,7 @@ Returns list of customers depending upon the parameters/filters passed
 - **user_id** — user id of user for which customer needs to be fetched (If this parameter is not passed user id will be used from X-Auth-Token)
 - **region_id** — region Id for which customer needs to be fetched,
 - **sub_region** — sub region (true/false) fetch jobs for sub regions as well,
+- **page** — Page number for pagination
 
 
 ## Return format
@@ -24,7 +25,7 @@ A collection JSON objects containing keys **customers**
 ## Example
 **Request**
 
-    /api/list-customers?user_id=1&region_id=1sub_region=true
+    /api/list-customers?user_id=1&region_id=1&sub_region=true&page=1
 
 **Return** __shortened for example purpose__
 ``` json

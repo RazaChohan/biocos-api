@@ -13,6 +13,7 @@ Returns list of products depending upon the parameters/filters passed
 
 ## Parameters
 - **user_id** — user id of user for which products needs to be fetched (If this parameter is not passed user id will be used from X-Auth-Token)
+- **page** — Page number for pagination
 
 
 ## Return format
@@ -24,7 +25,7 @@ A collection JSON objects containing keys **products**
 ## Example
 **Request**
 
-    /api/list-products
+    /api/list-products?page=1
 
 **Return** __shortened for example purpose__
 ``` json

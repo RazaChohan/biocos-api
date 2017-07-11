@@ -82,4 +82,31 @@ class OrderController extends BaseController
                                        'message' => is_null($order) ? 'Order not found' : 'Order found',
                                        'data' => $order], 200);
     }
+
+    /***
+     * List orders
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function listOrders(Request $request)
+    {
+        try {
+            $userId = $request->get('user_id');
+            $regionId = $request->get('region_id');
+            $subRegion = $request->get('sub_region');
+            $page = $request->get('page', 1);
+            if(IsNullOrEmptyString($userId)) {
+                $userId = $this->getUserIdFromToken($request);
+            }
+            $orders = $this->_orderModel->getOrders($userId, $regionId, $subRegion, $page);
+        }
+        catch(Exception $e)
+        {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+        return API::response()->array(['success' => true, 'message' => 'Orders found',
+            'data' => $orders], 200);
+    }
 }

@@ -67,4 +67,8 @@ $api->version('v1', function ($api) {
      * Add or Update Customer
      */
     $api->put('/add-update-region/{regionId?}', 'App\Http\Controllers\RegionController@addOrUpdateRegion');
+    /***
+     * List orders
+     */
+    $api->get('/list-orders', 'App\Http\Controllers\OrderController@listOrders');
 });

@@ -26,8 +26,9 @@ class Job extends Model
      * @param $regionId
      * @param $status
      * @param $subRegion
+     * @param $page
      */
-    public function getUserJobs($userId, $date, $regionId, $status, $subRegion)
+    public function getUserJobs($userId, $date, $regionId, $status, $subRegion, $page = 1)
     {
         $regionIds = [];
         if($subRegion == 'true') {
@@ -47,6 +48,11 @@ class Job extends Model
         }
         if(!IsNullOrEmptyString($status)) {
             $query->where('status', '=', $status);
+        }
+        if($page > 0) {
+            $offset = calculate_offset($page);
+            $query->skip($offset)
+                ->take(10);
         }
         $jobs = $query->get();
         return $jobs;

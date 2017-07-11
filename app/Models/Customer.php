@@ -34,9 +34,10 @@ class Customer extends Model
      * @param $userId
      * @param $regionId
      * @param $subRegion
+     * @param $page
      * @return mixed
      */
-    public function getCustomers($userId, $regionId, $subRegion)
+    public function getCustomers($userId, $regionId, $subRegion, $page = 1)
     {
         $regionIds = [];
         $regionModel = new Region();
@@ -48,9 +49,14 @@ class Customer extends Model
         if($subRegion == 'true') {
             $regionIds = array_merge($regionIds, $regionModel->getSubRegions($regionIds, true));
         }
-        $shops = $this->with('images')
-                      ->whereIn('region_id', $regionIds)
-                      ->get();
+        $query = $this->with('images')
+                      ->whereIn('region_id', $regionIds);
+        if($page > 0){
+            $offset = calculate_offset($page);
+            $query->skip($offset)
+                ->take(10);
+        }
+        $shops = $query->get();
         return $shops;
     }
 

@@ -40,12 +40,13 @@ class JobController extends BaseController
             $regionId = $request->get('region_id');
             $status = $request->get('status');
             $subRegion = $request->get('sub_region');
+            $page      = $request->get('page', 1);
 
             if(IsNullOrEmptyString($userId)) {
                 $userId = $this->getUserIdFromToken($request);
             }
             $jobs = $this->_jobModel->getUserJobs($userId, $date, $regionId,
-                                                  $status, $subRegion);
+                                                  $status, $subRegion, $page);
         }
         catch(Exception $e)
         {

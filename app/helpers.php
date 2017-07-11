@@ -82,3 +82,9 @@ function cmp($a, $b) {
 function createPath($path) {
     return (file_exists($path)) ? true : mkdir($path, 07777, true);
 }
+
+
+function calculate_offset($page, $itemsPerPage = 10) {
+    $offset = ($page - 1) * $itemsPerPage;
+    return $offset;
+}

@@ -15,6 +15,7 @@ Returns list of jobs depending upon the parameters/filters passed
 - **date** — date for which jobs needs to be fetched,
 - **status** — status (Pending,Completed,Postponed),
 - **sub_region** — sub region (true/false) fetch jobs for sub regions as well,
+- **page** — Page number for pagination
 
 
 ## Return format
@@ -26,7 +27,7 @@ A collection JSON objects containing keys **jobs**
 ## Example
 **Request**
 
-    /api/list-jobs?user_id=1&region_id=1&date=2017-06-12&status=Pending&sub_region=true
+    /api/list-jobs?user_id=1&region_id=1&date=2017-06-12&status=Pending&sub_region=true&page=1
 
 **Return** __shortened for example purpose__
 ``` json

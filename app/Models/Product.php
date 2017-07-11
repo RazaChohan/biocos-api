@@ -23,9 +23,10 @@ class Product extends Model
      * Get products based on filters
      *
      * @param $agencyId
+     * @param $page
      * @return mixed
      */
-    public function getProducts($agencyId)
+    public function getProducts($agencyId, $page = 1)
     {
         $query = $this->whereDate('started_on', '<=', Carbon::now())
                       ->where(function($query){
@@ -34,6 +35,11 @@ class Product extends Model
                       });
         if($agencyId > 0) {
             $query->where('agency_id', '=', $agencyId);
+        }
+        if($page > 0) {
+            $offset = calculate_offset($page);
+            $query->skip($offset)
+                ->take(10);
         }
         $shops =  $query->get();
         return $shops;

@@ -38,11 +38,11 @@ class CustomerController extends BaseController
             $userId = $request->get('user_id');
             $regionId = $request->get('region_id');
             $subRegion = $request->get('sub_region');
-
+            $page = $request->get('page', 1);
             if(IsNullOrEmptyString($userId)) {
                 $userId = $this->getUserIdFromToken($request);
             }
-            $customers = $this->_customerModel->getCustomers($userId, $regionId, $subRegion);
+            $customers = $this->_customerModel->getCustomers($userId, $regionId, $subRegion, $page);
         }
         catch(Exception $e)
         {
