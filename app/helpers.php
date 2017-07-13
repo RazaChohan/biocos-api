@@ -88,3 +88,28 @@ function calculate_offset($page, $itemsPerPage = 10) {
     $offset = ($page - 1) * $itemsPerPage;
     return $offset;
 }
+
+function getEnumValues($tableName, $fieldName){
+    $type = \DB::select(\DB::raw("SHOW COLUMNS FROM $tableName WHERE Field = '$fieldName'"))[0]->Type;
+    preg_match('/^enum\((.*)\)$/', $type, $matches);
+    $values = array();
+    foreach(explode(',', $matches[1]) as $value){
+        $values[] = trim($value, "'");
+    }
+    return $values;
+}
+
+function setDiscountPercentageArrayConstants($discountPercentageConst) {
+    $discountPercentageMapping = [
+            'wholesaler' => '< 10',
+            'retail saler' => '<= 4'
+    ];
+    $newConstants = [];
+    foreach($discountPercentageConst as $constant){
+        $object = new \stdClass();
+        $object->{$constant} = array_key_exists($constant, $discountPercentageMapping) ?
+                                $discountPercentageMapping[$constant] : "";
+        $newConstants[] = $object;
+    }
+    return $newConstants;
+}

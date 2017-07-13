@@ -23,7 +23,8 @@ class BaseController extends Controller
      */
     public $ignoreTokenCheck = [
         'login',
-        'register'
+        'register',
+        'get-constants'
     ];
     public $ignoreTokenCheckOnPath = [
     ];

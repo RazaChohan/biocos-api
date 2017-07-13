@@ -71,4 +71,8 @@ $api->version('v1', function ($api) {
      * List orders
      */
     $api->get('/list-orders', 'App\Http\Controllers\OrderController@listOrders');
+    /***
+     * Get Constants
+     */
+    $api->get('/get-constants', 'App\Http\Controllers\Controller@getConstants');
 });

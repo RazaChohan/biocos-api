@@ -25,8 +25,10 @@ class ShopTable extends Migration
             $table->string('phone_1');
             $table->string('phone_2');
             $table->string('email');
-            $table->enum('type',['wholesaler', 'Retail Saler']);
-            $table->enum('industry', ['Super store', 'General store', 'Cosmetic Shops', 'Mobiler']);
+            $table->enum('customer_type',['wholesaler', 'Retail Saler']);
+            $table->enum('shop_type', ['Parlor', 'Doctor', 'Medical Store', 'Pan Shop', 'Super Store',
+                                              'General Store', 'Cosmetics Shop', 'Tuk Shop at Fuel Station',
+                                              'Mobiler', 'Homeopathic store', 'Pansar Store', 'Super Market']);
             $table->enum('discount_percentage', ['wholesaler', 'retail saler ']);
             $table->double('biocos_ratting');
             $table->integer('region_id');

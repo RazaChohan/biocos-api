@@ -75,8 +75,10 @@ class Customer extends Model
             'latitude'        => 'required|numeric',
             'longitude'       => 'required|numeric',
             'email'           => 'email',
-            'type'            => ['required', Rule::in(['wholesaler','Retail Saler'])],
-            'industry'        => ['required', Rule::in(['Super store','General store','Cosmetic Shops','Mobiler'])],
+            'customer_type'   => ['required', Rule::in(['wholesaler','Retail Saler'])],
+            'shop_type'       => ['required', Rule::in(['Parlor','Doctor','Medical Store','Pan Shop','Super Store',
+                                                        'General Store','Cosmetics Shop','Tuk Shop at Fuel Station',
+                                                        'Mobiler','Homeopathic store','Pansar Store','Super Market'])],
             'discount_percentage' => ['required', Rule::in(['wholesaler','retail saler'])],
             'status'          => ['required', Rule::in(['approved','pending','rejected'])],
             'category'        => ['required', Rule::in(['A+','A','B','C','D'])],
@@ -127,8 +129,8 @@ class Customer extends Model
         $customerObj->latitude     = $customer['latitude'];
         $customerObj->longitude    = $customer['longitude'];
         $customerObj->phone_1      = $customer['phone_1'];
-        $customerObj->type         = $customer['type'];
-        $customerObj->industry     = $customer['industry'];
+        $customerObj->customer_type= $customer['customer_type'];
+        $customerObj->shop_type    = $customer['shop_type'];
         $customerObj->status       = $customer['status'];
         $customerObj->Category     = $customer['category'];
         $customerObj->discount_percentage = $customer['discount_percentage'];

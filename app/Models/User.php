@@ -7,7 +7,6 @@ use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Support\Facades\Hash;
 use DB;
 
@@ -117,5 +116,29 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $query->where($filter, '=', $value);
         }
         return $query->first();
+    }
+    public function getConstants()
+    {
+        $constants = [];
+        //Jobs Status
+        $constants['job_status'] = getEnumValues('jobs', 'status');
+        //Jobs Visit Type
+        $constants['job_visit_type'] = getEnumValues('jobs', 'visit_type');
+        //Order Status
+        $constants['order_status'] = getEnumValues('orders', 'status');
+        //Order Type
+        $constants['order_type'] = getEnumValues('orders', 'type');
+        //Product Category
+        $constants['product_category'] = getEnumValues('products', 'category');
+        //Product Type
+        $constants['product_type'] = getEnumValues('products', 'type');
+        //Customer Type
+        $constants['customer_type'] = getEnumValues('shops', 'customer_type');
+        //Shop Type
+        $constants['shop_type'] = getEnumValues('shops', 'shop_type');
+        //Discount Percentage
+        $constants['shop_discount_percentage'] = setDiscountPercentageArrayConstants(
+                                    getEnumValues('shops', 'discount_percentage'));
+        return $constants;
     }
 }
