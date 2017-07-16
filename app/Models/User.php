@@ -88,6 +88,37 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $newRules;
     }
 
+    /***
+     * Validation rules for update profile
+     *
+     * @param $userId
+     * @param null $attributes
+     * @return array
+     */
+    public function validationRulesUpdateProfile($userId, $attributes = null)
+    {
+        $rules = [
+            'username'  => 'unique:users,username,'.$userId,
+            'firstname' => 'string|max:255',
+            'lastname'  => 'string|max:255',
+            'email'     => 'unique:users,email,'.$userId
+
+        ];
+
+        // no list is provided
+        if(!$attributes)
+            return $rules;
+
+        // a single attribute is provided
+        if(!is_array($attributes))
+            return [ $attributes => $rules[$attributes] ];
+
+        // a list of attributes is provided
+        $newRules = [];
+        foreach ( $attributes as $attr )
+            $newRules[$attr] = $rules[$attr];
+        return $newRules;
+    }
     public function regions() {
         return $this->belongsToMany('App\Models\Region', 'user_regions', 'user_id', 'region_id');
     }
@@ -140,5 +171,41 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $constants['shop_discount_percentage'] = setDiscountPercentageArrayConstants(
                                     getEnumValues('shops', 'discount_percentage'));
         return $constants;
+    }
+
+    /***
+     * Update user
+     *
+     * @param $updateUser
+     * @param $userId
+     * @return User|Model|null
+     */
+    public function updateUser($updateUser, $userId)
+    {
+        $response = null;
+        $user = $this->where('id', '=', $userId)->first();
+        if(!is_null($user)) {
+            if(array_key_exists('username', $updateUser)) {
+               $user->username = $updateUser['username'];
+            }
+            if(array_key_exists('firstname', $updateUser)) {
+                $user->firstname = $updateUser['firstname'];
+            }
+            if(array_key_exists('lastname' , $updateUser)) {
+                $user->lastname = $updateUser['lastname'];
+            }
+            if(array_key_exists('email', $updateUser)) {
+                $user->email = $updateUser['email'];
+            }
+            if(array_key_exists('phone_1', $updateUser)) {
+                $user->phone_1 = $updateUser['phone_1'];
+            }
+            if(array_key_exists('phone_2', $updateUser)) {
+                $user->phone_2 = $updateUser['phone_2'];
+            }
+            $user->save();
+            $response = $this->getUserInfoWithRegions(['id' => $userId ]);
+        }
+        return $response;
     }
 }

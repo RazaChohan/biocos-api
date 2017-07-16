@@ -75,4 +75,8 @@ $api->version('v1', function ($api) {
      * Get Constants
      */
     $api->get('/get-constants', 'App\Http\Controllers\Controller@getConstants');
+    /***
+     * Update profile
+     */
+    $api->put('/update-profile/{userId}', 'App\Http\Controllers\UserController@updateProfile');
 });
