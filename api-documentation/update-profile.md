@@ -30,7 +30,8 @@ A JSON object containing key **User**
    "username"            :"mhraza",
    "email"               :"mraza@xynoapps.com",
    "phone_1"             :"456456-56465-54",
-   "phone_2"             :"55645-456645-44"
+   "phone_2"             :"55645-456645-44",
+   "photo"               :"base64-photo"
 }
 ```
 
@@ -52,6 +53,7 @@ A JSON object containing key **User**
         "username": "mhraza",
         "phone_1": "456456-56465-54",
         "phone_2": "55645-456645-44",
+        "profile_image": "api.biocos/uploads/user/profileimage-1500238658.jpeg",
         "parent_id": 0,
         "regions": [
             {

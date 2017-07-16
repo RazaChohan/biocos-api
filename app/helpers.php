@@ -99,6 +99,12 @@ function getEnumValues($tableName, $fieldName){
     return $values;
 }
 
+/***
+ * Set discount percentage array constants
+ *
+ * @param $discountPercentageConst
+ * @return array
+ */
 function setDiscountPercentageArrayConstants($discountPercentageConst) {
     $discountPercentageMapping = [
             'wholesaler' => '< 10',
@@ -112,4 +118,37 @@ function setDiscountPercentageArrayConstants($discountPercentageConst) {
         $newConstants[] = $object;
     }
     return $newConstants;
+}
+
+function upload_base64_image($base64EncodeString = '',$path = 'images', $imageNamePrefix = 'userimage-', $fetchNameOnly = false)
+{
+    try {
+        $decodedFile = base64_decode($base64EncodeString);
+        $opeFileToGetInfo = finfo_open();
+        $fileExtension = explode('/', finfo_buffer($opeFileToGetInfo, $decodedFile, FILEINFO_MIME_TYPE))[1];
+
+        $image_name = $imageNamePrefix . time() . "." . $fileExtension;
+        $imagePath = public_path($path) . "/" . $image_name;
+        createPath(public_path($path));
+        file_put_contents($imagePath, $decodedFile);
+        return ($fetchNameOnly) ? $image_name : env('PROFILE_IMAGES_UPLOAD_URL') . $image_name;
+
+    } catch (Exception $ex) {
+        return null;
+    }
+}
+/***
+ * Get filename from url
+ *
+ * @param $url
+ * @return null
+ */
+function get_filename_url($url) {
+    $filename = null;
+    if(!IsNullOrEmptyString($url)) {
+        $path = parse_url($url, PHP_URL_PATH);
+        $path = explode('/', $path);
+        $filename = $path[sizeof($path) - 1];
+    }
+    return $filename;
 }

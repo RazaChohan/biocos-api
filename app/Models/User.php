@@ -203,6 +203,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             if(array_key_exists('phone_2', $updateUser)) {
                 $user->phone_2 = $updateUser['phone_2'];
             }
+            if (array_key_exists('photo', $updateUser)) {
+                $photo = $updateUser['photo'];
+                $imageUpload = upload_base64_image($photo, 'uploads/user/', 'profileimage-');
+                if(!IsNullOrEmptyString($user->profile_image)) {
+                    $fileToUnlink = public_path() . '/uploads/user/' .
+                                get_filename_url($user->profile_image);
+                    if (file_exists($fileToUnlink)) {
+                        unlink($fileToUnlink);
+                    }
+                }
+                $user->profile_image = $imageUpload;
+            }
             $user->save();
             $response = $this->getUserInfoWithRegions(['id' => $userId ]);
         }
