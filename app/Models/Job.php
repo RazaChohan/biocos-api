@@ -57,4 +57,35 @@ class Job extends Model
         $jobs = $query->get();
         return $jobs;
     }
+
+    /***
+     * Update Job Order
+     *
+     * @param $jobsToUpdate
+     * @param $userId
+     * @return boolean
+     */
+    public function updateJobOrder($jobsToUpdate, $userId)
+    {
+        $jobsUpdated = false;
+        $jobIds = array_pluck($jobsToUpdate, 'job_id');
+        $jobs = $this->whereIn('id', $jobIds)
+                     ->where('user_id', $userId)
+                     ->get(['id']);
+
+        if(count($jobs) != count($jobIds)) {
+            $jobsUpdated = false;
+        } else {
+            foreach ($jobs as $job) {
+                $jobOrder = array_where($jobsToUpdate, function($value, $key) use($job) {
+                    return $value['job_id'] == $job->id;
+                });
+                $order = array_first($jobOrder)['order'];
+                $job->order = $order;
+                $job->save();
+                $jobsUpdated = true;
+            }
+        }
+        return $jobsUpdated;
+    }
 }

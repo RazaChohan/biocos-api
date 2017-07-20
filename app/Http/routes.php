@@ -79,4 +79,8 @@ $api->version('v1', function ($api) {
      * Update profile
      */
     $api->put('/update-profile/{userId}', 'App\Http\Controllers\UserController@updateProfile');
+    /***
+     * Update jobs order
+     */
+    $api->put('/update-jobs-order', 'App\Http\Controllers\JobController@updateJobsOrder');
 });

@@ -56,4 +56,35 @@ class JobController extends BaseController
         return API::response()->array(['success' => true, 'message' => 'Jobs found',
                                        'data' => $jobs], 200);
     }
+
+    /***
+     * Update jobs order
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function updateJobsOrder(Request $request)
+    {
+        try {
+            $jobsToUpdate  = $request->all();
+            if(count($jobsToUpdate) == 0) {
+                return API::response()->array(['success' => false,
+                    'error' => 'Required parameters are missing or incorrect!',
+                    'message' => 'Data is missing!'], 400);
+            }
+            $userId = $this->getUserIdFromToken($request);
+            $jobsUpdated = $this->_jobModel->updateJobOrder($jobsToUpdate, $userId);
+            if($jobsUpdated) {
+                return API::response()->array(['success' => true,
+                    'message' => 'Jobs order Updated'], 200);
+            } else {
+                return API::response()->array(['success' => false,
+                    'message' => 'Jobs not found or invalid request'], 400);
+            }
+        }
+        catch(Exception $e) {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+    }
 }
