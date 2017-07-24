@@ -31,12 +31,13 @@ class Order extends Model
     {
         $rules = [
             'customer_id'  => 'required|integer',
-            'status'          => [ 'required', Rule::in(['booked','confirmed','processed','ready','delivered','cleared']) ],
+            'status'          => [ 'required', Rule::in(['Booked','Confirmed','Processed','Ready',
+                                                         'Delivered','Cleared']) ],
             'date_to_deliver' => 'required|date',
             'price'           => 'required|numeric',
             'discount'        => 'numeric',
             'products'        => 'required',
-            'type'            => [ 'required', Rule::in([ 'query','order' ]) ]
+            'type'            => [ 'required', Rule::in([ 'Query','Order' ]) ]
         ];
 
         // no list is provided

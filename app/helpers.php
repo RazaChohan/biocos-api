@@ -107,13 +107,14 @@ function getEnumValues($tableName, $fieldName){
  */
 function setDiscountPercentageArrayConstants($discountPercentageConst) {
     $discountPercentageMapping = [
-            'wholesaler' => '< 10',
-            'retail saler' => '<= 4'
+            'Wholesaler' => '< 10',
+            'Retail Saler' => '<= 4'
     ];
     $newConstants = [];
     foreach($discountPercentageConst as $constant){
         $object = new \stdClass();
-        $object->{$constant} = array_key_exists($constant, $discountPercentageMapping) ?
+        $object->discount_type = $constant;
+        $object->discount_percentage = array_key_exists($constant, $discountPercentageMapping) ?
                                 $discountPercentageMapping[$constant] : "";
         $newConstants[] = $object;
     }
@@ -151,4 +152,23 @@ function get_filename_url($url) {
         $filename = $path[sizeof($path) - 1];
     }
     return $filename;
+}
+
+function setGradeArrayConstants($grades) {
+    $gradePointsMapping = [
+        'A+' => '5.0',
+        'A'  => '4.5',
+        'B'  => '4',
+        'C'  => '3',
+        'D'  => '2'
+    ];
+    $newConstants = [];
+    foreach($grades as $constant){
+        $object = new \stdClass();
+        $object->grade = $constant;
+        $object->point = array_key_exists($constant, $gradePointsMapping) ?
+            $gradePointsMapping[$constant] : "";
+        $newConstants[] = $object;
+    }
+    return $newConstants;
 }

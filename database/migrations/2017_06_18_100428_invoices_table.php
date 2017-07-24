@@ -19,7 +19,7 @@ class InvoicesTable extends Migration
             $table->integer('order_id');
             $table->double('amount');
             $table->double('discounted_percentage');
-            $table->enum('status', ['pending', 'cleared']);
+            $table->enum('status', ['Pending', 'Cleared']);
             $table->double('debit_amount');
             $table->double('credit_amount');
             $table->integer('created_by');

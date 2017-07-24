@@ -18,9 +18,9 @@ class ProductTable extends Migration
             $table->integer('agency_id')->nullable();
             $table->string('name');
             $table->string('product_code');
-            $table->enum('category', ['accessories', 'color cosmetics',
-                                      'body care cosmetics', 'face care cosmetics']);
-            $table->enum('type',['soap', 'face wash', 'cream','serum']);
+            $table->enum('category', ['Accessories', 'Color Cosmetics',
+                                      'Body Care Cosmetics', 'Face Care Cosmetics']);
+            $table->enum('type',['Soap', 'Face Wash', 'Cream','Serum']);
             $table->double('retail_price');
             $table->double('wholesale_price');
             $table->double('distributor_price');

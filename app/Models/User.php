@@ -170,6 +170,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         //Discount Percentage
         $constants['shop_discount_percentage'] = setDiscountPercentageArrayConstants(
                                     getEnumValues('shops', 'discount_percentage'));
+        $constants['grades'] = setGradeArrayConstants(
+                                    getEnumValues('shops', 'Category'));
         return $constants;
     }
 

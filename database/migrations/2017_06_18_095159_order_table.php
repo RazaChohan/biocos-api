@@ -17,14 +17,14 @@ class OrderTable extends Migration
             $table->increments('id');
             $table->integer('agency_id')->nullable();
             $table->integer('customer_id');
-            $table->enum('status',['booked', 'confirmed', 'processed',
-                         'ready', 'delivered', 'cleared']);
+            $table->enum('status',['Booked', 'Confirmed', 'Processed',
+                         'Ready', 'Delivered', 'Cleared']);
             $table->integer('visit_id');
             $table->dateTime('date_to_deliver');
             $table->integer('booked_by');
             $table->double('price');
             $table->double('discount');
-            $table->enum('type', ['query','order']);
+            $table->enum('type', ['Query','Order']);
             $table->integer('created_by');
             $table->integer('updated_by');
             $table->integer('deleted_by');

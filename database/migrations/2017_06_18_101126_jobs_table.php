@@ -23,7 +23,7 @@ class JobsTable extends Migration
             $table->enum('status', ['Pending', 'Completed', 'Postponed']);
             $table->dateTime('completed_on');
             $table->string('employee_location');
-            $table->enum('visit_type', ['Visit', 'on phone', 'on email', 'skype']);
+            $table->enum('visit_type', ['Visit', 'On Phone', 'On Email', 'Skype']);
             $table->string('comment');
             $table->integer('order');
             $table->integer('created_by');

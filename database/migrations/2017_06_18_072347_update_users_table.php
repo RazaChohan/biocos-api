@@ -14,7 +14,8 @@ class UpdateUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('user_type', ['Root', 'Super Admin', 'Admin', 'Manager', 'Sub Admin','Employee'])
+            $table->enum('user_type', ['Root', 'Super Admin', 'Admin', 'Manager',
+                                              'Sub Admin','Employee'])
                 ->nullable();
             $table->string('username');
             $table->string('phone_1');
