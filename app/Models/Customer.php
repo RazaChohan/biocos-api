@@ -161,6 +161,33 @@ class Customer extends Model
             $customerObj->region_id = $customer['region_id'];
         }
         $customerObj->save();
+        //Image upload
+        if(array_key_exists('images', $customer)) {
+            $images = [];
+            foreach($customer['images'] as $image) {
+                $image = upload_base64_image($image, 'uploads/customer/',
+                    'customerimage-');
+                $customerImage = new CustomerImage();
+                $customerImage->image = $image;
+                $images[] = $customerImage;
+            }
+            if(count($images) > 0) {
+                $customerObj->images()->saveMany($images);
+            }
+        }
+        //Remove Image
+        if(array_key_exists('remove_images', $customer)) {
+            $customerObj->images()->whereIn('image', $customer['remove_images'])
+                        ->delete();
+            foreach($customer['remove_images'] as $image) {
+                $fileToUnlink = public_path() . '/uploads/customer/' .
+                    get_filename_url($image);
+                if (file_exists($fileToUnlink)) {
+                    unlink($fileToUnlink);
+                }
+            }
+        }
+
         return $this->getCustomerDetail($customerObj->id);
     }
 
@@ -172,7 +199,8 @@ class Customer extends Model
      */
     public function getCustomerDetail($id)
     {
-        $customer = $this->where('id', $id)
+        $customer = $this->with('images')
+                         ->where('id', $id)
                          ->first();
         return $customer;
     }

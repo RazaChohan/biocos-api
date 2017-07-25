@@ -40,7 +40,15 @@ A JSON object containing key **Customer**
    "phone_2"             :"55645-456645-44",
    "email"               :"admin@biocospk.com",
    "biocos_ratting"      :21.3,
-   "region_id"           :1
+   "region_id"           :1,
+   "images"              : [
+       "image-1-hash",
+       "image-2-hash"
+   ],
+   "remove_images"      : [
+        "image-1-full-path",
+        "image-2-full-path"
+   ],
 }
 ```
 

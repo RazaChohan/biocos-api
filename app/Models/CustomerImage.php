@@ -15,4 +15,6 @@ class CustomerImage extends Model
     protected $table = 'shop_images';
 
     protected $guarded = ['id'];
+
+    public $timestamps = false;
 }

@@ -121,6 +121,15 @@ function setDiscountPercentageArrayConstants($discountPercentageConst) {
     return $newConstants;
 }
 
+/****
+ * Upload base64 image
+ *
+ * @param string $base64EncodeString
+ * @param string $path
+ * @param string $imageNamePrefix
+ * @param bool $fetchNameOnly
+ * @return null|string
+ */
 function upload_base64_image($base64EncodeString = '',$path = 'images', $imageNamePrefix = 'userimage-', $fetchNameOnly = false)
 {
     try {
@@ -128,11 +137,11 @@ function upload_base64_image($base64EncodeString = '',$path = 'images', $imageNa
         $opeFileToGetInfo = finfo_open();
         $fileExtension = explode('/', finfo_buffer($opeFileToGetInfo, $decodedFile, FILEINFO_MIME_TYPE))[1];
 
-        $image_name = $imageNamePrefix . time() . "." . $fileExtension;
+        $image_name = $imageNamePrefix . time() . str_random(4)."." . $fileExtension;
         $imagePath = public_path($path) . "/" . $image_name;
         createPath(public_path($path));
         file_put_contents($imagePath, $decodedFile);
-        return ($fetchNameOnly) ? $image_name : env('PROFILE_IMAGES_UPLOAD_URL') . $image_name;
+        return ($fetchNameOnly) ? $image_name : env('APP_URL') . '/' . $path . $image_name;
 
     } catch (Exception $ex) {
         return null;
@@ -171,4 +180,10 @@ function setGradeArrayConstants($grades) {
         $newConstants[] = $object;
     }
     return $newConstants;
+}
+
+function fetchUrlOfImage($type) {
+    $imagesFolderTypeMapping = [
+        'user' => ''
+    ];
 }
