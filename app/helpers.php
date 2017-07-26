@@ -108,7 +108,8 @@ function getEnumValues($tableName, $fieldName){
 function setDiscountPercentageArrayConstants($discountPercentageConst) {
     $discountPercentageMapping = [
             'Wholesaler' => '< 10',
-            'Retail Saler' => '<= 4'
+            'Retail Saler' => '<= 4',
+            'Distributer' => '<= 15'
     ];
     $newConstants = [];
     foreach($discountPercentageConst as $constant){
