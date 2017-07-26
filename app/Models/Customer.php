@@ -80,7 +80,7 @@ class Customer extends Model
                                                         'General Store','Cosmetics Shop',
                                                         'Tuk Shop at Fuel Station','Mobiler','Homeopathic Store',
                                                         'Pansar Store','Super Market'])],
-            'discount_percentage' => ['required', Rule::in(['Wholesaler','Retail Saler'])],
+            'discount_percentage' => ['required', Rule::in(['Wholesaler','Retail Saler', 'Distributer'])],
             'status'          => ['required', Rule::in(['Approved','Pending','Rejected'])],
             'category'        => ['required', Rule::in(['A+','A','B','C','D'])],
             'biocos_ratting'  => 'numeric',
@@ -140,9 +140,17 @@ class Customer extends Model
         if(array_key_exists('proprietor_id', $customer)) {
             $customerObj->proprietor_id = $customer['proprietor_id'];
         }
+        elseif(array_key_exists('proprietor', $customer)) {
+            $userModel = new User();
+            $customerObj->proprietor_id = $userModel->createOrUpdateUser($customer['proprietor']);
+        }
         //Contact Person ID
         if(array_key_exists('contact_person_id', $customer)) {
             $customerObj->contact_person_id = $customer['contact_person_id'];
+        }
+        elseif(array_key_exists('contact_person', $customer)) {
+            $userModel = new User();
+            $customerObj->contact_person_id = $userModel->createOrUpdateUser($customer['contact_person']);
         }
         //Phone 2
         if(array_key_exists('phone_2', $customer)) {

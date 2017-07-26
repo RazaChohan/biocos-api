@@ -222,4 +222,25 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
         return $response;
     }
+    public function createOrUpdateUser($data)
+    {
+        $user = $this->where('email', '=', $data['email'])
+                     ->first();
+        if(is_null($user)) {
+            $user = new User();
+            $user->email = $data['email'];
+        }
+        $splitName = split_name($data['name']);
+        if(count($splitName) > 1) {
+            $user->firstname = $splitName[0];
+            $user->lastname  = $splitName[1];
+        }
+        $user->address  =  $data["address"];
+        $user->landline =  $data['landline'];
+        $user->phone_1  =  $data['phone_1'];
+        $user->phone_2  =  $data['phone_2'];
+        $user->user_type = 'Employee';
+        $user->save();
+        return $user->id;
+    }
 }

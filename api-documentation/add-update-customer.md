@@ -22,7 +22,51 @@ A JSON object containing key **Customer**
 
     /api/add-update-customer
 
-**Json Body**
+**Json Body with Contact Person & Proprietor Objects**
+```javascript
+{  
+   "name"                :"Wood works",
+   "location"            :"Liberty Market Lahore",
+   "phone_1"             :"456456-56465-54",
+   "latitude"            :"31.577986",
+   "longitude"           :"74.317994",
+   "customer_type"       :"wholesaler",
+   "shop_type"           :"Super store",
+   "discount_percentage" :"retail saler",
+   "status"              :"rejected",
+   "category"            :"D",
+   "proprietor"          :{
+                            "name"    : "Propreitor Name",
+                            "address" : "Propreitor Address",
+                            "email"   : "propreitor@biocospk.com",
+                            "landline": "landline-no",
+                            "phone_1" : "phone-1",
+                            "phone_2" : "phone-2"
+                          },
+   "contact_person"      :{
+                            "name"    : "Contact person Name",
+                            "address" : "Contact person Address",
+                            "email"   : "contact_person@biocospk.com",
+                            "landline": "landline-no",
+                            "phone_1" : "phone-1",
+                            "phone_2" : "phone-2"
+                          },
+   "phone_2"             :"55645-456645-44",
+   "email"               :"admin@biocospk.com",
+   "biocos_ratting"      :21.3,
+   "region_id"           :1,
+   "images"              : [
+       "image-1-hash",
+       "image-2-hash"
+   ],
+   "remove_images"      : [
+        "image-1-full-path",
+        "image-2-full-path"
+   ]
+}
+```
+
+**Json Body with Contact Person and Proprietor ID**
 ```javascript
 {  
    "name"                :"Wood works",
@@ -48,7 +92,7 @@ A JSON object containing key **Customer**
    "remove_images"      : [
         "image-1-full-path",
         "image-2-full-path"
-   ],
+   ]
 }
 ```
 
