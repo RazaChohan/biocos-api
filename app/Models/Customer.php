@@ -28,6 +28,24 @@ class Customer extends Model
     {
         return $this->hasMany('App\Models\CustomerImage', 'shop_id');
     }
+
+    /***
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function proprietor()
+    {
+        return $this->belongsTo('App\Models\User', 'proprietor_id');
+    }
+
+    /***
+     * Contact Person Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function contactPerson()
+    {
+        return $this->belongsTo('App\Models\User', 'contact_person_id');
+    }
     /***
      * Get customers based on filters
      *
@@ -49,7 +67,7 @@ class Customer extends Model
         if($subRegion == 'true') {
             $regionIds = array_merge($regionIds, $regionModel->getSubRegions($regionIds, true));
         }
-        $query = $this->with('images')
+        $query = $this->with('images', 'proprietor', 'contactPerson')
                       ->whereIn('region_id', $regionIds);
         if($page > 0){
             $offset = calculate_offset($page);
@@ -207,7 +225,7 @@ class Customer extends Model
      */
     public function getCustomerDetail($id)
     {
-        $customer = $this->with('images')
+        $customer = $this->with('images', 'contactPerson', 'proprietor')
                          ->where('id', $id)
                          ->first();
         return $customer;
