@@ -6,15 +6,17 @@
 Returns customer object after storing/updating given customer information 
 
 ## Request Headers
-- **X-Auth-Token** â€” Authorization Token
+- **X-Auth-Token** — Authorization Token
+- **Content-Type** — application/json
+
 
 ## Parameter
-- **CustomerId** â€” Customer Id is only required when a particular customer needs to be updated
+- **CustomerId** — Customer Id is only required when a particular customer needs to be updated
 
 ## Return format
 A JSON object containing key **Customer** 
 
-- **Customer**  â€” Customer object
+- **Customer**  — Customer object
 
 
 ## Example
