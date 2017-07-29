@@ -73,7 +73,8 @@ class CustomerController extends BaseController
                 $user = $this->getUserIdFromToken($request, true);
                 $customer['user_id'] = $user->id;
                 $customer['agency_id'] = $user->agency_id;
-                $customer = $this->_customerModel->addOrUpdateCustomer($customer, $customerId);
+                $customer = $this->_customerModel->addOrUpdateCustomer($customer, $customerId,
+                                                                       true);
                 if (is_null($customer)) {
                     return API::response()->array(['success' => false,
                                                    'error' => 'Customer Not Found'], 400);

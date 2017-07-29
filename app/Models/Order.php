@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
+use PhpParser\Builder;
 
 class Order extends Model
 {
@@ -30,7 +31,7 @@ class Order extends Model
     public function validationRules( $attributes = null )
     {
         $rules = [
-            'customer_id'  => 'required|integer',
+            'customer_id'     => 'integer',
             'status'          => [ 'required', Rule::in(['Booked','Confirmed','Processed','Ready',
                                                          'Delivered','Cleared']) ],
             'date_to_deliver' => 'required|date',
@@ -80,6 +81,17 @@ class Order extends Model
             $orderObj->created_by = $order['user_id'];
             $orderObj->agency_id  = $order['agency_id'];
         }
+        //Contact Person ID
+        if(array_key_exists('customer_id', $order)) {
+            $orderObj->customer_id = $order['customer_id'];
+        }
+        elseif(array_key_exists('customer', $order)) {
+            $customerModel = new Customer();
+            $customerId = $customerModel->getCustomerId($order['customer']);
+            $order['customer']['user_id'] = $order['user_id'];
+            $order['customer_id'] = $customerModel->addOrUpdateCustomer($order['customer'],
+                                                                         $customerId);
+        }
         $orderObj->customer_id     = $order['customer_id'];
         $orderObj->status          = $order['status'];
         $orderObj->date_to_deliver = $order['date_to_deliver'];
@@ -112,16 +124,27 @@ class Order extends Model
     }
 
     /***
+     * Customer Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customer()
+    {
+        return $this->belongsTo('App\Models\Customer', 'customer_id');
+    }
+
+    /***
      * Get Order Details
      *
      * @param $id
-     * @return Order
+     * @return \Illuminate\Database\Query\Builder
      */
     public function getOrderDetails($id)
     {
-        return $this->with('products')
-                    ->where('id', $id)
-                    ->first();
+        return $this->with(['products', 'customer' => function($query){
+                        $query->with('images', 'contactPerson', 'proprietor');
+        }])->where('id', $id)
+           ->first();
     }
 
     /***
@@ -132,7 +155,9 @@ class Order extends Model
      */
     public function getOrders($userId, $page = 1)
     {
-        $query = $this->with('products');
+        $query = $this->with(['products', 'customer' => function($query){
+                                        $query->with('images', 'contactPerson', 'proprietor');
+        }]);
         if($userId > 0) {
             $query->where('booked_by', $userId);
         }

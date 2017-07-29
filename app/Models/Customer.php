@@ -125,9 +125,10 @@ class Customer extends Model
      *
      * @param $customer
      * @param int $customerId
+     * @param bool $returnObj
      * @return mixed
      */
-    public function addOrUpdateCustomer($customer, $customerId = 0)
+    public function addOrUpdateCustomer($customer, $customerId = 0, $returnObj = false)
     {
         $customerObj = new $this();
         if($customerId > 0) {
@@ -153,7 +154,6 @@ class Customer extends Model
         $customerObj->status       = $customer['status'];
         $customerObj->Category     = $customer['category'];
         $customerObj->discount_percentage = $customer['discount_percentage'];
-
         //Proprietor ID
         if(array_key_exists('proprietor_id', $customer)) {
             $customerObj->proprietor_id = $customer['proprietor_id'];
@@ -214,7 +214,7 @@ class Customer extends Model
             }
         }
 
-        return $this->getCustomerDetail($customerObj->id);
+        return ($returnObj) ? $this->getCustomerDetail($customerObj->id) : $customerObj->id;
     }
 
     /***
@@ -229,5 +229,21 @@ class Customer extends Model
                          ->where('id', $id)
                          ->first();
         return $customer;
+    }
+
+    /***
+     * Get Customer ID using different params
+     *
+     * @param $customerArray
+     * @return int
+     */
+    public function getCustomerId($customerArray)
+    {
+        $customerRecord =  $this->where('name', $customerArray['name'])
+                                ->where('location', $customerArray['location'])
+                                ->where('customer_type', $customerArray['customer_type'])
+                                ->where('shop_type', $customerArray['shop_type'])
+                                ->first();
+        return is_null($customerRecord) ? 0 : $customerRecord->id;
     }
 }

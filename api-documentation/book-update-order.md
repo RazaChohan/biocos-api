@@ -22,6 +22,57 @@ A collection JSON object containing keys **Order** , **Products**
 **Request**
 
     /api/book-update-order
+**Json Body With Customer Object**
+```javascript
+{
+	"customer"   : {  
+                        "name"  			  :"Wood works",
+                        "location"            :"Liberty Market Lahore",
+                        "phone_1"             :"456456-56465-54",
+                        "latitude"            :"31.577986",
+                        "longitude"           :"74.317994",
+                        "customer_type"       :"Wholesaler",
+                        "shop_type"           :"Super Store",
+                        "discount_percentage" :"Retail Saler",
+                        "status"              :"Rejected",
+                        "category"            :"D",
+                        "proprietor"          :{
+                                                "name"    : "Propreitor Name",
+                                                "address" : "Propreitor Address",
+                                                "email"   : "propreitor@biocospk.com",
+                                                "landline": "landline-no",
+                                                "phone_1" : "phone-1",
+                                                "phone_2" : "phone-2"
+						                       },
+						    "contact_person"  :{
+						                            "name"    : "Contact person Name",
+						                            "address" : "Contact person Address",
+						                            "email"   : "contact_person@biocospk.com",
+						                            "landline": "landline-no",
+						                            "phone_1" : "phone-1",
+						                            "phone_2" : "phone-2"
+						                          },
+												   "phone_2"             :"55645-456645-44",
+												   "email"               :"admin@biocospk.com",
+												   "biocos_ratting"      :21.3,
+												   "region_id"           :1
+											},
+	"status"	      : "Booked",
+	"date_to_deliver" : "2017-08-15",
+	"price"			  : "25.2",
+	"products"		  : [
+							{
+								"product_id" : "1",
+								"quantity"   : "3"
+							},
+							{
+								"product_id" : "2",
+								"quantity"   : "5"
+							}
+						],
+	"type"			  : "Query"
+}
+```
 
 **Json Body**
 ```javascript
