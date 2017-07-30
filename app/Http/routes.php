@@ -83,4 +83,8 @@ $api->version('v1', function ($api) {
      * Update jobs order
      */
     $api->put('/update-jobs-order', 'App\Http\Controllers\JobController@updateJobsOrder');
+    /***
+     * Sync Data
+     */
+    $api->put('/sync-data', 'App\Http\Controllers\Controller@syncData');
 });
