@@ -50,6 +50,11 @@ class BaseController extends Controller
 				$this->_trackRequest ( $token );
 			}
 		}
+		//Adding Content Type in Header
+        if ($request->isMethod('post') || $request->isMethod('put'))
+        {
+            $request->headers->set('content-type', 'application/json');
+        }
 
 		$this->input = (array)json_decode($request->getContent());
 
