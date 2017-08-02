@@ -60,6 +60,11 @@ A collection JSON object containing keys **Order** , **Products**
 	"status"	      : "Booked",
 	"date_to_deliver" : "2017-08-15",
 	"price"			  : "25.2",
+    "remarks"		  : "Very urgent",
+    "latitude"		  : "13.43",
+    "longitude"       : "22.5",
+    "delivery_time"   : "15:22",
+    "discount"		  : "32.1",
 	"products"		  : [
 							{
 								"product_id" : "1",
@@ -111,6 +116,11 @@ A collection JSON object containing keys **Order** , **Products**
         "price": 25.2,
         "discount": 0,
         "type": "query",
+        "remarks"		  : "Very urgent",
+        "latitude"		  : "13.43",
+        "longitude"       : "22.5",
+        "delivery_time"   : "15:22",
+        "discount"		  : "32.1",
         "created_by": 1,
         "updated_by": 1,
         "deleted_by": 0,
