@@ -87,4 +87,13 @@ $api->version('v1', function ($api) {
      * Sync Data
      */
     $api->put('/sync-data', 'App\Http\Controllers\Controller@syncData');
+    /***
+     * Migrate Endpoint
+     */
+    $api->get('/migrate', function()
+    {
+        echo 'init with app tables migrations...';
+        \Illuminate\Support\Facades\Artisan::call('migrate');
+        echo 'done with app tables migrations';
+    });
 });

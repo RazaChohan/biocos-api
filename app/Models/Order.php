@@ -96,6 +96,23 @@ class Order extends Model
         $orderObj->status          = $order['status'];
         $orderObj->date_to_deliver = $order['date_to_deliver'];
         $orderObj->price           = $order['price'];
+        $orderObj->remarks         = $order['remarks'];
+
+        if(array_key_exists('delivery_time', $order)) {
+            $orderObj->delivery_time = $order['delivery_time'];
+        }
+
+        if(array_key_exists('remarks', $order)) {
+            $orderObj->remarks = $order['remarks'];
+        }
+
+        if(array_key_exists('latitude', $order)) {
+            $orderObj->latitude = $order['latitude'];
+        }
+
+        if(array_key_exists('longitude', $order)) {
+            $orderObj->longitude = $order['longitude'];
+        }
         if(array_key_exists('discount', $order)) {
             $orderObj->discount = $order['discount'];
         }
