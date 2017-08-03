@@ -18,6 +18,15 @@ class Product extends Model
     protected $table = 'products';
 
     protected $guarded = ['id'];
+    /***
+     * Images of Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images()
+    {
+        return $this->hasMany('App\Models\ProductImage', 'product_id');
+    }
 
     /***
      * Get products based on filters
@@ -28,7 +37,8 @@ class Product extends Model
      */
     public function getProducts($agencyId, $page = 1)
     {
-        $query = $this->whereDate('started_on', '<=', Carbon::now())
+        $query = $this->with('images')
+                      ->whereDate('started_on', '<=', Carbon::now())
                       ->where(function($query){
                           $query->whereDate('discontinued_on', '>', Carbon::now())
                                 ->orWhereNull('discontinued_on');
@@ -53,7 +63,8 @@ class Product extends Model
      */
     public function getProductDetail($productId)
     {
-        $product = $this->where('id', '=', $productId)
+        $product = $this->with('images')
+                        ->where('id', '=', $productId)
                         ->first();
         return $product;
 

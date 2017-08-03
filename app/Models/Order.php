@@ -23,6 +23,15 @@ class Order extends Model
      */
     protected $guarded = ['id'];
     /***
+     * Images of customer/shop
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images()
+    {
+        return $this->hasMany('App\Models\OrderImage', 'order_id');
+    }
+    /***
      * Validation rules for add user
      *
      * @param null $attributes
@@ -118,6 +127,34 @@ class Order extends Model
         }
         $orderObj->type         = $order['type'];
         $orderObj->save();
+
+        //Image upload
+        if(array_key_exists('images', $order)) {
+            $images = [];
+            foreach($order['images'] as $image) {
+                $image = upload_base64_image($image, 'uploads/order/',
+                    'orderimage-');
+                $orderImage = new OrderImage();
+                $orderImage->image = $image;
+                $images[] = $orderImage;
+            }
+            if(count($images) > 0) {
+                $orderObj->images()->saveMany($images);
+            }
+        }
+        //Remove Image
+        if(array_key_exists('remove_images', $order)) {
+            $orderObj->images()->whereIn('image', $order['remove_images'])
+                ->delete();
+            foreach($order['remove_images'] as $image) {
+                $fileToUnlink = public_path() . '/uploads/order/' .
+                    get_filename_url($image);
+                if (file_exists($fileToUnlink)) {
+                    unlink($fileToUnlink);
+                }
+            }
+        }
+
         if(array_key_exists('products', $order)) {
             $products = [];
             foreach($order['products'] as $product) {
@@ -158,8 +195,10 @@ class Order extends Model
      */
     public function getOrderDetails($id)
     {
-        return $this->with(['products', 'customer' => function($query){
-                        $query->with('images', 'contactPerson', 'proprietor');
+        return $this->with(['products' => function($query) {
+                                    $query->with('images');
+                        }, 'images','customer' => function($query){
+                                    $query->with('images', 'contactPerson', 'proprietor');
         }])->where('id', $id)
            ->first();
     }
@@ -172,8 +211,10 @@ class Order extends Model
      */
     public function getOrders($userId, $page = 1)
     {
-        $query = $this->with(['products', 'customer' => function($query){
-                                        $query->with('images', 'contactPerson', 'proprietor');
+        $query = $this->with(['images','products' => function($query) {
+                            $query->with('images');
+        },      'customer' => function($query){
+                        $query->with('images', 'contactPerson', 'proprietor');
         }]);
         if($userId > 0) {
             $query->where('booked_by', $userId);
