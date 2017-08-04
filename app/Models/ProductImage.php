@@ -9,7 +9,9 @@
 namespace App\Models;
 
 
-class ProductImage
+use Illuminate\Database\Eloquent\Model;
+
+class ProductImage extends Model
 {
     /**
      * The attributes that are mass assignable.
