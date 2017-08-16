@@ -22,4 +22,13 @@ class OrderImage extends Model
      * @var bool
      */
     public $timestamps = false;
+    /***
+     * Image Attribute mutator
+     * @param $value
+     * @return string
+     */
+    public function getImageAttribute($value)
+    {
+        return prepend_http($value);
+    }
 }

@@ -192,3 +192,18 @@ function split_name($name) {
     $first_name = trim( preg_replace('#'.$last_name.'#', '', $name ) );
     return array($first_name, $last_name);
 }
+
+/***
+ * Prepend HTTP
+ *
+ * @param $value
+ * @return string
+ */
+function prepend_http($value) {
+    $url = parse_url($value);
+    if ( ! $url OR ! isset($url['scheme']))
+    {
+        return 'http://'.$value;
+    }
+    return $value;
+}
