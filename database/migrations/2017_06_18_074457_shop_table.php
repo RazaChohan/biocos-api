@@ -29,7 +29,7 @@ class ShopTable extends Migration
             $table->enum('shop_type', ['Parlor', 'Doctor', 'Medical Store', 'Pan Shop', 'Super Store',
                                               'General Store', 'Cosmetics Shop', 'Tuk Shop at Fuel Station',
                                               'Mobiler', 'Homeopathic Store', 'Pansar Store', 'Super Market']);
-            $table->enum('discount_percentage', ['Wholesaler', 'Retail Saler', 'Distributer']);
+            $table->string('discount_percentage', 50);
             $table->double('biocos_ratting');
             $table->integer('region_id');
             $table->enum('status', ['Approved', 'Pending', 'Rejected']);

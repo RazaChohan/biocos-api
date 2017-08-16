@@ -102,21 +102,19 @@ function getEnumValues($tableName, $fieldName){
 /***
  * Set discount percentage array constants
  *
- * @param $discountPercentageConst
  * @return array
  */
-function setDiscountPercentageArrayConstants($discountPercentageConst) {
+function setDiscountPercentageArrayConstants() {
     $discountPercentageMapping = [
             'Wholesaler' => '10',
             'Retail Saler' => '4',
             'Distributer' => '15'
     ];
     $newConstants = [];
-    foreach($discountPercentageConst as $constant){
+    foreach($discountPercentageMapping as $discountType => $percentage){
         $object = new \stdClass();
-        $object->discount_type = $constant;
-        $object->discount_percentage = array_key_exists($constant, $discountPercentageMapping) ?
-                                $discountPercentageMapping[$constant] : "";
+        $object->discount_type = $discountType;
+        $object->discount_percentage = $percentage;
         $newConstants[] = $object;
     }
     return $newConstants;
