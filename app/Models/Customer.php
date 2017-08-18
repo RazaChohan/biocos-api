@@ -52,10 +52,11 @@ class Customer extends Model
      * @param $userId
      * @param $regionId
      * @param $subRegion
+     * @param $avoidPagination
      * @param $page
      * @return mixed
      */
-    public function getCustomers($userId, $regionId, $subRegion, $page = 1)
+    public function getCustomers($userId, $regionId, $subRegion, $avoidPagination, $page = 1)
     {
         $regionIds = [];
         $regionModel = new Region();
@@ -69,7 +70,7 @@ class Customer extends Model
         }
         $query = $this->with('images', 'proprietor', 'contactPerson')
                       ->whereIn('region_id', $regionIds);
-        if($page > 0){
+        if($page > 0 && !$avoidPagination){
             $offset = calculate_offset($page);
             $query->skip($offset)
                 ->take(10);

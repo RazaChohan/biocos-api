@@ -41,9 +41,11 @@ class Region extends Model
      * @param $userId
      * @param $regionId
      * @param $subRegion
+     * @param $avoidPagination
+     * @param $page
      * @return array
      */
-    public function getUserRegions($userId, $regionId, $subRegion)
+    public function getUserRegions($userId, $regionId, $subRegion, $avoidPagination, $page)
     {
         $regions = [];
         $regionIds = [];
@@ -61,8 +63,14 @@ class Region extends Model
             $regionIds = array_merge($regionIds, $this->getSubRegions($regionIds, true));
         }
         if(count($regionIds) > 0) {
-            $regions = $this->whereIn('id', $regionIds)
-                            ->get();
+            $regions = $this->whereIn('id', $regionIds);
+
+            if($page > 0 && !$avoidPagination) {
+                $offset = calculate_offset($page);
+                $regions->skip($offset)
+                        ->take(10);
+            }
+            $regions = $regions->get();
         }
         return $regions;
     }

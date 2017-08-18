@@ -206,10 +206,11 @@ class Order extends Model
     /***
      * Order list
      * @param $userId
+     * @param $avoidPagination
      * @param int $page
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getOrders($userId, $page = 1)
+    public function getOrders($userId, $avoidPagination, $page = 1)
     {
         $query = $this->with(['images','products' => function($query) {
                             $query->with('images');
@@ -219,7 +220,7 @@ class Order extends Model
         if($userId > 0) {
             $query->where('booked_by', $userId);
         }
-        if($page > 0) {
+        if($page > 0 && !$avoidPagination) {
             $offset = calculate_offset($page);
             $query->skip($offset)
                   ->take(10);

@@ -26,9 +26,10 @@ class Job extends Model
      * @param $regionId
      * @param $status
      * @param $subRegion
+     * @param $avoidPagination
      * @param $page
      */
-    public function getUserJobs($userId, $date, $regionId, $status, $subRegion, $page = 1)
+    public function getUserJobs($userId, $date, $regionId, $status, $subRegion, $avoidPagination, $page = 1)
     {
         $regionIds = [];
         if($subRegion == 'true') {
@@ -49,10 +50,10 @@ class Job extends Model
         if(!IsNullOrEmptyString($status)) {
             $query->where('status', '=', $status);
         }
-        if($page > 0) {
+        if($page > 0 && !$avoidPagination) {
             $offset = calculate_offset($page);
             $query->skip($offset)
-                ->take(10);
+                  ->take(10);
         }
         $jobs = $query->get();
         return $jobs;

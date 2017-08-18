@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: raza
- * Date: 8/4/17
- * Time: 1:53 AM
- */
 
 namespace App\Models;
 
@@ -31,7 +25,7 @@ class ProductImage extends Model
     public $timestamps = false;
     /***
      * Image Attribute mutator
-     * 
+     *
      * @param $value
      * @return string
      */

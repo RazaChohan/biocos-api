@@ -33,9 +33,10 @@ class Product extends Model
      *
      * @param $agencyId
      * @param $page
+     * @param $avoidPagination
      * @return mixed
      */
-    public function getProducts($agencyId, $page = 1)
+    public function getProducts($agencyId, $avoidPagination, $page = 1)
     {
         $query = $this->with('images')
                       ->whereDate('started_on', '<=', Carbon::now())
@@ -46,7 +47,7 @@ class Product extends Model
         if($agencyId > 0) {
             $query->where('agency_id', '=', $agencyId);
         }
-        if($page > 0) {
+        if($page > 0 && !$avoidPagination) {
             $offset = calculate_offset($page);
             $query->skip($offset)
                 ->take(10);

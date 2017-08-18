@@ -94,10 +94,11 @@ class OrderController extends BaseController
         try {
             $userId = $request->get('user_id');
             $page = $request->get('page', 1);
+            $avoidPagination = $request->get('avoid_pagination', false);
             if(IsNullOrEmptyString($userId)) {
                 $userId = $this->getUserIdFromToken($request);
             }
-            $orders = $this->_orderModel->getOrders($userId, $page);
+            $orders = $this->_orderModel->getOrders($userId, $avoidPagination, $page);
         }
         catch(Exception $e)
         {
