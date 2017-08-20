@@ -88,6 +88,10 @@ $api->version('v1', function ($api) {
      */
     $api->put('/sync-data', 'App\Http\Controllers\Controller@syncData');
     /***
+     * Add or update payment received
+     */
+    $api->put('/add-update-payment-received/{orderId?}', 'App\Http\Controllers\OrderController@addOrUpdatePaymentReceived');
+    /***
      * Migrate Endpoint
      */
     $api->get('/migrate', function()

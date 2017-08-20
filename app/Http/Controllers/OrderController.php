@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\PaymentReceived;
 use Dingo\Api\Facade\API;
 use Illuminate\Http\Request;
 use League\Flysystem\Exception;
@@ -108,5 +109,44 @@ class OrderController extends BaseController
         }
         return API::response()->array(['success' => true, 'message' => 'Orders found',
             'data' => $orders], 200);
+    }
+
+    /***
+     * Add or update Payment Received
+     *
+     * @param Request $request
+     * @param Integer $orderId
+     */
+    public function addOrUpdatePaymentReceived(Request $request, $orderId = 0)
+    {
+        try {
+            $paymentReceivedModel = new PaymentReceived();
+            $validator = \Validator::make($request->all(), $paymentReceivedModel->validationRules());
+
+            if ($validator->fails()) {
+                return API::response()->array(['success' => false,
+                    'error'   => 'Required parameters are missing or incorrect!',
+                    'message' => $validator->errors()], 400);
+            } else {
+                $paymentReceived = $request->all();
+                $user = $this->getUserIdFromToken($request, true);
+                $paymentReceived['user_id'] = $user->id;
+                $paymentReceived['agency_id'] = $user->agency_id;
+                $paymentReceived = $paymentReceivedModel->addOrUpdatePaymentReceived($paymentReceived,
+                                                                                     $orderId);
+                if (is_null($paymentReceived)) {
+                    return API::response()->array(['success' => false,
+                        'error' => 'Payment Not Found'], 400);
+                }
+            }
+        }
+        catch(Exception $e)
+        {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+        return API::response()->array(['success' => true, 'message' => 'Payment Received ' .
+                                                            (($orderId > 0) ? "Updated" : "Created"),
+            'data' => $paymentReceived], 200);
     }
 }
