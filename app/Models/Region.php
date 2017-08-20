@@ -98,6 +98,7 @@ class Region extends Model
     public function validationRules( $attributes = null )
     {
         $rules = [
+            'uuid'            => 'required',
             'name'            => 'required',
             'city'            => 'required',
             'latitude'        => 'required|numeric',
@@ -142,6 +143,7 @@ class Region extends Model
             $regionObj->created_by = $region['user_id'];
             $regionObj->agency_id  = $region['agency_id'];
         }
+        $regionObj->uuid       = $region['uuid'];
         $regionObj->name       = $region['name'];
         $regionObj->city       = $region['city'];
         $regionObj->latitude   = $region['latitude'];

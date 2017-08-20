@@ -88,6 +88,7 @@ class Customer extends Model
     public function validationRules( $attributes = null )
     {
         $rules = [
+            'uuid'            => 'required',
             'name'            => 'required',
             'location'        => 'required',
             'phone_1'         => 'required',
@@ -144,6 +145,7 @@ class Customer extends Model
             $customerObj->created_by = $customer['user_id'];
             $customerObj->agency_id  = $customer['agency_id'];
         }
+        $customerObj->uuid         = $customer['uuid'];
         $customerObj->name         = $customer['name'];
         $customerObj->status       = $customer['status'];
         $customerObj->location     = $customer['location'];
@@ -240,10 +242,7 @@ class Customer extends Model
      */
     public function getCustomerId($customerArray)
     {
-        $customerRecord =  $this->where('name', $customerArray['name'])
-                                ->where('location', $customerArray['location'])
-                                ->where('customer_type', $customerArray['customer_type'])
-                                ->where('shop_type', $customerArray['shop_type'])
+        $customerRecord =  $this->where('uuid', $customerArray['uuid'])
                                 ->first();
         return is_null($customerRecord) ? 0 : $customerRecord->id;
     }

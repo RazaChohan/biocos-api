@@ -40,6 +40,7 @@ class Order extends Model
     public function validationRules( $attributes = null )
     {
         $rules = [
+            'uuid'            => 'required',
             'customer_id'     => 'integer',
             'status'          => [ 'required', Rule::in(['Booked','Confirmed','Processed','Ready',
                                                          'Delivered','Cleared']) ],
@@ -47,6 +48,7 @@ class Order extends Model
             'price'           => 'required|numeric',
             'discount'        => 'numeric',
             'products'        => 'required',
+            'remarks'         => 'required',
             'type'            => [ 'required', Rule::in([ 'Query','Order' ]) ]
         ];
 
@@ -106,6 +108,11 @@ class Order extends Model
         $orderObj->date_to_deliver = $order['date_to_deliver'];
         $orderObj->price           = $order['price'];
         $orderObj->remarks         = $order['remarks'];
+        $orderObj->uuid            = $order['uuid'];
+
+        if(array_key_exists('payment', $order)) {
+            $orderObj->payment = $order['payment'];
+        }
 
         if(array_key_exists('delivery_time', $order)) {
             $orderObj->delivery_time = $order['delivery_time'];
@@ -122,10 +129,11 @@ class Order extends Model
         if(array_key_exists('longitude', $order)) {
             $orderObj->longitude = $order['longitude'];
         }
+
         if(array_key_exists('discount', $order)) {
             $orderObj->discount = $order['discount'];
         }
-        $orderObj->type         = $order['type'];
+        $orderObj->type       = $order['type'];
         $orderObj->save();
 
         //Image upload

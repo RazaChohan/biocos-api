@@ -25,6 +25,7 @@ A JSON object containing key **Region**
 **Json Body**
 ```javascript
 {  
+   "uuid"                :"18cecfb5-8825-45fa-9622-501dc3ba14fe",
    "name"                :"Wood works",
    "location"            :"Liberty Market Lahore",
    "phone_1"             :"456456-56465-54",

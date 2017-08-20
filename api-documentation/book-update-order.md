@@ -25,26 +25,28 @@ A collection JSON object containing keys **Order** , **Products**
 **Json Body With Customer Object**
 ```javascript
 {
-	"customer"   : {  
-                        "name"  			  :"Wood works",
-                        "location"            :"Liberty Market Lahore",
-                        "phone_1"             :"456456-56465-54",
-                        "latitude"            :"31.577986",
-                        "longitude"           :"74.317994",
-                        "customer_type"       :"Wholesaler",
-                        "shop_type"           :"Super Store",
-                        "discount_percentage" :"Retail Saler",
-                        "status"              :"Rejected",
-                        "category"            :"D",
-                        "proprietor"          :{
-                                                "name"    : "Propreitor Name",
-                                                "address" : "Propreitor Address",
-                                                "email"   : "propreitor@biocospk.com",
-                                                "landline": "landline-no",
-                                                "phone_1" : "phone-1",
-                                                "phone_2" : "phone-2"
-						                       },
-						    "contact_person"  :{
+	"customer"        : {
+							"uuid"				  :"218eb842-3f12-428b-90ac-1c482ba89b85",
+							"name"  			  :"Wood works",
+							"location"            :"Liberty Market Lahore",
+						    "phone_1"             :"456456-56465-54",
+						    "agency_id"			  :2,
+						    "latitude"            :"31.577986",
+						    "longitude"           :"74.317994",
+						    "customer_type"       :"Wholesaler",
+						    "shop_type"           :"Super Store",
+						    "discount_percentage" :"Retail Saler",
+						    "status"              :"Rejected",
+						    "category"            :"D",
+						    "proprietor"          :{
+						                            "name"    : "Propreitor Name",
+						                            "address" : "Propreitor Address",
+						                            "email"   : "propreitor@biocospk.com",
+						                            "landline": "landline-no",
+						                            "phone_1" : "phone-1",
+						                            "phone_2" : "phone-2"
+						                          },
+						    "contact_person"      :{
 						                            "name"    : "Contact person Name",
 						                            "address" : "Contact person Address",
 						                            "email"   : "contact_person@biocospk.com",
@@ -57,14 +59,12 @@ A collection JSON object containing keys **Order** , **Products**
 												   "biocos_ratting"      :21.3,
 												   "region_id"           :1
 											},
+	"payment"         : 2563.5,
+	"uuid"			  : "218eb842-3f12-428b-90ac-1c482ba89b94",
 	"status"	      : "Booked",
 	"date_to_deliver" : "2017-08-15",
 	"price"			  : "25.2",
-    "remarks"		  : "Very urgent",
-    "latitude"		  : "13.43",
-    "longitude"       : "22.5",
-    "delivery_time"   : "15:22",
-    "discount"		  : "32.1",
+	"remarks"		  : "Remarks goes here",
 	"products"		  : [
 							{
 								"product_id" : "1",
@@ -86,6 +86,7 @@ A collection JSON object containing keys **Order** , **Products**
 	"status"	      : "booked",
 	"date_to_deliver" : "2017-08-15",
 	"price"			  : "25.2",
+	"remarks"         : "Remarks goes here",
 	"products"		  : [
                 {
                   "product_id" : "1",

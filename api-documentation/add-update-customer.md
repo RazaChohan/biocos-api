@@ -6,17 +6,17 @@
 Returns customer object after storing/updating given customer information 
 
 ## Request Headers
-- **X-Auth-Token** — Authorization Token
-- **Content-Type** — application/json
+- **X-Auth-Token** ï¿½ Authorization Token
+- **Content-Type** ï¿½ application/json
 
 
 ## Parameter
-- **CustomerId** — Customer Id is only required when a particular customer needs to be updated
+- **CustomerId** ï¿½ Customer Id is only required when a particular customer needs to be updated
 
 ## Return format
 A JSON object containing key **Customer** 
 
-- **Customer**  — Customer object
+- **Customer**  ï¿½ Customer object
 
 
 ## Example
@@ -27,6 +27,7 @@ A JSON object containing key **Customer**
 **Json Body with Contact Person & Proprietor Objects**
 ```javascript
 {  
+   "uuid"                :"55c143cd-1ec9-4566-86bd-030db960434f",
    "name"                :"Wood works",
    "location"            :"Liberty Market Lahore",
    "phone_1"             :"456456-56465-54",

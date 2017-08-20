@@ -40,7 +40,8 @@ class OrderController extends BaseController
             $validator = \Validator::make($request->all(), $this->_orderModel->validationRules());
 
             if ($validator->fails()) {
-                return API::response()->array(['success' => false, 'error' => 'Required parameters are missing or incorrect!',
+                return API::response()->array(['success' => false,
+                    'error'   => 'Required parameters are missing or incorrect!',
                     'message' => $validator->errors()], 400);
             } else {
                 $order = $request->all();
@@ -55,7 +56,7 @@ class OrderController extends BaseController
             }
             return API::response()->array(['success' => true,
                 'message' => 'Order ' . (($orderId > 0) ? 'Updated' : 'Created'),
-                'data' => $order], 200);
+                'data'    => $order], 200);
         } catch(Exception $e) {
             return API::response()->array(['success' => false,
                                            'message' => $e->getTraceAsString()], 400);
