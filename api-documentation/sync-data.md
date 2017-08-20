@@ -21,6 +21,7 @@ Status whether records are created successfully
 {
 	"customers" : [
 				{  
+				   "uuid"                :"55c143cd-1ec9-4566-86bd-030db960434f",
 				   "name"                :"Wood works",
 				   "location"            :"Liberty Market Lahore",
 				   "phone_1"             :"456456-56465-54",
@@ -56,6 +57,7 @@ Status whether records are created successfully
 	"orders"    : [
 		{
 				"customer":   {  
+				                "uuid"                :"55c143cd-1ec9-4566-86bd-030db960434f",                                				   
 								"name"  			  :"Wood works",
 								"location"            :"Liberty Market Lahore",
 							    "phone_1"             :"456456-56465-54",
@@ -90,6 +92,9 @@ Status whether records are created successfully
 	"status"	      : "Booked",
 	"date_to_deliver" : "2017-08-15",
 	"price"			  : "25.2",
+	"uuid"			  : "9c065f4f-ee20-467b-b704-946d45c8a3db",
+    "remarks"		  : "Remarks goes here",
+    	
 	"products"		  : [
 							{
 								"product_id" : "1",
@@ -105,6 +110,7 @@ Status whether records are created successfully
 	],
 	"regions"   : [
 						{
+						    "uuid"		: "2f15c9db-ad84-4ff4-9597-6d7a37f8cf83",                            							
 							"name"      : "Shah Alam Market",
 							"city"      : "Lahore",
 							"latitude"  : "31.44",

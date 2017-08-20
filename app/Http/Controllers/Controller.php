@@ -57,7 +57,7 @@ class Controller extends BaseController
         $customers = $request->get('customers');
         $orders    = $request->get('orders');
         $regions   = $request->get('regions');
-        $regionsReponses = [];
+        $regionsResponses = [];
         $customersRespones  = [];
         $ordersResponses = [];
         $user = $this->getUserIdFromToken($request, true);
@@ -78,7 +78,7 @@ class Controller extends BaseController
                         if($regionId == 0) {
                             $regionId = $regionModel->getRegionId($region['uuid']);
                         }
-                        $regionsReponses[] = $regionModel->addOrUpdateRegion($region, $regionId);
+                        $regionsResponses[] = $regionModel->addOrUpdateRegion($region, $regionId);
                     }
                 }
                 //Insert Customers
@@ -112,11 +112,11 @@ class Controller extends BaseController
                 $data = new \stdClass();
                 $data->customers = $customersRespones;
                 $data->orders = $ordersResponses;
-                $data->regions = $regionsReponses;
+                $data->regions = $regionsResponses;
 
                 return API::response()->array(['success' => true,
-                    'message' => 'Records Created',
-                    'data' => $data, 200]);
+                    'message' => 'Records Created/Updated',
+                    'data' => $data], 200);
             }
         } catch(Exception $e) {
             return API::response()->array(['success' => false,
