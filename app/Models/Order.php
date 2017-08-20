@@ -235,4 +235,16 @@ class Order extends Model
         }
         return $query->get();
     }
+    /***
+     * Get Order ID using uuid
+     *
+     * @param $uuid
+     * @return int
+     */
+    public function getOrderId($uuid)
+    {
+        $orderRecord =  $this->where('uuid', $uuid)
+            ->first();
+        return is_null($orderRecord) ? 0 : $orderRecord->id;
+    }
 }

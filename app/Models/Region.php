@@ -170,4 +170,17 @@ class Region extends Model
                        ->first();
         return $region;
     }
+
+    /***
+     * Get Region Id using uuid
+     *
+     * @param $uuid
+     * @return integer
+     */
+    public function getRegionId($uuid)
+    {
+        $region = $this->where('uuid', $uuid)
+            ->first(['id']);
+        return !is_null($region) ? $region->id : 0;
+    }
 }

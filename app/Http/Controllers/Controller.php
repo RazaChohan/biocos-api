@@ -57,6 +57,9 @@ class Controller extends BaseController
         $customers = $request->get('customers');
         $orders    = $request->get('orders');
         $regions   = $request->get('regions');
+        $regionsReponses = [];
+        $customersRespones  = [];
+        $ordersResponses = [];
         $user = $this->getUserIdFromToken($request, true);
         try {
             $validationErrors = $this->checkValidation($customers, $orders, $regions);
@@ -72,7 +75,10 @@ class Controller extends BaseController
                         $region['agency_id'] = $user->agency_id;
                         $regionId = array_key_exists('region_id', $region)
                                             ? $region['region_id'] : 0;
-                        $regionModel->addOrUpdateRegion($region, $regionId);
+                        if($regionId == 0) {
+                            $regionId = $regionModel->getRegionId($region['uuid']);
+                        }
+                        $regionsReponses[] = $regionModel->addOrUpdateRegion($region, $regionId);
                     }
                 }
                 //Insert Customers
@@ -86,7 +92,7 @@ class Controller extends BaseController
                         if($customerId == 0) {
                             $customerId = $customerModel->getCustomerId($customer);
                         }
-                        $customerModel->addOrUpdateCustomer($customer, $customerId);
+                        $customersRespones [] = $customerModel->addOrUpdateCustomer($customer, $customerId, true);
                     }
                 }
                 //Insert Orders
@@ -97,11 +103,20 @@ class Controller extends BaseController
                         $order['agency_id'] = $user->agency_id;
                         $orderId            = array_key_exists('order_id', $order)
                                                 ? $order['order_id'] : 0;
-                        $orderModel->addOrUpdateOrder($order, $orderId);
+                        if($orderId == 0) {
+                            $orderId = $orderModel->getOrderId($order['uuid']);
+                        }
+                        $ordersResponses[] = $orderModel->addOrUpdateOrder($order, $orderId);
                     }
                 }
+                $data = new \stdClass();
+                $data->customers = $customersRespones;
+                $data->orders = $ordersResponses;
+                $data->regions = $regionsReponses;
+
                 return API::response()->array(['success' => true,
-                    'message' => 'Records Created'], 200);
+                    'message' => 'Records Created',
+                    'data' => $data, 200]);
             }
         } catch(Exception $e) {
             return API::response()->array(['success' => false,
