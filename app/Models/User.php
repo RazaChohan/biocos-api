@@ -72,7 +72,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'email' => 'unique:users,email',
             'password' => 'required',
             'user_type' => 'required'
-
         ];
 
         // no list is provided
@@ -225,8 +224,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
     public function createOrUpdateUser($data)
     {
-        $user = $this->where('email', '=', $data['email'])
-                     ->first();
+        if(array_key_exists('email', $data)) {
+            $user = $this->where('email', '=', $data['email'])
+                ->first();
+        } else {
+            $user = $this->where('phone_1', '=', $data['phone_1'])
+                ->first();
+        }
         if(is_null($user)) {
             $user = new User();
             if(array_key_exists('email', $data)) {
