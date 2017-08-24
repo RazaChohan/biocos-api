@@ -35,7 +35,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $this->firstname = $input['firstname'];
         $this->lastname = $input['lastname'];
-        $this->email = $input['email'];
+        if(array_key_exists('email', $input)) {
+            $this->email = $input['email'];
+        }
         $this->password = Hash::make($input['password']);
         if(array_key_exists('user_type', $input)) {
             $this->user_type = $input['user_type'];
@@ -67,7 +69,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'username'  => 'required|unique:users,username',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'email' => 'required|unique:users,email',
+            'email' => 'unique:users,email',
             'password' => 'required',
             'user_type' => 'required'
 
@@ -227,7 +229,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                      ->first();
         if(is_null($user)) {
             $user = new User();
-            $user->email = $data['email'];
+            if(array_key_exists('email', $data)) {
+                $user->email = $data['email'];
+            }
         }
         $splitName = split_name($data['name']);
         if(count($splitName) > 1) {

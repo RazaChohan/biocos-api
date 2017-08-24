@@ -153,7 +153,9 @@ class Customer extends Model
         $customerObj->longitude    = $customer['longitude'];
         $customerObj->phone_1      = $customer['phone_1'];
         $customerObj->customer_type= $customer['customer_type'];
-        $customerObj->shop_type    = $customer['shop_type'];
+        if(array_key_exists('shop_type', $customer)) {
+            $customerObj->shop_type = $customer['shop_type'];
+        }
         $customerObj->status       = $customer['status'];
         $customerObj->Category     = $customer['category'];
         $customerObj->discount_percentage = $customer['discount_percentage'];
