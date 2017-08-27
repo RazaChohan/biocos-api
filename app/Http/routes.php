@@ -92,6 +92,14 @@ $api->version('v1', function ($api) {
      */
     $api->put('/add-update-payment-received/{orderId?}', 'App\Http\Controllers\OrderController@addOrUpdatePaymentReceived');
     /***
+     * Assign or Update Regions
+     */
+    $api->put('/assign-update-regions', 'App\Http\Controllers\RegionController@assignOrUpdateRegions');
+    /***
+     * Get User regions
+     */
+    $api->get('list-user-regions', 'App\Http\Controllers\RegionController@listUserRegions');
+    /***
      * Migrate Endpoint
      */
     $api->get('/migrate', function()

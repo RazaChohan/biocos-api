@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -120,8 +121,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $newRules[$attr] = $rules[$attr];
         return $newRules;
     }
+
+    /***
+     * User regions
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function regions() {
-        return $this->belongsToMany('App\Models\Region', 'user_regions', 'user_id', 'region_id');
+        return $this->belongsToMany('App\Models\Region', 'user_regions',
+                                    'user_id', 'region_id')
+                    ->withPivot(['date']);
     }
 
     /***
@@ -149,6 +158,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
         return $query->first();
     }
+
+    /***
+     * Get constants
+     *
+     * @return array
+     */
     public function getConstants()
     {
         $constants = [];
@@ -222,6 +237,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
         return $response;
     }
+
+    /***
+     * Create or update user
+     *
+     * @param $data
+     * @return mixed
+     */
     public function createOrUpdateUser($data)
     {
         if(array_key_exists('email', $data)) {
@@ -249,5 +271,54 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $user->user_type = 'Employee';
         $user->save();
         return $user->id;
+    }
+    /***
+     * Assign or update Regions
+     *
+     * @param $regions
+     * @param $userId
+     * @return array
+     */
+    public function assignOrUpdateRegions($regions, $userId)
+    {
+        $userRegions = [];
+        if(is_array($regions) > 0) {
+            foreach($regions as $region) {
+                $userRegion = DB::table('user_regions')
+                                ->where('user_id', $userId)
+                                ->where('region_id', $region['region_id'])
+                                ->first();
+                if(is_null($userRegion)) {
+                    DB::table('user_regions')
+                        ->insert([ 'date'      => Carbon::parse($region['date']),
+                                   'user_id'   => $userId,
+                                   'region_id' => $region['region_id']
+                                ]);
+                } else {
+                    DB::table('user_regions')
+                        ->where('user_id', $userId)
+                        ->where('region_id', $region['region_id'])
+                        ->update( [ 'date' => Carbon::parse($region['date']) ] );
+                }
+            }
+            $userRegions = $this->getUserRegionsWithPivot($userId);
+        }
+        return $userRegions;
+    }
+
+    /***
+     * Get user regions with pivot values
+     *
+     * @param $userId
+     * @return array
+     */
+    public function getUserRegionsWithPivot($userId)
+    {
+        $userRegions = [];
+        $userWithRegions = $this->where('id', $userId)->first();
+        if(!is_null($userWithRegions)) {
+            $userRegions = $userWithRegions->regions;
+        }
+        return $userRegions;
     }
 }

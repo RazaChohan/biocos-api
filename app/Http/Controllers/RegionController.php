@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Region;
+use App\Models\User;
 use Dingo\Api\Facade\API;
 use Illuminate\Http\Request;
 use League\Flysystem\Exception;
@@ -90,4 +91,53 @@ class RegionController extends BaseController
                 'message' => $e->getTraceAsString()], 400);
         }
     }
+
+    /***
+     * Assign Or Update Regions
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function assignOrUpdateRegions(Request $request)
+    {
+        try {
+            $regions = $request->all();
+            $userModel = new User();
+            $user = $this->getUserIdFromToken($request, true);
+            $userRegions = $userModel->assignOrUpdateRegions($regions, $user->id);
+            if (count($userRegions) == 0) {
+                return API::response()->array(['success' => false,
+                    'error' => 'Region Not Found'], 400);
+            }
+            return API::response()->array(['success' => true,
+                'message' => 'User Regions Updated',
+                'data' => $userRegions], 200);
+        } catch(Exception $e) {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+    }
+    /***
+     * List user regions
+     *
+     * @param $request
+     * @return mixed
+     */
+    public function listUserRegions(Request $request)
+    {
+        try {
+            $userId = $this->getUserIdFromToken($request, false);
+            $userModel = new User();
+            $regions = $userModel->getUserRegionsWithPivot($userId);
+        }
+        catch(Exception $e)
+        {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+        return API::response()->array(['success' => true,
+            'message' => 'User Regions found',
+            'data' => $regions], 200);
+    }
+
 }
