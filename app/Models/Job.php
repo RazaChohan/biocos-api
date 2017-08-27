@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -88,5 +89,28 @@ class Job extends Model
             }
         }
         return $jobsUpdated;
+    }
+
+    /***
+     * Add Job for new Customer
+     *
+     * @param $customer
+     * @return mixed
+     */
+    public function addJobForNewCustomer($customer)
+    {
+        $newJob = new $this();
+        $newJob->region_id = $customer->region_id;
+        $newJob->date      = Carbon::now();
+        $newJob->customer_id = $customer->id;
+        $newJob->user_id     = $customer->created_by;
+        $newJob->status      = 'Completed';
+        $newJob->completed_on = Carbon::now();
+        $newJob->employee_location = $customer->location;
+        $newJob->visit_type    = 'Visit';
+        $newJob->order       = 1;
+        $newJob->created_by = $customer->created_by;
+        $newJob->save();
+        return $this->where('id', $newJob->id)->first();
     }
 }

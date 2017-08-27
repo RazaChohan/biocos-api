@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Job;
 use App\Models\Order;
 use App\Models\Region;
 use App\Models\User;
@@ -92,7 +93,13 @@ class Controller extends BaseController
                         if($customerId == 0) {
                             $customerId = $customerModel->getCustomerId($customer);
                         }
-                        $customersRespones [] = $customerModel->addOrUpdateCustomer($customer, $customerId, true);
+                        $newUpdatedCustomer = $customerModel->addOrUpdateCustomer($customer, $customerId, true);
+                        if($customerId == 0) {
+                            $jobModel = new Job();
+                            $job = $jobModel->addJobForNewCustomer($newUpdatedCustomer);
+                            $newUpdatedCustomer->job = $job;
+                        }
+                        $customersRespones [] = $newUpdatedCustomer;
                     }
                 }
                 //Insert Orders

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Job;
 use Dingo\Api\Facade\API;
 use Illuminate\Http\Request;
 use League\Flysystem\Exception;
@@ -77,6 +78,12 @@ class CustomerController extends BaseController
                 $customer['agency_id'] = $user->agency_id;
                 $customer = $this->_customerModel->addOrUpdateCustomer($customer, $customerId,
                                                                        true);
+                //Add Job for new Customer
+                if($customerId == 0) {
+                    $jobModel = new Job();
+                    $job = $jobModel->addJobForNewCustomer($customer);
+                    $customer->job = $job;
+                }
                 if (is_null($customer)) {
                     return API::response()->array(['success' => false,
                                                    'error' => 'Customer Not Found'], 400);
