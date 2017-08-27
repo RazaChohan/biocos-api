@@ -74,6 +74,7 @@ class OrderController extends BaseController
     {
         try {
             $order = $this->_orderModel->getOrderDetails($orderId);
+            $order->remaining_amount = $this->getRemainingAmount($order->customer_id);
         }
         catch(Exception $e)
         {
@@ -147,5 +148,19 @@ class OrderController extends BaseController
         }
         return API::response()->array(['success' => true, 'message' => 'Payment Received Updated/Created',
             'data' => $newOrUpdatePayments], 200);
+    }
+
+    /***
+     * Get remaining amount
+     *
+     * @param $customerId
+     * @return int|mixed
+     */
+    public function getRemainingAmount($customerId)
+    {
+        $paymentReceivedModel = new PaymentReceived();
+        $totalPaidAmountByCustomer = $paymentReceivedModel->getTotalPaidAmountByCustomer($customerId);
+        $totalOrdersAmount = $this->_orderModel->getTotalOrdersAmount($customerId);
+        return (($totalOrdersAmount - $totalPaidAmountByCustomer) < 0) ? 0 : ($totalOrdersAmount - $totalPaidAmountByCustomer);
     }
 }

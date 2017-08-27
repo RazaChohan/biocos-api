@@ -117,4 +117,16 @@ class PaymentReceived extends Model
         return $this->where('id', $id)
                     ->first();
     }
+
+    /***
+     * Get Total amount paid by customer
+     * @param $customerId
+     * @return mixed
+     */
+    public function getTotalPaidAmountByCustomer($customerId)
+    {
+        return $this->where('customer_id', $customerId)
+                    ->where('is_success', true)
+                    ->sum('amount');
+    }
 }

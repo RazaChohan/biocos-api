@@ -247,4 +247,16 @@ class Order extends Model
             ->first();
         return is_null($orderRecord) ? 0 : $orderRecord->id;
     }
+
+    /***
+     * Get total orders amount
+     *
+     * @param $customerId
+     * @return mixed
+     */
+    public function getTotalOrdersAmount($customerId)
+    {
+        return $this->where('customer_id', $customerId)
+                    ->sum('price');
+    }
 }
