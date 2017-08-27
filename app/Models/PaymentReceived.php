@@ -65,25 +65,24 @@ class PaymentReceived extends Model
      * Add or Update Payment Received
      *
      * @param $paymentReceived
-     * @param $orderId
      * @return Model|null|static
      */
-    public function addOrUpdatePaymentReceived($paymentReceived, $orderId)
+    public function addOrUpdatePaymentReceived($paymentReceived)
     {
         $paymentReceivedObj = new $this();
-        if($orderId > 0) {
-            $paymentReceivedObj = $this->where('order_id', $orderId)
+        if(IsNullOrEmptyString($paymentReceived['uuid'])) {
+            $paymentReceivedObj = $this->where('uuid', $paymentReceived['uuid'])
                                        ->first();
             //Payment Received not found
             if(is_null($paymentReceivedObj)) {
-                return $paymentReceivedObj;
+                $paymentReceivedObj = new   $this();
+                $paymentReceivedObj->user_id     = $paymentReceived['user_id'];
             }
         } else {
             $paymentReceivedObj->user_id     = $paymentReceived['user_id'];
         }
         $paymentReceivedObj->uuid           = $paymentReceived['uuid'];
         $paymentReceivedObj->customer_id    = $paymentReceived['customer_id'];
-        $paymentReceivedObj->order_id       = $paymentReceived['order_id'];
         $paymentReceivedObj->remarks        = $paymentReceived['remarks'];
         $paymentReceivedObj->payment_type   = $paymentReceived['payment_type'];
         $paymentReceivedObj->amount         = $paymentReceived['amount'];
@@ -98,6 +97,10 @@ class PaymentReceived extends Model
         // Cheque Number
         if(array_key_exists('cheque_no', $paymentReceived)) {
             $paymentReceivedObj->cheque_no = $paymentReceived['cheque_no'];
+        }
+        // IS Success
+        if(array_key_exists('is_success', $paymentReceived)) {
+            $paymentReceivedObj->is_success = $paymentReceived['is_success'];
         }
         $paymentReceivedObj->save();
         return $this->getPaymentReceivedDetails($paymentReceivedObj->id);

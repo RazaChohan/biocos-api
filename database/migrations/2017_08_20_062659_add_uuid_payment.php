@@ -40,7 +40,7 @@ class AddUuidPayment extends Migration
             $table->string('uuid');
             $table->integer('customer_id');
             $table->integer('user_id');
-            $table->integer('order_id');
+            $table->boolean('is_success')->default(false);
             $table->string('remarks');
             $table->enum('payment_type', ['Promise', 'Cheque', 'Cash']);
             $table->double('amount');

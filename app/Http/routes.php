@@ -90,7 +90,7 @@ $api->version('v1', function ($api) {
     /***
      * Add or update payment received
      */
-    $api->put('/add-update-payment-received/{orderId?}', 'App\Http\Controllers\OrderController@addOrUpdatePaymentReceived');
+    $api->put('/add-update-payment-received', 'App\Http\Controllers\OrderController@addOrUpdatePaymentReceived');
     /***
      * Assign or Update Regions
      */

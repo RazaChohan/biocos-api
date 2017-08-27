@@ -115,38 +115,37 @@ class OrderController extends BaseController
      * Add or update Payment Received
      *
      * @param Request $request
-     * @param Integer $orderId
      */
-    public function addOrUpdatePaymentReceived(Request $request, $orderId = 0)
+    public function addOrUpdatePaymentReceived(Request $request)
     {
         try {
-            $paymentReceivedModel = new PaymentReceived();
-            $validator = \Validator::make($request->all(), $paymentReceivedModel->validationRules());
+            $newOrUpdatePayments = [];
+            $payments = $request->all();
+            $user = $this->getUserIdFromToken($request, true);
+            foreach ($payments as $payment) {
+                $paymentReceivedModel = new PaymentReceived();
+                $validator = \Validator::make($payment, $paymentReceivedModel->validationRules());
 
-            if ($validator->fails()) {
-                return API::response()->array(['success' => false,
-                    'error'   => 'Required parameters are missing or incorrect!',
-                    'message' => $validator->errors()], 400);
-            } else {
-                $paymentReceived = $request->all();
-                $user = $this->getUserIdFromToken($request, true);
-                $paymentReceived['user_id'] = $user->id;
-                $paymentReceived['agency_id'] = $user->agency_id;
-                $paymentReceived = $paymentReceivedModel->addOrUpdatePaymentReceived($paymentReceived,
-                                                                                     $orderId);
-                if (is_null($paymentReceived)) {
+                if ($validator->fails()) {
                     return API::response()->array(['success' => false,
-                        'error' => 'Payment Not Found'], 400);
+                        'error' => 'Required parameters are missing or incorrect!',
+                        'message' => $validator->errors()], 400);
+                } else {
+                    $payment['user_id'] = $user->id;
+                    $payment['agency_id'] = $user->agency_id;
+                    $payment = $paymentReceivedModel->addOrUpdatePaymentReceived($payment);
+                    if (is_null($payment)) {
+                        return API::response()->array(['success' => false,
+                            'error' => 'Payment Not Found'], 400);
+                    }
+                    $newOrUpdatePayments[] = $payment;
                 }
             }
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             return API::response()->array(['success' => false,
                 'message' => $e->getTraceAsString()], 400);
         }
-        return API::response()->array(['success' => true, 'message' => 'Payment Received ' .
-                                                            (($orderId > 0) ? "Updated" : "Created"),
-            'data' => $paymentReceived], 200);
+        return API::response()->array(['success' => true, 'message' => 'Payment Received Updated/Created',
+            'data' => $newOrUpdatePayments], 200);
     }
 }

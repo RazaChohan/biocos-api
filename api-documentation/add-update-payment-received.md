@@ -1,17 +1,13 @@
 # Add or Update Payment Received
 
-    PUT /api/add-update-payment-received/{orderId?}
+    PUT /api/add-update-payment-received
 
 ## Description
-Returns payment received object after storing/updating given payment information
+Returns payment received array after storing/updating given payment information
 
 ## Request Headers
 - **X-Auth-Token** � Authorization Token
 - **Content-Type** � application/json
-
-
-## Parameter
-- **OrderId** � Order Id is only required when a particular payment needs to be updated
 
 ## Return format
 A JSON object containing key **Payment Received**
@@ -26,18 +22,33 @@ A JSON object containing key **Payment Received**
 
 **Json Body**
 ```javascript
-{
-    "uuid"		    : "1c61e74c-5909-4ce2-a0c3-7eda9c2a8ba6",
-    "customer_id"   : "1",
-    "user_id"	    : "2",
-    "order_id"	    : "3",
-    "remarks"	    : "Remarks goes here...",
-    "payment_type"  : "Cheque",
-    "amount"	    : 562.6,
-    "promise_cheque_date" : "2017-05-12",
-    "cheque_type"	: "Bearer Cheque",
-    "cheque_no"		: "wede4redw43432423-234dwdwd"
-}
+[
+	{
+		"uuid"		    : "1c61e74c-5909-4ce2-a0c3-7eda9c2a8ba6",
+		"customer_id"   : "1",
+		"user_id"	    : "2",
+		"order_id"	    : "3",
+		"remarks"	    : "Remarks goes here...",
+		"payment_type"  : "Cheque",
+		"amount"	    : 562.6,
+		"is_success"    : true,
+	    "promise_cheque_date" : "2017-05-12",
+		"cheque_type"	: "Bearer Cheque",
+		"cheque_no"		: "wede4redw43432423-234dwdwd"
+	},
+	{
+		"uuid"		    : "1c61e74c-5909-4ce2-a0c3-7eda9c2a8ba3",
+		"customer_id"   : "1",
+		"user_id"	    : "2",
+		"order_id"	    : "3",
+		"remarks"	    : "Remarks goes here...",
+		"payment_type"  : "Cheque",
+		"amount"	    : 562.6,
+	    "promise_cheque_date" : "2017-05-12",
+		"cheque_type"	: "Bearer Cheque",
+		"cheque_no"		: "wede4redw43432423-234dwdwd"
+	}
+]
 ```
 
 
@@ -45,20 +56,35 @@ A JSON object containing key **Payment Received**
 ``` json
 {
     "success": true,
-    "message": "Payment Received Created",
-    "data": {
-        "id": 1,
-        "uuid": "1c61e74c-5909-4ce2-a0c3-7eda9c2a8ba6",
-        "customer_id": 1,
-        "user_id": 1,
-        "order_id": 3,
-        "remarks": "Remarks goes here...",
-        "payment_type": "Cheque",
-        "amount": 562.6,
-        "promise_cheque_date": "2017-05-12",
-        "cheque_type": "Bearer Cheque",
-        "cheque_no": "wede4redw43432423-234dwdwd"
-    }
+    "message": "Payment Received Updated/Created",
+    "data": [
+        {
+            "id": 8,
+            "uuid": "1c61e74c-5909-4ce2-a0c3-7eda9c2a8ba6",
+            "customer_id": 1,
+            "user_id": 1,
+            "remarks": "Remarks goes here...",
+            "payment_type": "Cheque",
+            "amount": 562.6,
+            "promise_cheque_date": "2017-05-12",
+            "cheque_type": "Bearer Cheque",
+            "cheque_no": "wede4redw43432423-234dwdwd",
+            "is_success": 1
+        },
+        {
+            "id": 9,
+            "uuid": "1c61e74c-5909-4ce2-a0c3-7eda9c2a8ba3",
+            "customer_id": 1,
+            "user_id": 1,
+            "remarks": "Remarks goes here...",
+            "payment_type": "Cheque",
+            "amount": 562.6,
+            "promise_cheque_date": "2017-05-12",
+            "cheque_type": "Bearer Cheque",
+            "cheque_no": "wede4redw43432423-234dwdwd",
+            "is_success": 0
+        }
+    ]
 }
 ```
 

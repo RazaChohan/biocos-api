@@ -101,6 +101,7 @@ class Job extends Model
     {
         $newJob = new $this();
         $newJob->region_id = $customer->region_id;
+        $newJob->agency_id = $customer->agency_id;
         $newJob->date      = Carbon::now();
         $newJob->customer_id = $customer->id;
         $newJob->user_id     = $customer->created_by;
