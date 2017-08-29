@@ -48,7 +48,6 @@ class Order extends Model
             'price'           => 'required|numeric',
             'discount'        => 'numeric',
             'products'        => 'required',
-            'remarks'         => 'required',
             'type'            => [ 'required', Rule::in([ 'Query','Order' ]) ]
         ];
 
@@ -107,8 +106,12 @@ class Order extends Model
         $orderObj->status          = $order['status'];
         $orderObj->date_to_deliver = $order['date_to_deliver'];
         $orderObj->price           = $order['price'];
-        $orderObj->remarks         = $order['remarks'];
         $orderObj->uuid            = $order['uuid'];
+
+
+        if(array_key_exists('remarks', $order)) {
+            $orderObj->remarks = $order['remarks'];
+        }
 
         if(array_key_exists('payment', $order)) {
             $orderObj->payment = $order['payment'];

@@ -50,6 +50,7 @@ class OrderController extends BaseController
                 $order['user_id'] = $user->id;
                 $order['agency_id'] = $user->agency_id;
                 $order = $this->_orderModel->addOrUpdateOrder($order, $orderId);
+                $order->remaining_amount = $this->getRemainingAmount($order->customer_id);
                 if (is_null($order)) {
                     return API::response()->array(['success' => false,
                         'error' => 'Order Not Found'], 400);
@@ -95,6 +96,7 @@ class OrderController extends BaseController
     public function listOrders(Request $request)
     {
         try {
+            $orderRemainingAmounts = [];
             $userId = $request->get('user_id');
             $page = $request->get('page', 1);
             $avoidPagination = $request->get('avoid_pagination', false);
@@ -102,6 +104,13 @@ class OrderController extends BaseController
                 $userId = $this->getUserIdFromToken($request);
             }
             $orders = $this->_orderModel->getOrders($userId, $avoidPagination, $page);
+            //Calculating remaining amounts
+            foreach($orders as $key => $order) {
+                if(!array_key_exists($order->id, $orderRemainingAmounts)) {
+                    $orderRemainingAmounts[$order->id] = $this->getRemainingAmount($order->customer_id);
+                }
+                $order->remaining_amount = $orderRemainingAmounts[$order->id];
+            }
         }
         catch(Exception $e)
         {
