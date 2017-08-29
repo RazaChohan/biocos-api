@@ -45,7 +45,8 @@ A collection JSON objects containing keys **regions**
             "pivot": {
                 "user_id": 1,
                 "region_id": 1,
-                "date": "2017-10-27"
+                "date": "2017-10-27",
+                "execution_time" : "55:00"
             }
         },
         {
@@ -67,7 +68,8 @@ A collection JSON objects containing keys **regions**
             "pivot": {
                 "user_id": 1,
                 "region_id": 2,
-                "date": "2017-09-26"
+                "date": "2017-09-26",
+                "execution_time" : "52:00"
             }
         }
     ]

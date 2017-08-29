@@ -23,10 +23,13 @@ A JSON object containing key **Regions**
 **Json Body**
 ```javascript
 [ 
-	{	"region_id": 1,
-		"date" : "27-10-2017"
+	{	"id"       : 2,
+	    "region_id": 1,
+		"date" : "27-10-2017",
+		
 	},
 	{
+	    "id"       : 3,
 		"region_id": 2,
 		"date" : "26-09-2017"
 	}
@@ -58,7 +61,8 @@ A JSON object containing key **Regions**
             "pivot": {
                 "user_id": 1,
                 "region_id": 1,
-                "date": "2017-10-27"
+                "date": "2017-10-27",
+                "execution_time" : "52:00"
             }
         },
         {
@@ -80,7 +84,8 @@ A JSON object containing key **Regions**
             "pivot": {
                 "user_id": 1,
                 "region_id": 2,
-                "date": "2017-09-26"
+                "date": "2017-09-26",
+                "execution_time" : "52:00"
             }
         }
     ]
