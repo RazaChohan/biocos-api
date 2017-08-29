@@ -105,6 +105,11 @@ function getEnumValues($tableName, $fieldName){
  * @return array
  */
 function setDiscountPercentageArrayConstants() {
+    $discountPercentageColorMapping = [
+        'Wholesaler' => '#CC6A55',
+        'Retail Saler' => '#47C10A',
+        'Distributer' => '#C1182D'
+    ];
     $discountPercentageMapping = [
             'Wholesaler' => '10',
             'Retail Saler' => '4',
@@ -115,6 +120,7 @@ function setDiscountPercentageArrayConstants() {
         $object = new \stdClass();
         $object->discount_type = $discountType;
         $object->discount_percentage = $percentage;
+        $object->color = $discountPercentageColorMapping[$discountType];
         $newConstants[] = $object;
     }
     return $newConstants;
