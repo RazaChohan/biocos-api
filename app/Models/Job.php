@@ -29,6 +29,8 @@ class Job extends Model
      * @param $subRegion
      * @param $avoidPagination
      * @param $page
+     *
+     * @return mixed
      */
     public function getUserJobs($userId, $date, $regionId, $status, $subRegion, $avoidPagination, $page = 1)
     {
@@ -38,7 +40,8 @@ class Job extends Model
             $regionIds = $regionModel->getSubRegions($regionId, true);
             array_push($regionIds, intval($regionId));
         }
-        $query = $this->where('user_id', '=', $userId);
+        $query = $this->with('customer')
+                      ->where('user_id', '=', $userId);
         if(count($regionIds) > 0) {
             $query->whereIn('region_id', $regionIds);
         }
@@ -113,5 +116,15 @@ class Job extends Model
         $newJob->created_by = $customer->created_by;
         $newJob->save();
         return $this->where('id', $newJob->id)->first();
+    }
+
+    /***
+     * Customer relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customer()
+    {
+        return $this->belongsTo('App\Models\Customer', 'customer_id');
     }
 }

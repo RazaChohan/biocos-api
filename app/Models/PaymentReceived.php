@@ -103,6 +103,33 @@ class PaymentReceived extends Model
             $paymentReceivedObj->is_success = $paymentReceived['is_success'];
         }
         $paymentReceivedObj->save();
+        //Image upload
+        if(array_key_exists('images', $paymentReceived)) {
+            $images = [];
+            foreach($paymentReceived['images'] as $image) {
+                $image = upload_base64_image($image, 'uploads/payment/',
+                    'paymentimage-');
+                $paymentImage = new PaymentImage();
+                $paymentImage->image = $image;
+                $images[] = $paymentImage;
+            }
+            if(count($images) > 0) {
+                $paymentReceivedObj->images()->saveMany($images);
+            }
+        }
+        //Remove Image
+        if(array_key_exists('remove_images', $paymentReceived)) {
+            $paymentReceivedObj->images()->whereIn('image', $paymentReceived['remove_images'])
+                ->delete();
+            foreach($paymentReceived['remove_images'] as $image) {
+                $fileToUnlink = public_path() . '/uploads/payment/' .
+                    get_filename_url($image);
+                if (file_exists($fileToUnlink)) {
+                    unlink($fileToUnlink);
+                }
+            }
+        }
+
         return $this->getPaymentReceivedDetails($paymentReceivedObj->id);
     }
 
@@ -114,7 +141,8 @@ class PaymentReceived extends Model
      */
     public function getPaymentReceivedDetails($id)
     {
-        return $this->where('id', $id)
+        return $this->with('images')
+                    ->where('id', $id)
                     ->first();
     }
 
@@ -128,5 +156,14 @@ class PaymentReceived extends Model
         return $this->where('customer_id', $customerId)
                     ->where('is_success', true)
                     ->sum('amount');
+    }
+    /***
+     * Images of customer/shop
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images()
+    {
+        return $this->hasMany('App\Models\PaymentImage', 'payment_id');
     }
 }
