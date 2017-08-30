@@ -65,15 +65,12 @@ class UserRegion extends Model
      */
     public function updateUserRegion($updateData, $id = 0, $userId = 0, $regionId = 0)
     {
-        $model = new $this();
+        $model = $this->where('user_id', $userId);;
         if($id > 0) {
             $model->where('id', $id);
         }
         if($regionId > 0) {
             $model->where('region_id', $regionId);
-        }
-        if($userId > 0) {
-            $model->where('user_id', $userId);
         }
         $userRegion = $model->first();
         if(count($updateData) > 0) {
