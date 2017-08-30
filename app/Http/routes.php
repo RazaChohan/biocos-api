@@ -100,6 +100,10 @@ $api->version('v1', function ($api) {
      */
     $api->get('list-user-regions', 'App\Http\Controllers\RegionController@listUserRegions');
     /***
+     * Insert user locations
+     */
+    $api->put('/add-user-locations', 'App\Http\Controllers\UserController@addUserLocations');
+    /***
      * Migrate Endpoint
      */
     $api->get('/migrate', function()
