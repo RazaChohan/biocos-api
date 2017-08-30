@@ -1,6 +1,6 @@
 # List Jobs
 
-    POST /api/list-regions
+    GET /api/list-regions
 
 ## Description
 Returns list of regions depending upon the parameters/filters passed

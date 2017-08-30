@@ -94,8 +94,8 @@ class UserController extends BaseController
      */
     public function addUserLocations(Request $request)
     {
-        $userLocationModel = new UserLocation();
         try {
+            $userLocationModel = new UserLocation();
             $locations = $request->all();
             $userId = $this->getUserIdFromToken($request);
             foreach($locations as $location)
@@ -116,5 +116,33 @@ class UserController extends BaseController
             return API::response()->array(['success' => false,
                 'message' => $e->getTraceAsString()], 400);
         }
+    }
+
+    /***
+     * List user locations
+     * 
+     * @param Request $request
+     * @return mixed
+     */
+    public function listUserLocations(Request $request)
+    {
+        try {
+            $userLocationModel = new UserLocation();
+            $userId = $request->get('user_id');
+            $avoidPagination = $request->get('avoid_pagination', false);
+            $page      = $request->get('page', 1);
+
+            if(IsNullOrEmptyString($userId)) {
+                $userId = $this->getUserIdFromToken($request);
+            }
+            $userLocations = $userLocationModel->getUserLocations($userId, $avoidPagination, $page);
+        }
+        catch(Exception $e)
+        {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+        return API::response()->array(['success' => true, 'message' => 'User Locations found',
+            'data' => $userLocations], 200);
     }
 }

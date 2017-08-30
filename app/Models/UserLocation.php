@@ -71,4 +71,24 @@ class UserLocation extends Model
         $model->save();
         return $model->id;
     }
+
+    /***
+     * Get user locations
+     *
+     * @param $userId
+     * @param $avoidPagination
+     * @param $page
+     * @return mixed
+     */
+    public function getUserLocations($userId, $avoidPagination, $page)
+    {
+        $query = $this->where('user_id', '=', $userId);
+        if($page > 0 && !$avoidPagination) {
+            $offset = calculate_offset($page);
+            $query->skip($offset)
+                ->take(10);
+        }
+        $locations = $query->get();
+        return $locations;
+    }
 }
