@@ -29,12 +29,15 @@ class UserRegion extends Model
      * Get user regions
      *
      * @param $userId
-     * @param int $regionId
-     * @return mixed
+     * @param integer $regionId
+     * @param integer $id
      */
-    public function getUserRegions($userId, $regionId = 0)
+    public function getUserRegions($userId, $regionId = 0, $id = 0)
     {
         $model = $this->where('user_id', $userId);
+        if($id > 0) {
+            $model->where('id', $id);
+        }
         if($regionId > 0) {
             $model->where('region_id', $regionId);
         }
@@ -58,19 +61,14 @@ class UserRegion extends Model
     /***
      * Update user region
      *
-     * @param $userId
-     * @param int $regionId
      * @param $updateData
      * @param $id
      */
-    public function updateUserRegion($updateData, $id = 0, $userId = 0, $regionId = 0)
+    public function updateUserRegion($updateData, $id = 0)
     {
-        $model = $this->where('user_id', $userId);;
+        $model = new $this();
         if($id > 0) {
             $model->where('id', $id);
-        }
-        if($regionId > 0) {
-            $model->where('region_id', $regionId);
         }
         $userRegion = $model->first();
         if(count($updateData) > 0) {
