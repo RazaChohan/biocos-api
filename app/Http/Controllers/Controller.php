@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Job;
 use App\Models\Order;
+use App\Models\PaymentReceived;
 use App\Models\Region;
 use App\Models\User;
+use App\Models\UserRegion;
 use Illuminate\Http\Request;
 use League\Flysystem\Exception;
 use Dingo\Api\Facade\API;
@@ -55,22 +57,26 @@ class Controller extends BaseController
      */
     public function syncData(Request $request)
     {
-        $customers = $request->get('customers');
-        $orders    = $request->get('orders');
-        $regions   = $request->get('regions');
+        $customers   = $request->get('customers');
+        $orders      = $request->get('orders');
+        $regions     = $request->get('regions');
+        $payments    = $request->get('payments');
+        $userRegions = $request->get('user_regions');
         $regionsResponses = [];
-        $customersRespones  = [];
+        $customersResponses  = [];
         $ordersResponses = [];
+        $paymentResponses = [];
+        $userRegionsResponses = [];
         $user = $this->getUserIdFromToken($request, true);
         try {
-            $validationErrors = $this->checkValidation($customers, $orders, $regions);
+            $validationErrors = $this->checkValidation($customers, $orders, $regions,$paymentResponses);
             if(count($validationErrors) > 0) {
                 return API::response()->array(['success' => false, 'error' => 'Required parameters are missing or incorrect!',
                     'message' => $validationErrors], 400);
             } else {
                 //Insert Regions
+                $regionModel = new Region();
                 if(!is_null($regions) && count($regions) > 0) {
-                    $regionModel = new Region();
                     foreach($regions as $region) {
                         $region['user_id'] = $user->id;
                         $region['agency_id'] = $user->agency_id;
@@ -83,8 +89,8 @@ class Controller extends BaseController
                     }
                 }
                 //Insert Customers
+                $customerModel = new Customer();
                 if(!is_null($customers) && count($customers) > 0) {
-                    $customerModel = new Customer();
                     foreach($customers as $customer) {
                         $customer['user_id']     = $user->id;
                         $customer['agency_id']   = $user->agency_id;
@@ -99,12 +105,12 @@ class Controller extends BaseController
                             $job = $jobModel->addJobForNewCustomer($newUpdatedCustomer);
                             $newUpdatedCustomer->job = $job;
                         }
-                        $customersRespones [] = $newUpdatedCustomer;
+                        $customersResponses [] = $newUpdatedCustomer;
                     }
                 }
                 //Insert Orders
+                $orderModel = new Order();
                 if(!is_null($orders) && count($orders) > 0) {
-                    $orderModel = new Order();
                     foreach($orders as $order) {
                         $order['user_id']   = $user->id;
                         $order['agency_id'] = $user->agency_id;
@@ -116,11 +122,41 @@ class Controller extends BaseController
                         $ordersResponses[] = $orderModel->addOrUpdateOrder($order, $orderId);
                     }
                 }
+
+                //Insert Payments
+                if(!is_null($payments) && count($payments) > 0) {
+                    $paymentModel = new PaymentReceived();
+                    foreach($payments as $payment) {
+                        $payment['user_id']   = $user->id;
+                        if(array_key_exists('order_uuid', $payment)) {
+                            $payment['order_id'] = $orderModel->getOrderId($payment['customer_uuid']);
+                        }
+                        if(array_key_exists('customer_uuid', $payment)) {
+                            $customerArr['uuid'] = $payment['customer_uuid'];
+                            $payment['customer_id'] = $customerModel->getCustomerId($customerArr);
+                        }
+                        $paymentResponses[] = $paymentModel->addOrUpdatePaymentReceived($payment);
+                    }
+                }
+                //Insert/Update user Regions
+                if(!is_null($userRegions) && count($userRegions) > 0) {
+                    $userModel = new User();
+                    foreach($userRegions as $key => $userRegion) {
+                        $userRegions[$key]['user_id']   = $user->id;
+                        $userRegions[$key]['agency_id'] = $user->agency_id;
+                        if(array_key_exists('region_uuid', $userRegion)) {
+                            $userRegions[$key]['region_id'] = $regionModel->getRegionId($userRegion['region_uuid']);
+                        }
+                    }
+                    $userRegionsResponses[] = $userModel->assignOrUpdateRegions($userRegions, $user->id);
+                }
+
                 $data = new \stdClass();
-                $data->customers = $customersRespones;
+                $data->customers = $customersResponses;
                 $data->orders = $ordersResponses;
                 $data->regions = $regionsResponses;
-
+                $data->payments = $paymentResponses;
+                $data->user_regions = $userRegionsResponses;
                 return API::response()->array(['success' => true,
                     'message' => 'Records Created/Updated',
                     'data' => $data], 200);
@@ -137,13 +173,15 @@ class Controller extends BaseController
      * @param $customers
      * @param $orders
      * @param $regions
+     * @param $payments
      * @return array
      */
-    public function checkValidation($customers, $orders, $regions)
+    public function checkValidation($customers, $orders, $regions, $payments)
     {
         $customerModel = new Customer();
         $orderModel    = new Order();
         $regionModel   = new Region();
+        $paymentReceivedModel = new PaymentReceived();
         $validationErrors = [];
         //Validate Customers
         if(!is_null($customers) && count($customers) > 0) {
@@ -171,6 +209,15 @@ class Controller extends BaseController
                 $validator = \Validator::make($region, $regionModel->validationRules());
                 if ($validator->fails()) {
                     $validationErrors['regions'][] = $validator->errors();
+                }
+            }
+        }
+        // Validate Payment Received
+        if(!is_null($payments) && count($payments) > 0) {
+            foreach ($payments as $payment) {
+                $validator = \Validator::make($payment, $paymentReceivedModel->validationRules());
+                if ($validator->fails()) {
+                    $validationErrors['payments'][] = $validator->errors();
                 }
             }
         }

@@ -143,7 +143,9 @@ class Customer extends Model
             $customerObj->updated_by = $customer['user_id'];
         } else {
             $customerObj->created_by = $customer['user_id'];
-            $customerObj->agency_id  = $customer['agency_id'];
+            if(array_key_exists('agency_id', $customer)) {
+                $customerObj->agency_id = $customer['agency_id'];
+            }
         }
         $customerObj->uuid         = $customer['uuid'];
         $customerObj->name         = $customer['name'];
