@@ -130,7 +130,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function regions() {
         return $this->belongsToMany('App\Models\Region', 'user_regions',
                                     'user_id', 'region_id')
-                    ->withPivot(['date', 'execution_time']);
+                    ->withPivot(['date', 'execution_time', 'id']);
     }
 
     /***
@@ -296,18 +296,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                         'region_id' => $region['region_id']
                     ]);
                 } else {
-                    $updateUserRegionAttr = [ ];
-                    if(array_key_exists('date', $region)) {
-                        $updateUserRegionAttr['date'] = Carbon::parse($region['date']);
-                    }
-                    if(array_key_exists('execution_time', $region)) {
-                        $updateUserRegionAttr['execution_time'] = $region['execution_time'];
-                    }
                     $id = 0;
-                    if(array_key_exists('id', $region)) {
+                    if (array_key_exists('id', $region)) {
                         $id = $region['id'];
                     }
-                    $userRegionModel->updateUserRegion($updateUserRegionAttr, $id);
+                    if(array_key_exists('delete', $region) && $region['delete'] == "true") {
+                        $userRegionModel->deleteUserRegion($id);
+                    } else {
+                        $updateUserRegionAttr = [];
+                        if (array_key_exists('date', $region)) {
+                            $updateUserRegionAttr['date'] = Carbon::parse($region['date']);
+                        }
+                        if (array_key_exists('execution_time', $region)) {
+                            $updateUserRegionAttr['execution_time'] = $region['execution_time'];
+                        }
+                        $userRegionModel->updateUserRegion($updateUserRegionAttr, $id);
+                    }
                 }
             }
             $userRegions = $this->getUserRegionsWithPivot($userId);

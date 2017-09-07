@@ -36,6 +36,20 @@ A JSON object containing key **Regions**
 ]
 
 ```
+
+**Json Body for deleting regions**
+```javascript
+[ 
+	{	"id"       : 2,
+	    "delete"   : true
+	},
+	{
+	    "id"       : 3,
+		"delete"   : true
+	}
+]
+
+```
 **Return** __shortened for example purpose__
 ``` json
 {

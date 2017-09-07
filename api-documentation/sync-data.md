@@ -16,7 +16,7 @@ Status whether records are created successfully
 
     /api/sync-data
     
-**Json Body With Customers, Regions & Orders**
+**Json Body With Customers, Regions, Payments, User Regions & Orders**
 ```javascript
 {
 	"customers" : [
@@ -57,7 +57,7 @@ Status whether records are created successfully
 	"orders"    : [
 		{
 				"customer":   {  
-				                "uuid"                :"55c143cd-1ec9-4566-86bd-030db960434f",                                				   
+							    "uuid"                : "9c065f4f-ee20-467b-b704-946d45c8a3db",
 								"name"  			  :"Wood works",
 								"location"            :"Liberty Market Lahore",
 							    "phone_1"             :"456456-56465-54",
@@ -92,9 +92,6 @@ Status whether records are created successfully
 	"status"	      : "Booked",
 	"date_to_deliver" : "2017-08-15",
 	"price"			  : "25.2",
-	"uuid"			  : "9c065f4f-ee20-467b-b704-946d45c8a3db",
-    "remarks"		  : "Remarks goes here",
-    	
 	"products"		  : [
 							{
 								"product_id" : "1",
@@ -105,12 +102,13 @@ Status whether records are created successfully
 								"quantity"   : "5"
 							}
 						],
-	"type"			  : "Query"
+	"type"			  : "Query",
+	"uuid"			  : "9c065f4f-ee20-467b-b704-946d45c8a3db"
 }
 	],
 	"regions"   : [
 						{
-						    "uuid"		: "2f15c9db-ad84-4ff4-9597-6d7a37f8cf83",                            							
+							"uuid"      : "18cecfb5-8825-45fa-9622-501dc3ba14fe",
 							"name"      : "Shah Alam Market",
 							"city"      : "Lahore",
 							"latitude"  : "31.44",
@@ -118,7 +116,44 @@ Status whether records are created successfully
 							"country"   : "Pakistan",
 							"parent_id" : 1
 					    }
-	]	
+	],
+	"payments"  : [
+	        {
+                "uuid"		    : "1c61e74c-5909-4ce2-a0c3-7eda9c2a8ba6",
+                "customer_uuid" : "55c143cd-1ec9-4566-86bd-030db960434f",
+                "order_uuid"    : "9c065f4f-ee20-467b-b704-946d45c8a3db",
+                "remarks"	    : "Remarks goes here...",
+                "payment_type"  : "Cheque", 
+                "amount"	    : 562.6,
+                "is_success"    : true,
+                "promise_cheque_date" : "2017-05-12",
+                "cheque_type"	: "Bearer Cheque",
+                "cheque_no"		: "wede4redw43432423-234dwdwd"
+	        },
+            {
+                "uuid"		    : "1c61e74c-5909-4ce2-a0c3-7eda9c2a8ba3",
+                "customer_id"   : "1",
+                "order_id"	    : "3",
+                "remarks"	    : "Remarks goes here...",
+                "payment_type"  : "Cheque", 
+                "amount"	    : 562.6,
+                "promise_cheque_date" : "2017-05-12",
+                "cheque_type"	: "Bearer Cheque",
+                "cheque_no"		: "wede4redw43432423-234dwdwd"
+            }
+	],
+	"user_regions" : [
+		 {
+    	   "id" : 1,
+    	   "region_uuid": "2f15c9db-ad84-4ff4-9597-6d7a37f8cf83",
+           "date" : "2017-09-19",
+           "execution_time" : "12:00:19"
+         },
+         {
+    	    "region_uuid" : "18cecfb5-8825-45fa-9622-501dc3ba14fe",
+    	    "date" : "2017-09-07"
+         }
+	]
 }
 ```
 

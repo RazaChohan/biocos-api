@@ -78,4 +78,16 @@ class UserRegion extends Model
         }
         $userRegion->save();
     }
+
+    /***
+     * Delete User Region
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function deleteUserRegion($id)
+    {
+        return $this->where('id', '=', $id)
+                    ->delete();
+    }
 }
