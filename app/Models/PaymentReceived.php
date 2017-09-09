@@ -38,7 +38,6 @@ class PaymentReceived extends Model
         $rules = [
             'uuid'            => 'required',
             'customer_id'     => 'required',
-            'remarks'         => 'required',
             'payment_type'    => ['required', Rule::in(['Promise','Cheque','Cash']) ],
             'amount'          => 'required',
             'cheque_type'     => [Rule::in(['Bearer Cheque','Order Cheque','Crossed Cheque',
@@ -83,9 +82,12 @@ class PaymentReceived extends Model
         }
         $paymentReceivedObj->uuid           = $paymentReceived['uuid'];
         $paymentReceivedObj->customer_id    = $paymentReceived['customer_id'];
-        $paymentReceivedObj->remarks        = $paymentReceived['remarks'];
         $paymentReceivedObj->payment_type   = $paymentReceived['payment_type'];
         $paymentReceivedObj->amount         = $paymentReceived['amount'];
+        //Remarks on payment received
+        if(array_key_exists('remarks', $paymentReceived)) {
+            $paymentReceivedObj->remarks = $paymentReceived['remarks'];
+        }
         // Promise Cheque Date
         if(array_key_exists('promise_cheque_date', $paymentReceived)) {
             $paymentReceivedObj->promise_cheque_date = $paymentReceived['promise_cheque_date'];

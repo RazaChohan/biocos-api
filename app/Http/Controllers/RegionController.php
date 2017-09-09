@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Region;
 use App\Models\User;
+use App\Models\UserRegion;
 use Dingo\Api\Facade\API;
 use Illuminate\Http\Request;
 use League\Flysystem\Exception;
@@ -101,10 +102,21 @@ class RegionController extends BaseController
     public function assignOrUpdateRegions(Request $request)
     {
         try {
-            $regions = $request->all();
+            $addOrUpdateRegions = $request->get('update_region_model_list');
+            $deleteUserRegions  = $request->get('delete_assign_region_model_list');
             $userModel = new User();
             $user = $this->getUserIdFromToken($request, true);
-            $userRegions = $userModel->assignOrUpdateRegions($regions, $user->id);
+            //Delete User Regions
+            if(!is_null($deleteUserRegions) && count($deleteUserRegions) > 0) {
+                $userRegionModel = new UserRegion();
+                foreach ($deleteUserRegions as $deleteUserRegion) {
+                    if(array_key_exists('delete', $deleteUserRegion) && $deleteUserRegion['delete'] == "true") {
+                        $userRegionModel->deleteUserRegion($deleteUserRegion['id']);
+                    }
+                }
+            }
+            //Assign or update regions
+            $userRegions = $userModel->assignOrUpdateRegions($addOrUpdateRegions, $user->id);
             if (count($userRegions) == 0) {
                 return API::response()->array(['success' => false,
                     'error' => 'Region Not Found'], 400);

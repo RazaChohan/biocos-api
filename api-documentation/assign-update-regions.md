@@ -22,32 +22,32 @@ A JSON object containing key **Regions**
 
 **Json Body**
 ```javascript
-[ 
-	{	"id"       : 2,
-	    "region_id": 1,
-		"date" : "27-10-2017",
-		
-	},
-	{
-	    "id"       : 3,
-		"region_id": 2,
-		"date" : "26-09-2017"
-	}
-]
+{ 
+	"update_region_model_list" : 
+	[
+		{
+			"region_id": 1,
+			"date" : "05-10-2019"
+		},
+		{
+			"id"	   : 29,
+		    "region_id": 2,
+			"date" : "09-12-2019"
+		}
+	],
+	"delete_assign_region_model_list" : 
+	[
+		{
+			"id" : 31,
+			"delete" : true
+		},
+		{
+			"id" : 32,
+			"delete" :true
+		}
+	]
+}
 
-```
-
-**Json Body for deleting regions**
-```javascript
-[ 
-	{	"id"       : 2,
-	    "delete"   : true
-	},
-	{
-	    "id"       : 3,
-		"delete"   : true
-	}
-]
 
 ```
 **Return** __shortened for example purpose__

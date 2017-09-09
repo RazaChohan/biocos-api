@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class UserRegion extends Model
@@ -68,7 +69,7 @@ class UserRegion extends Model
     {
         $model = new $this();
         if($id > 0) {
-            $model->where('id', $id);
+            $model = $model->where('id', $id);
         }
         $userRegion = $model->first();
         if(count($updateData) > 0) {

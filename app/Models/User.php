@@ -284,15 +284,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $userRegionModel = new UserRegion();
         $userRegions = [];
         if(is_array($regions) > 0) {
-            foreach($regions as $region) {
+            foreach ($regions as $region) {
                 $userRegion = null;
-                if(array_key_exists('id', $region)) {
-                    $userRegion = $userRegionModel->getUserRegions($userId, 0 , $region['id']);
+                if (array_key_exists('id', $region)) {
+                    $userRegion = $userRegionModel->getUserRegions($userId, 0, $region['id']);
                 }
-                if(is_null($userRegion)) {
+                if (is_null($userRegion)) {
                     $userRegionModel->insertUserRegion([
-                        'date'      => Carbon::parse($region['date']),
-                        'user_id'   => $userId,
+                        'date' => Carbon::parse($region['date']),
+                        'user_id' => $userId,
                         'region_id' => $region['region_id']
                     ]);
                 } else {
@@ -300,18 +300,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                     if (array_key_exists('id', $region)) {
                         $id = $region['id'];
                     }
-                    if(array_key_exists('delete', $region) && $region['delete'] == "true") {
-                        $userRegionModel->deleteUserRegion($id);
-                    } else {
-                        $updateUserRegionAttr = [];
-                        if (array_key_exists('date', $region)) {
-                            $updateUserRegionAttr['date'] = Carbon::parse($region['date']);
-                        }
-                        if (array_key_exists('execution_time', $region)) {
-                            $updateUserRegionAttr['execution_time'] = $region['execution_time'];
-                        }
-                        $userRegionModel->updateUserRegion($updateUserRegionAttr, $id);
+                    $updateUserRegionAttr = [];
+                    if (array_key_exists('date', $region)) {
+                        $updateUserRegionAttr['date'] = Carbon::parse($region['date']);
                     }
+                    if (array_key_exists('execution_time', $region)) {
+                        $updateUserRegionAttr['execution_time'] = $region['execution_time'];
+                    }
+                    $userRegionModel->updateUserRegion($updateUserRegionAttr, $id);
                 }
             }
             $userRegions = $this->getUserRegionsWithPivot($userId);

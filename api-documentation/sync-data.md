@@ -142,18 +142,29 @@ Status whether records are created successfully
                 "cheque_no"		: "wede4redw43432423-234dwdwd"
             }
 	],
-	"user_regions" : [
-		 {
-    	   "id" : 1,
-    	   "region_uuid": "2f15c9db-ad84-4ff4-9597-6d7a37f8cf83",
-           "date" : "2017-09-19",
-           "execution_time" : "12:00:19"
-         },
-         {
-    	    "region_uuid" : "18cecfb5-8825-45fa-9622-501dc3ba14fe",
-    	    "date" : "2017-09-07"
-         }
-	]
+	"user_regions" : 
+    	{
+    			"update_region_model_list" : 
+    			[
+    				{
+    		    	   "id" : 1,
+    		    	   "region_uuid": "2f15c9db-ad84-4ff4-9597-6d7a37f8cf83",
+    		           "date" : "2017-09-19",
+    		           "execution_time" : "12:00:19"
+    		    	},
+    		    	{
+    		    		"region_uuid" : "18cecfb5-8825-45fa-9622-501dc3ba14fe",
+    		    		"date" : "2017-09-07"
+    		    	}
+    	    	],
+    	    	"delete_assign_region_model_list" :
+    	    	[
+    	    		{
+    	    			"id" : 30,
+    	    			"delete" : "true"
+    	    		}
+    	    	]
+    		}
 }
 ```
 
