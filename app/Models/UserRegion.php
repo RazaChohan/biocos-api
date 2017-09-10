@@ -62,20 +62,15 @@ class UserRegion extends Model
     /***
      * Update user region
      *
-     * @param $updateData
-     * @param $id
+     * @param $userRegion
      */
-    public function updateUserRegion($updateData, $id = 0)
+    public function updateUserRegion($userRegion, $updateData)
     {
-        $model = new $this();
-        if($id > 0) {
-            $model = $model->where('id', $id);
+        if (array_key_exists('date', $updateData)) {
+            $userRegion->date = Carbon::parse($updateData['date']);
         }
-        $userRegion = $model->first();
-        if(count($updateData) > 0) {
-            foreach ($updateData as $attribute => $value) {
-                $userRegion->{$attribute} = $value;
-            }
+        if (array_key_exists('execution_time', $updateData)) {
+            $userRegion->execution_time = $updateData['execution_time'];
         }
         $userRegion->save();
     }
@@ -90,5 +85,21 @@ class UserRegion extends Model
     {
         return $this->where('id', '=', $id)
                     ->delete();
+    }
+
+    /***
+     * Get User Region with date and region
+     *
+     * @param $userId
+     * @param $regionId
+     * @param $date
+     * @return mixed
+     */
+    public function getUserRegionWithDateAndRegion($userId, $regionId, $date)
+    {
+        return $this->whereDate('date', '=', Carbon::parse($date)->toDateString())
+                    ->where('region_id', '=', $regionId)
+                    ->where('user_id', '=', $userId)
+                    ->first();
     }
 }

@@ -288,6 +288,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                 $userRegion = null;
                 if (array_key_exists('id', $region)) {
                     $userRegion = $userRegionModel->getUserRegions($userId, 0, $region['id']);
+                } elseif(array_key_exists('date', $region) && array_key_exists('region_id', $region)
+                    && is_null($userRegion)) {
+                    $userRegion = $userRegionModel->getUserRegionWithDateAndRegion($userId, $region['region_id'],
+                                                                                   $region['date']);
                 }
                 if (is_null($userRegion)) {
                     $userRegionModel->insertUserRegion([
@@ -296,18 +300,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                         'region_id' => $region['region_id']
                     ]);
                 } else {
-                    $id = 0;
-                    if (array_key_exists('id', $region)) {
-                        $id = $region['id'];
-                    }
-                    $updateUserRegionAttr = [];
-                    if (array_key_exists('date', $region)) {
-                        $updateUserRegionAttr['date'] = Carbon::parse($region['date']);
-                    }
-                    if (array_key_exists('execution_time', $region)) {
-                        $updateUserRegionAttr['execution_time'] = $region['execution_time'];
-                    }
-                    $userRegionModel->updateUserRegion($updateUserRegionAttr, $id);
+                    $userRegionModel->updateUserRegion($userRegion, $region);
                 }
             }
             $userRegions = $this->getUserRegionsWithPivot($userId);
