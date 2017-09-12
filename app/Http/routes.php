@@ -108,6 +108,10 @@ $api->version('v1', function ($api) {
      */
     $api->get('list-user-locations', 'App\Http\Controllers\UserController@listUserLocations');
     /***
+     * List payment received
+     */
+    $api->get('list-customer-payments', 'App\Http\Controllers\OrderController@listPaymentReceived');
+    /***
      * Migrate Endpoint
      */
     $api->get('/migrate', function()

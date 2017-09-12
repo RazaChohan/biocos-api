@@ -168,4 +168,27 @@ class PaymentReceived extends Model
     {
         return $this->hasMany('App\Models\PaymentImage', 'payment_id');
     }
+
+    /***
+     * Get payment received records
+     *
+     * @param $userId
+     * @param int $customerId
+     * @param bool $avoidPagination
+     * @param int $page
+     * @return mixed
+     */
+    public function getPaymentReceived($userId, $customerId = 0, $page = 1, $avoidPagination)
+    {
+        $model = $this->where('user_id', $userId);
+        if($customerId > 0) {
+            $model->where('customer_id', $customerId);
+        }
+        if($page > 0 && !$avoidPagination) {
+            $offset = calculate_offset($page);
+            $model->skip($offset)
+                ->take(10);
+        }
+        return $model->get();
+    }
 }

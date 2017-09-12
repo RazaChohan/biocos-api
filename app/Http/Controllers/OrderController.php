@@ -172,4 +172,33 @@ class OrderController extends BaseController
         $totalOrdersAmount = $this->_orderModel->getTotalOrdersAmount($customerId);
         return (($totalOrdersAmount - $totalPaidAmountByCustomer) < 0) ? 0 : ($totalOrdersAmount - $totalPaidAmountByCustomer);
     }
+
+    /***
+     * List payment received API
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function listPaymentReceived(Request $request)
+    {
+        try {
+            $paymentReceivedModel = new PaymentReceived();
+            $userId = $request->get('user_id');
+            $customerId = $request->get('customer_id', 0);
+            $page = $request->get('page', 1);
+            $avoidPagination = $request->get('avoid_pagination', false);
+            if(IsNullOrEmptyString($userId)) {
+                $userId = $this->getUserIdFromToken($request);
+            }
+            $payments = $paymentReceivedModel->getPaymentReceived($userId, $customerId,
+                                                                  $page, $avoidPagination);
+        }
+        catch(Exception $e)
+        {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+        return API::response()->array(['success' => true, 'message' => 'Payments found',
+            'data' => $payments], 200);
+    }
 }
