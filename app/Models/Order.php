@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
@@ -261,5 +262,20 @@ class Order extends Model
     {
         return $this->where('customer_id', $customerId)
                     ->sum('price');
+    }
+
+    /***
+     * Cancel order
+     *
+     * @param $orderId
+     * @param $userId
+     */
+    public function cancelOrder($orderId, $userId)
+    {
+        $this->where('id', $orderId)
+             ->update([
+                    'deleted_at' => Carbon::now(),
+                    'deleted_by' => $userId
+             ]);
     }
 }

@@ -201,4 +201,28 @@ class OrderController extends BaseController
         return API::response()->array(['success' => true, 'message' => 'Payments found',
             'data' => $payments], 200);
     }
+
+    /***
+     * Cancel order method
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function cancelOrder(Request $request)
+    {
+        try {
+            $orderId = $request->get('order_id');
+            $userId = $request->get('user_id');
+            if(IsNullOrEmptyString($userId)) {
+                $userId = $this->getUserIdFromToken($request);
+            }
+            $this->_orderModel->cancelOrder($orderId, $userId);
+        }
+        catch(Exception $e)
+        {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+        return API::response()->array(['success' => true, 'message' => 'Order Cancelled'], 200);
+    }
 }

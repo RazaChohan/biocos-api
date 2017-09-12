@@ -112,6 +112,10 @@ $api->version('v1', function ($api) {
      */
     $api->get('list-customer-payments', 'App\Http\Controllers\OrderController@listPaymentReceived');
     /***
+     * Cancel Order
+     */
+    $api->post('cancel-order', 'App\Http\Controllers\OrderController@cancelOrder');
+    /***
      * Migrate Endpoint
      */
     $api->get('/migrate', function()
