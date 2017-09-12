@@ -63,6 +63,7 @@ class UserRegion extends Model
      * Update user region
      *
      * @param $userRegion
+     * @param $updateData
      */
     public function updateUserRegion($userRegion, $updateData)
     {
@@ -73,6 +74,7 @@ class UserRegion extends Model
             $userRegion->execution_time = $updateData['execution_time'];
         }
         $userRegion->save();
+        return $userRegion->id;
     }
 
     /***

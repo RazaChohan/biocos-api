@@ -283,6 +283,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $userRegionModel = new UserRegion();
         $userRegions = [];
+        $userRegionIds = [];
         if(is_array($regions) > 0) {
             foreach ($regions as $region) {
                 $userRegion = null;
@@ -294,16 +295,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                                                                                    $region['date']);
                 }
                 if (is_null($userRegion)) {
-                    $userRegionModel->insertUserRegion([
-                        'date' => Carbon::parse($region['date']),
-                        'user_id' => $userId,
-                        'region_id' => $region['region_id']
-                    ]);
+                    $userRegionIds[] = $userRegionModel->insertUserRegion([
+                                            'date' => Carbon::parse($region['date']),
+                                            'user_id' => $userId,
+                                            'region_id' => $region['region_id']
+                                        ]);
                 } else {
-                    $userRegionModel->updateUserRegion($userRegion, $region);
+                    $userRegionIds[] = $userRegionModel->updateUserRegion($userRegion, $region);
                 }
             }
-            $userRegions = $this->getUserRegionsWithPivot($userId);
+            $userRegions = $this->getUserRegionsWithPivot($userId, $userRegionIds);
         }
         return $userRegions;
     }
@@ -312,12 +313,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * Get user regions with pivot values
      *
      * @param $userId
+     * @param $userRegionIds
+     *
      * @return array
      */
-    public function getUserRegionsWithPivot($userId)
+    public function getUserRegionsWithPivot($userId, $userRegionIds = [])
     {
         $userRegions = [];
-        $userWithRegions = $this->where('id', $userId)->first();
+        $userWithRegions = $this->with(['regions' => function($query) use ($userRegionIds){
+                                    if(count($userRegionIds) > 0) {
+                                        $query->whereIn('user_regions.id', $userRegionIds);
+                                    }
+                                }])
+                                ->where('id', $userId)->first();
         if(!is_null($userWithRegions)) {
             $userRegions = $userWithRegions->regions;
         }
