@@ -141,11 +141,13 @@ class Controller extends BaseController
                 //Insert/Update user Regions
                 if(!is_null($userRegions) && count($userRegions) > 0) {
                     // Delete Regions
-                    $deleteRegions = $userRegions['delete_assign_region_model_list'];
-                    $userRegionModel = new UserRegion();
-                    foreach($deleteRegions as $deleteRegion) {
-                        if(array_key_exists('delete', $deleteRegion) && $deleteRegion['delete'] == "true") {
-                            $userRegionModel->deleteUserRegion($deleteRegion['id']);
+                    if(array_key_exists('delete_assign_region_model_list', $userRegions)) {
+                        $deleteRegions = $userRegions['delete_assign_region_model_list'];
+                        $userRegionModel = new UserRegion();
+                        foreach ($deleteRegions as $deleteRegion) {
+                            if (array_key_exists('delete', $deleteRegion) && $deleteRegion['delete'] == "true") {
+                                $userRegionModel->deleteUserRegion($deleteRegion['id']);
+                            }
                         }
                     }
                     // Update Regions

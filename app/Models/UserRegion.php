@@ -63,6 +63,7 @@ class UserRegion extends Model
      * Update user region
      *
      * @param $userRegion
+     * @param $updateData
      */
     public function updateUserRegion($userRegion, $updateData)
     {
