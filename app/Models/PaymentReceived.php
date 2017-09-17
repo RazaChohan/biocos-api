@@ -84,6 +84,10 @@ class PaymentReceived extends Model
         $paymentReceivedObj->customer_id    = $paymentReceived['customer_id'];
         $paymentReceivedObj->payment_type   = $paymentReceived['payment_type'];
         $paymentReceivedObj->amount         = $paymentReceived['amount'];
+        if($paymentReceivedObj->order_id <= 0) {
+            $paymentReceivedObj->order_id = $this->getOrderIdForCustomer($paymentReceived['customer_id'],
+                                                    $paymentReceived['amount']);
+        }
         //Remarks on payment received
         if(array_key_exists('remarks', $paymentReceived)) {
             $paymentReceivedObj->remarks = $paymentReceived['remarks'];
@@ -190,5 +194,48 @@ class PaymentReceived extends Model
                 ->take(10);
         }
         return $model->get();
+    }
+
+    /***
+     * Get Total payment made for order
+     *
+     * @param $orderId
+     * @return mixed
+     */
+    public function getTotalPaymentAgainstOrder($orderId)
+    {
+        return $this->where('order_id', $orderId)
+                      ->where('is_success', true)
+                      ->sum('amount');
+    }
+
+    /***
+     * Get Order Id for Customer
+     *
+     * @param $customerId
+     * @param $currentPaymentAmount
+     *
+     * @return integer $orderId
+     *
+     */
+    public function getOrderIdForCustomer($customerId, $currentPaymentAmount)
+    {
+        $orderModel = new Order();
+        $orderId = 0;
+        $allCustomerOrders = $orderModel->getOrdersForCustomer($customerId);
+        foreach($allCustomerOrders as $customerOrder)
+        {
+            if(count($customerOrder->payments) > 0) {
+                $totalPaymentForOrder = $customerOrder->payments->sum('amount');
+                $remainingAmount = $customerOrder->price - $totalPaymentForOrder;
+                if ($remainingAmount > 0) {
+                    $orderId = $customerOrder->id;
+                    break;
+                }
+            } else {
+                $orderId = $customerOrder->id;
+            }
+        }
+        return $orderId;
     }
 }

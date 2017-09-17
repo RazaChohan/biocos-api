@@ -200,6 +200,16 @@ class Order extends Model
     }
 
     /***
+     * Payment Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payments()
+    {
+        return $this->hasMany('App\Models\PaymentReceived', 'order_id');
+    }
+
+    /***
      * Get Order Details
      *
      * @param $id
@@ -272,6 +282,8 @@ class Order extends Model
      * @param $status
      * @param $remarks
      *
+     * @return object
+     *
      */
     public function updateOrderStatus($orderId, $userId, $status, $remarks = null)
     {
@@ -286,5 +298,21 @@ class Order extends Model
              ->update($updateData);
 
         return $this->getOrderDetails($orderId);
+    }
+
+    /***
+     * Get orders for customer
+     *
+     * @param $customerId
+     * @return mixed
+     */
+    public function getOrdersForCustomer($customerId)
+    {
+        return $this->with(['payments' => function($query){
+                            $query->where('is_success', 1);
+                    }])
+                    ->where('customer_id', $customerId)
+                    ->whereNotIn('status', ['Rejected','Cancelled'])
+                    ->get();
     }
 }

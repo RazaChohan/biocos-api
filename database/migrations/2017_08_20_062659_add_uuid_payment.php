@@ -38,6 +38,7 @@ class AddUuidPayment extends Migration
         Schema::create('payment_received', function (Blueprint $table) {
             $table->increments('id');
             $table->string('uuid');
+            $table->integer('order_id');
             $table->integer('customer_id');
             $table->integer('user_id');
             $table->boolean('is_success')->default(false);
