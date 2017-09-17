@@ -89,4 +89,31 @@ class JobController extends BaseController
                 'message' => $e->getTraceAsString()], 400);
         }
     }
+
+    /***
+     * Log No Order
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function logNoOrder(Request $request)
+    {
+        try {
+            $job  = $request->all();
+            $userId = $this->getUserIdFromToken($request);
+            $job = $this->_jobModel->logNoOrder($job, $userId);
+            if(!is_null($job)) {
+                return API::response()->array(['success' => true,
+                    'message' => 'No order job added',
+                    'data'   => $job], 200);
+            } else {
+                return API::response()->array(['success' => false,
+                    'message' => 'invalid request'], 400);
+            }
+        }
+        catch(Exception $e) {
+            return API::response()->array(['success' => false,
+                'message' => $e->getTraceAsString()], 400);
+        }
+    }
 }

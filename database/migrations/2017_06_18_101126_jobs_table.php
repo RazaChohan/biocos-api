@@ -15,9 +15,14 @@ class JobsTable extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('uuid');
             $table->integer('agency_id')->nullable();
             $table->integer('region_id');
             $table->dateTime('date');
+            $table->double('latitude');
+            $table->double('longitude');
+            $table->string('reason');
+            $table->time('time');
             $table->integer('customer_id');
             $table->integer('user_id');
             $table->enum('status', ['Pending', 'Completed', 'Postponed']);

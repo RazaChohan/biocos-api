@@ -115,6 +115,10 @@ $api->version('v1', function ($api) {
      * Update Order Status Order
      */
     $api->post('update-order-status', 'App\Http\Controllers\OrderController@updateOrderStatus');
+    /****
+     * Log no order API
+     */
+    $api->post('log-no-order', 'App\Http\Controllers\JobController@logNoOrder');
     /***
      * Migrate Endpoint
      */
