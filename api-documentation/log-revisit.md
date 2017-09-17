@@ -1,6 +1,6 @@
-# Log no order
+# Log revisit
 
-    POST /api/log-no-order
+    POST /api/log-revisit
 
 ## Description
 Returns object of newly created job
@@ -18,7 +18,7 @@ A JSON object containing key **data**
 ## Example
 **Request**
 
-    /api/log-no-order
+    /api/log-revisit
 
 **Return** __shortened for example purpose__
 ``` json
@@ -27,11 +27,10 @@ A JSON object containing key **data**
 	"date"       : "05-09-2019",
 	"latitude"	 : 20.55,
 	"longitude"  : 105.55,
-	"reason"     : "Reason goes here",
 	"region_id"  : 2,
-	"remarks"    : "Remarks goes here...",
 	"time"		 : "15:12",
-	"uuid"		 : "sdfsd234dssdvdvdfvdsvd"
+	"uuid"		 : "sdfsd234dssdvdvdfvdsvd",
+	"completed_on" : "05-10-2020"
 }
 ```
 
@@ -40,30 +39,30 @@ A JSON object containing key **data**
 ``` json
 {
     "success": true,
-    "message": "No order job added",
+    "message": "Revisit job added",
     "data": {
-        "id": 13,
+        "id": 15,
         "agency_id": null,
         "region_id": 2,
         "date": "2019-09-05 00:00:00",
         "customer_id": 1,
         "user_id": 1,
         "status": "Completed",
-        "completed_on": "2019-09-05 00:00:00",
+        "completed_on": "2020-10-05 00:00:00",
         "employee_location": "",
         "visit_type": null,
-        "comment": "Remarks goes here...",
+        "comment": "revisit",
         "order": 0,
         "created_by": 1,
         "updated_by": 1,
         "deleted_by": null,
-        "created_at": "2017-09-17 19:00:57",
-        "updated_at": "2017-09-17 19:00:57",
+        "created_at": "2017-09-17 19:39:28",
+        "updated_at": "2017-09-17 19:39:28",
         "deleted_at": null,
         "uuid": "sdfsd234dssdvdvdfvdsvd",
         "longitude": 105.55,
         "latitude": 20.55,
-        "reason": "Reason goes here",
+        "reason": null,
         "time": "15:12:00"
     }
 }

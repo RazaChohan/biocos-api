@@ -120,6 +120,10 @@ $api->version('v1', function ($api) {
      */
     $api->post('log-no-order', 'App\Http\Controllers\JobController@logNoOrder');
     /***
+     * Log re-visit
+     */
+    $api->post('log-revisit', 'App\Http\Controllers\JobController@logRevisit');
+    /***
      * Migrate Endpoint
      */
     $api->get('/migrate', function()
