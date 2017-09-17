@@ -203,26 +203,27 @@ class OrderController extends BaseController
     }
 
     /***
-     * Cancel order method
+     * Update order Status method
      *
      * @param Request $request
      * @return mixed
      */
-    public function cancelOrder(Request $request)
+    public function updateOrderStatus(Request $request)
     {
         try {
             $orderId = $request->get('order_id');
-            $userId = $request->get('user_id');
+            $userId  = $request->get('user_id');
+            $status  = $request->get('status');
             if(IsNullOrEmptyString($userId)) {
                 $userId = $this->getUserIdFromToken($request);
             }
-            $this->_orderModel->cancelOrder($orderId, $userId);
+            $this->_orderModel->updateOrderStatus($orderId, $userId, $status);
         }
         catch(Exception $e)
         {
             return API::response()->array(['success' => false,
                 'message' => $e->getTraceAsString()], 400);
         }
-        return API::response()->array(['success' => true, 'message' => 'Order Cancelled'], 200);
+        return API::response()->array(['success' => true, 'message' => 'Order Status Updated'], 200);
     }
 }

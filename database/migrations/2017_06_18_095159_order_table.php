@@ -18,7 +18,7 @@ class OrderTable extends Migration
             $table->integer('agency_id')->nullable();
             $table->integer('customer_id');
             $table->enum('status',['Booked', 'Confirmed', 'Processed',
-                         'Ready', 'Delivered', 'Cleared']);
+                         'Ready', 'Delivered', 'Cleared','Rejected','Cancelled']);
             $table->integer('visit_id');
             $table->dateTime('date_to_deliver');
             $table->integer('booked_by');

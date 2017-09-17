@@ -44,7 +44,7 @@ class Order extends Model
             'uuid'            => 'required',
             'customer_id'     => 'integer',
             'status'          => [ 'required', Rule::in(['Booked','Confirmed','Processed','Ready',
-                                                         'Delivered','Cleared']) ],
+                                                         'Delivered','Cleared','Rejected','Cancelled']) ],
             'date_to_deliver' => 'required|date',
             'price'           => 'required|numeric',
             'discount'        => 'numeric',
@@ -269,13 +269,15 @@ class Order extends Model
      *
      * @param $orderId
      * @param $userId
+     * @param $status
+     *
      */
-    public function cancelOrder($orderId, $userId)
+    public function updateOrderStatus($orderId, $userId, $status)
     {
         $this->where('id', $orderId)
              ->update([
-                    'deleted_at' => Carbon::now(),
-                    'deleted_by' => $userId
+                    'updated_by' => $userId,
+                    'status'     => $status
              ]);
     }
 }
