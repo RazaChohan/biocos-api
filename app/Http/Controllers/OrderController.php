@@ -214,16 +214,18 @@ class OrderController extends BaseController
             $orderId = $request->get('order_id');
             $userId  = $request->get('user_id');
             $status  = $request->get('status');
+            $remarks = $request->get('remarks');
             if(IsNullOrEmptyString($userId)) {
                 $userId = $this->getUserIdFromToken($request);
             }
-            $this->_orderModel->updateOrderStatus($orderId, $userId, $status);
+            $order = $this->_orderModel->updateOrderStatus($orderId, $userId, $status, $remarks);
         }
         catch(Exception $e)
         {
             return API::response()->array(['success' => false,
                 'message' => $e->getTraceAsString()], 400);
         }
-        return API::response()->array(['success' => true, 'message' => 'Order Status Updated'], 200);
+        return API::response()->array(['success' => true, 'message' => 'Order Status Updated',
+                                       'data' => $order], 200);
     }
 }

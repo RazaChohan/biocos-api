@@ -265,19 +265,26 @@ class Order extends Model
     }
 
     /***
-     * Cancel order
+     * Update order status
      *
      * @param $orderId
      * @param $userId
      * @param $status
+     * @param $remarks
      *
      */
-    public function updateOrderStatus($orderId, $userId, $status)
+    public function updateOrderStatus($orderId, $userId, $status, $remarks = null)
     {
+        $updateData = [
+                        'updated_by' => $userId,
+                        'status'     => $status
+                      ];
+        if(!is_null($remarks)) {
+            $updateData['remarks'] = $remarks;
+        }
         $this->where('id', $orderId)
-             ->update([
-                    'updated_by' => $userId,
-                    'status'     => $status
-             ]);
+             ->update($updateData);
+
+        return $this->getOrderDetails($orderId);
     }
 }
