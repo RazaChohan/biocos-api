@@ -105,13 +105,14 @@ class RegionController extends BaseController
             $addOrUpdateRegions = $request->get('update_region_model_list');
             $deleteUserRegions  = $request->get('delete_assign_region_model_list');
             $userModel = new User();
+            $deletedUserRegions = [];
             $user = $this->getUserIdFromToken($request, true);
             //Delete User Regions
             if(!is_null($deleteUserRegions) && count($deleteUserRegions) > 0) {
                 $userRegionModel = new UserRegion();
                 foreach ($deleteUserRegions as $deleteUserRegion) {
                     if(array_key_exists('delete', $deleteUserRegion) && $deleteUserRegion['delete'] == "true") {
-                        $userRegionModel->deleteUserRegion($deleteUserRegion['id']);
+                        $deletedUserRegions[] = $userRegionModel->deleteUserRegion($deleteUserRegion['id']);
                     }
                 }
             }
@@ -123,7 +124,7 @@ class RegionController extends BaseController
             }
             return API::response()->array(['success' => true,
                 'message' => 'User Regions Updated',
-                'data' => $userRegions], 200);
+                'data' => ['user_regions' => $userRegions, 'deleted_regions' => $deletedUserRegions]], 200);
         } catch(Exception $e) {
             return API::response()->array(['success' => false,
                 'message' => $e->getTraceAsString()], 400);
