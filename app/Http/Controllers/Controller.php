@@ -67,6 +67,7 @@ class Controller extends BaseController
         $ordersResponses = [];
         $paymentResponses = [];
         $userRegionsResponses = [];
+        $deletedUserRegions = [];
         $user = $this->getUserIdFromToken($request, true);
         try {
             $validationErrors = $this->checkValidation($customers, $orders, $regions,$paymentResponses);
@@ -146,7 +147,7 @@ class Controller extends BaseController
                         $userRegionModel = new UserRegion();
                         foreach ($deleteRegions as $deleteRegion) {
                             if (array_key_exists('delete', $deleteRegion) && $deleteRegion['delete'] == "true") {
-                                $userRegionModel->deleteUserRegion($deleteRegion['id']);
+                                $deletedUserRegions[] = $userRegionModel->deleteUserRegion($deleteRegion['id']);
                             }
                         }
                     }
@@ -169,6 +170,7 @@ class Controller extends BaseController
                 $data->regions = $regionsResponses;
                 $data->payments = $paymentResponses;
                 $data->user_regions = $userRegionsResponses;
+                $data->deleted_user_regions = $deletedUserRegions;
                 return API::response()->array(['success' => true,
                     'message' => 'Records Created/Updated',
                     'data' => $data], 200);

@@ -85,8 +85,9 @@ class UserRegion extends Model
      */
     public function deleteUserRegion($id)
     {
-        return $this->where('id', '=', $id)
-                    ->delete();
+        $this->where('id', '=', $id)
+                         ->delete();
+        return $id;
     }
 
     /***
