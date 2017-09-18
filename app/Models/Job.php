@@ -127,4 +127,60 @@ class Job extends Model
     {
         return $this->belongsTo('App\Models\Customer', 'customer_id');
     }
+
+    /***
+     * Log no order
+     *
+     * @param $job
+     * @param $userId
+     *
+     * @return integer $jobId
+     */
+    public function logNoOrder($job, $userId)
+    {
+        $newJob = new $this();
+        $newJob->customer_id  = $job['customer_id'];
+        $newJob->date         = Carbon::parse($job['date'])->toDateString();
+        $newJob->completed_on = Carbon::parse($job['date'])->toDateString();
+        $newJob->latitude     = $job['latitude'];
+        $newJob->longitude    = $job['longitude'];
+        $newJob->reason       = $job['reason'];
+        $newJob->region_id    = $job['region_id'];
+        $newJob->comment      = $job['remarks'];
+        $newJob->time         = $job['time'];
+        $newJob->user_id      = $userId;
+        $newJob->uuid         = $job['uuid'];
+        $newJob->status       = 'Completed';
+        $newJob->created_by   = $userId;
+        $newJob->updated_by   = $userId;
+        $newJob->save();
+        return $this->where('id', $newJob->id)->first();
+    }
+    /***
+     * Log revisit
+     *
+     * @param $job
+     * @param $userId
+     *
+     * @return integer $jobId
+     */
+    public function logRevisit($job, $userId)
+    {
+        $newJob = new $this();
+        $newJob->customer_id  = $job['customer_id'];
+        $newJob->date         = Carbon::parse($job['date'])->toDateString();
+        $newJob->completed_on = Carbon::parse($job['completed_on'])->toDateString();
+        $newJob->latitude     = $job['latitude'];
+        $newJob->longitude    = $job['longitude'];
+        $newJob->region_id    = $job['region_id'];
+        $newJob->time         = $job['time'];
+        $newJob->user_id      = $userId;
+        $newJob->uuid         = $job['uuid'];
+        $newJob->comment      = 'revisit';
+        $newJob->status       = 'Completed';
+        $newJob->created_by   = $userId;
+        $newJob->updated_by   = $userId;
+        $newJob->save();
+        return $this->where('id', $newJob->id)->first();
+    }
 }
