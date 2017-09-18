@@ -141,7 +141,7 @@ class RegionController extends BaseController
         try {
             $userId = $this->getUserIdFromToken($request, false);
             $userModel = new User();
-            $regions = $userModel->getUserRegionsWithPivot($userId);
+            $regions = $userModel->getUserRegionsWithPivot($userId, [], true);
         }
         catch(Exception $e)
         {
