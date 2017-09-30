@@ -321,9 +321,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $userRegions = [];
         $userWithRegions = $this->with(['regions' => function($query) use ($userRegionIds){
-                                    if(count($userRegionIds) > 0) {
                                         $query->whereIn('user_regions.id', $userRegionIds);
-                                    }
                                 }])
                                 ->where('id', $userId)->first();
         if(!is_null($userWithRegions)) {

@@ -118,7 +118,7 @@ class RegionController extends BaseController
             }
             //Assign or update regions
             $userRegions = $userModel->assignOrUpdateRegions($addOrUpdateRegions, $user->id);
-            if (count($userRegions) == 0) {
+            if (count($userRegions) == 0 && count($deletedUserRegions) == 0) {
                 return API::response()->array(['success' => false,
                     'error' => 'Region Not Found'], 400);
             }
