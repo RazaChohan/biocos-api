@@ -314,14 +314,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @param $userId
      * @param $userRegionIds
-     *
+     * @param $doNotFilter
      * @return array
      */
-    public function getUserRegionsWithPivot($userId, $userRegionIds = [])
+    public function getUserRegionsWithPivot($userId, $userRegionIds = [], $doNotFilter = false)
     {
         $userRegions = [];
-        $userWithRegions = $this->with(['regions' => function($query) use ($userRegionIds){
+        $userWithRegions = $this->with(['regions' => function($query) use ($userRegionIds, $doNotFilter){
+                                    if(!$doNotFilter) {
                                         $query->whereIn('user_regions.id', $userRegionIds);
+                                    }
                                 }])
                                 ->where('id', $userId)->first();
         if(!is_null($userWithRegions)) {

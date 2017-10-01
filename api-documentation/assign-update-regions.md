@@ -55,54 +55,62 @@ A JSON object containing key **Regions**
 {
     "success": true,
     "message": "User Regions Updated",
-    "data": [
-        {
-            "id": 1,
-            "uuid": "",
-            "agency_id": null,
-            "name": "Shalmi",
-            "city": "Lahore",
-            "latitude": 32.3,
-            "longitude": 23.21,
-            "country": "Lahore",
-            "parent_id": 1,
-            "created_by": 1,
-            "updated_by": 1,
-            "deleted_by": 1,
-            "created_at": null,
-            "updated_at": null,
-            "deleted_at": null,
-            "pivot": {
-                "user_id": 1,
-                "region_id": 1,
-                "date": "2017-10-27",
-                "execution_time" : "52:00"
+    "data": {
+        "user_regions": [
+            {
+                "id": 1,
+                "uuid": "d1756a4a-caf1-4a29-9692-e3a3794965fd",
+                "agency_id": null,
+                "name": "Shalmi",
+                "city": "Lahore",
+                "latitude": 32.3,
+                "longitude": 23.21,
+                "country": "Lahore",
+                "parent_id": 1,
+                "created_by": 1,
+                "updated_by": 1,
+                "deleted_by": 1,
+                "created_at": null,
+                "updated_at": null,
+                "deleted_at": null,
+                "pivot": {
+                    "user_id": 1,
+                    "region_id": 1,
+                    "date": "2019-10-05",
+                    "execution_time": "00:00:00",
+                    "id": 49
+                }
+            },
+            {
+                "id": 2,
+                "uuid": "59734610-698f-4037-ae30-85f31d3cb2f7",
+                "agency_id": null,
+                "name": "Rawind",
+                "city": "Lahore",
+                "latitude": 32.4,
+                "longitude": 13.32,
+                "country": "Lahore",
+                "parent_id": 1,
+                "created_by": 1,
+                "updated_by": 1,
+                "deleted_by": 1,
+                "created_at": null,
+                "updated_at": null,
+                "deleted_at": null,
+                "pivot": {
+                    "user_id": 1,
+                    "region_id": 2,
+                    "date": "2019-12-09",
+                    "execution_time": "00:00:00",
+                    "id": 50
+                }
             }
-        },
-        {
-            "id": 2,
-            "uuid": "",
-            "agency_id": null,
-            "name": "Shah Alam Market",
-            "city": "Lahore",
-            "latitude": 31.44,
-            "longitude": 74.52,
-            "country": "Pakistan",
-            "parent_id": 1,
-            "created_by": 1,
-            "updated_by": 1,
-            "deleted_by": 1,
-            "created_at": null,
-            "updated_at": "2017-07-31 21:07:39",
-            "deleted_at": null,
-            "pivot": {
-                "user_id": 1,
-                "region_id": 2,
-                "date": "2017-09-26",
-                "execution_time" : "52:00"
-            }
-        }
-    ]
+        ],
+        "deleted_regions": [
+            31,
+            32
+        ]
+    }
 }
 ```
  

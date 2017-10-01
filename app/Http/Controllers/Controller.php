@@ -165,7 +165,7 @@ class Controller extends BaseController
                             $userRegions[$key]['region_id'] = $regionModel->getRegionId($userRegion['region_uuid']);
                         }
                     }
-                    $userRegionsResponses[] = $userModel->assignOrUpdateRegions($userRegions, $user->id);
+                    $userRegionsResponses = $userModel->assignOrUpdateRegions($userRegions, $user->id);
                 }
                 //Insert revisits
                 if(!is_null($revisits) && count($revisits) > 0) {
