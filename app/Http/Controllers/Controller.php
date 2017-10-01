@@ -62,12 +62,16 @@ class Controller extends BaseController
         $regions     = $request->get('regions');
         $payments    = $request->get('payments');
         $userRegions = $request->get('user_regions');
+        $noOrders    = $request->get('no_orders');
+        $revisits    = $request->get('revisits');
         $regionsResponses = [];
         $customersResponses  = [];
         $ordersResponses = [];
         $paymentResponses = [];
         $userRegionsResponses = [];
         $deletedUserRegions = [];
+        $revisitsResponse = [];
+        $noOrdersResponse = [];
         $user = $this->getUserIdFromToken($request, true);
         try {
             $validationErrors = $this->checkValidation($customers, $orders, $regions,$paymentResponses);
@@ -163,7 +167,30 @@ class Controller extends BaseController
                     }
                     $userRegionsResponses[] = $userModel->assignOrUpdateRegions($userRegions, $user->id);
                 }
-
+                //Insert revisits
+                if(!is_null($revisits) && count($revisits) > 0) {
+                    $jobModel = new Job();
+                    $customerModel = new Customer();
+                    foreach($noOrders as $key => $noOrder) {
+                        $noOrder['customer_id'] = $customerModel->getCustomerId(
+                            [
+                                'uuid' => $noOrder['customer_uuid']
+                            ]);
+                        $revisitsResponse[] = $jobModel->logRevisit($noOrder, $user->id);
+                    }
+                }
+                //Insert no orders
+                if(!is_null($noOrders) && count($noOrders) > 0) {
+                    $jobModel = new Job();
+                    $customerModel = new Customer();
+                    foreach($noOrders as $key => $noOrder) {
+                        $noOrder['customer_id'] = $customerModel->getCustomerId(
+                                                                [
+                                                                    'uuid' => $noOrder['customer_uuid']
+                                                                ]);
+                        $noOrdersResponse[] = $jobModel->logNoOrder($noOrder, $user->id);
+                    }
+                }
                 $data = new \stdClass();
                 $data->customers = $customersResponses;
                 $data->orders = $ordersResponses;
@@ -171,6 +198,8 @@ class Controller extends BaseController
                 $data->payments = $paymentResponses;
                 $data->user_regions = $userRegionsResponses;
                 $data->deleted_user_regions = $deletedUserRegions;
+                $data->no_orders = $noOrdersResponse;
+                $data->revists   = $revisitsResponse;
                 return API::response()->array(['success' => true,
                     'message' => 'Records Created/Updated',
                     'data' => $data], 200);

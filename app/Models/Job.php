@@ -59,7 +59,7 @@ class Job extends Model
             $query->skip($offset)
                   ->take(10);
         }
-        $jobs = $query->get();
+        $jobs = $query->with('images')->get();
         return $jobs;
     }
 
@@ -115,7 +115,7 @@ class Job extends Model
         $newJob->order       = 1;
         $newJob->created_by = $customer->created_by;
         $newJob->save();
-        return $this->where('id', $newJob->id)->first();
+        return $this->where('id', $newJob->id)->with('images')->first();
     }
 
     /***
@@ -139,7 +139,17 @@ class Job extends Model
     public function logNoOrder($job, $userId)
     {
         $newJob = new $this();
-        $newJob->customer_id  = $job['customer_id'];
+        $newJob = $newJob->where('customer_id', $job['customer_id'])
+                         ->where('user_id', $userId)
+                         ->whereIn('job_type', ['no-order', 'revisit'])
+                         ->first();
+        if(is_null($newJob)) {
+            $newJob = new $this();
+            $newJob->customer_id  = $job['customer_id'];
+            $newJob->created_by   = $userId;
+            $newJob->user_id      = $userId;
+        }
+        $newJob->job_type     = 'no-order';
         $newJob->date         = Carbon::parse($job['date'])->toDateString();
         $newJob->completed_on = Carbon::parse($job['date'])->toDateString();
         $newJob->latitude     = $job['latitude'];
@@ -148,13 +158,13 @@ class Job extends Model
         $newJob->region_id    = $job['region_id'];
         $newJob->comment      = $job['remarks'];
         $newJob->time         = $job['time'];
-        $newJob->user_id      = $userId;
         $newJob->uuid         = $job['uuid'];
         $newJob->status       = 'Completed';
-        $newJob->created_by   = $userId;
         $newJob->updated_by   = $userId;
         $newJob->save();
-        return $this->where('id', $newJob->id)->first();
+        //Upload or remove images
+        $this->_uploadJobImage($newJob, $job);
+        return $this->where('id', $newJob->id)->with('images')->first();
     }
     /***
      * Log revisit
@@ -167,20 +177,77 @@ class Job extends Model
     public function logRevisit($job, $userId)
     {
         $newJob = new $this();
-        $newJob->customer_id  = $job['customer_id'];
+        $newJob = $newJob->where('customer_id', $job['customer_id'])
+                         ->where('user_id', $userId)
+                         ->whereIn('job_type', ['no-order', 'revisit'])
+                         ->first();
+        if(is_null($newJob)) {
+            $newJob = new $this();
+            $newJob->customer_id  = $job['customer_id'];
+            $newJob->created_by   = $userId;
+            $newJob->user_id      = $userId;
+        }
         $newJob->date         = Carbon::parse($job['date'])->toDateString();
-        $newJob->completed_on = Carbon::parse($job['completed_on'])->toDateString();
+        if(array_key_exists('completed_on', $job)) {
+            $newJob->completed_on = Carbon::parse($job['completed_on'])->toDateString();
+        }
         $newJob->latitude     = $job['latitude'];
         $newJob->longitude    = $job['longitude'];
         $newJob->region_id    = $job['region_id'];
         $newJob->time         = $job['time'];
-        $newJob->user_id      = $userId;
         $newJob->uuid         = $job['uuid'];
         $newJob->comment      = 'revisit';
+        $newJob->job_type     = 'revisit';
         $newJob->status       = 'Completed';
-        $newJob->created_by   = $userId;
         $newJob->updated_by   = $userId;
         $newJob->save();
-        return $this->where('id', $newJob->id)->first();
+        //Upload or remove images
+        $this->_uploadJobImage($newJob, $job);
+        return $this->where('id', $newJob->id)->with('images')->first();
+    }
+    /***
+     * Images of job
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images()
+    {
+        return $this->hasMany('App\Models\JobImage', 'job_id');
+    }
+
+    /***
+     * Upload Job Image
+     *
+     * @param $jobModel
+     * @param $jobObject
+     */
+    private function _uploadJobImage($jobModel, $jobObject)
+    {
+        //Image upload
+        if(array_key_exists('images', $jobObject)) {
+            $images = [];
+            foreach($jobObject['images'] as $image) {
+                $image = upload_base64_image($image, 'uploads/job/',
+                    'jobimage-');
+                $jobImage = new JobImage();
+                $jobImage->image = $image;
+                $images[] = $jobImage;
+            }
+            if(count($images) > 0) {
+                $jobModel->images()->saveMany($images);
+            }
+        }
+        //Remove Image
+        if(array_key_exists('remove_images', $jobObject)) {
+            $jobModel->images()->whereIn('image', $jobObject['remove_images'])
+                ->delete();
+            foreach($jobObject['remove_images'] as $image) {
+                $fileToUnlink = public_path() . '/uploads/job/' .
+                    get_filename_url($image);
+                if (file_exists($fileToUnlink)) {
+                    unlink($fileToUnlink);
+                }
+            }
+        }
     }
 }

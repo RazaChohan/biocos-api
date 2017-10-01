@@ -30,7 +30,10 @@ A JSON object containing key **data**
 	"region_id"  : 2,
 	"time"		 : "15:12",
 	"uuid"		 : "sdfsd234dssdvdvdfvdsvd",
-	"completed_on" : "05-10-2020"
+	"completed_on" : "05-10-2020",
+   "images:     : [],
+    "remove_images" : [] # in order to remove images
+
 }
 ```
 

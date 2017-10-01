@@ -31,7 +31,9 @@ A JSON object containing key **data**
 	"region_id"  : 2,
 	"remarks"    : "Remarks goes here...",
 	"time"		 : "15:12",
-	"uuid"		 : "sdfsd234dssdvdvdfvdsvd"
+	"uuid"		 : "sdfsd234dssdvdvdfvdsvd",
+	"images:     : [],
+	"remove_images" : [] # in order to remove images
 }
 ```
 
