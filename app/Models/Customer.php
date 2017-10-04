@@ -246,7 +246,7 @@ class Customer extends Model
      */
     public function getCustomerId($customerArray)
     {
-        $customerRecord =  $this->where('uuid', $customerArray['uuid'])
+        $customerRecord =  $this->where('uuid[0]', $customerArray['uuid[0]'])
                                 ->first();
         return is_null($customerRecord) ? 0 : $customerRecord->id;
     }
