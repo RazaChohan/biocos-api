@@ -153,14 +153,21 @@ class Customer extends Model
         $customerObj->location     = $customer['location'];
         $customerObj->latitude     = $customer['latitude'];
         $customerObj->longitude    = $customer['longitude'];
-        $customerObj->phone_1      = $customer['phone_1'];
-        $customerObj->customer_type= $customer['customer_type'];
-        if(array_key_exists('shop_type', $customer)) {
-            $customerObj->shop_type = $customer['shop_type'];
-        }
         $customerObj->status       = $customer['status'];
         $customerObj->Category     = $customer['category'];
         $customerObj->discount_percentage = $customer['discount_percentage'];
+        //Customer Type
+        if(array_key_exists('customer_type', $customer)) {
+            $customerObj->customer_type = $customer['customer_type'];
+        }
+        //Shop Type
+        if(array_key_exists('shop_type', $customer)) {
+            $customerObj->shop_type = $customer['shop_type'];
+        }
+        //Phone_1
+        if(array_key_exists('phone_1', $customer)) {
+            $customerObj->phone_1 = $customer['phone_1'];
+        }
         //Proprietor ID
         if(array_key_exists('proprietor_id', $customer)) {
             $customerObj->proprietor_id = $customer['proprietor_id'];
@@ -246,7 +253,7 @@ class Customer extends Model
      */
     public function getCustomerId($customerArray)
     {
-        $customerRecord =  $this->where('uuid[0]', $customerArray['uuid[0]'])
+        $customerRecord =  $this->where('uuid', $customerArray['uuid'])
                                 ->first();
         return is_null($customerRecord) ? 0 : $customerRecord->id;
     }
