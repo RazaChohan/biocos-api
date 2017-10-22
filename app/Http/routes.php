@@ -124,6 +124,10 @@ $api->version('v1', function ($api) {
      */
     $api->post('log-revisit', 'App\Http\Controllers\JobController@logRevisit');
     /***
+     * Get user points
+     */
+    $api->get('user-points', 'App\Http\Controllers\TargetController@getUserPoints');
+    /***
      * Migrate Endpoint
      */
     $api->get('/migrate', function()
