@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -51,5 +52,18 @@ class UserPoint extends Model
         }
         $result = $query->sum('points');
         return !is_null($result) ? $result : 0;
+    }
+
+    /***
+     * @param $userId
+     * @param $type
+     */
+    public function insertUserPoints($userId, $type)
+    {
+        $targetPointsModel = new TargetPoint();
+        $points = $targetPointsModel->getTypePoints($type);
+        if($points > 0) {
+            $this->insert(['user_id' => $userId, 'points' => $points, 'date' => Carbon::now()]);
+        }
     }
 }

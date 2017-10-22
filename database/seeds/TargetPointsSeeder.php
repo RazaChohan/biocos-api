@@ -15,7 +15,6 @@ class TargetPointsSeeder extends \Illuminate\Database\Seeder
                         'confirm_order' => 2,
                         'add_customer'  => 5,
                         'complete_job'  => 2,
-                        'order_confirm' => 2,
                         'payment_added' => 5
             ];
         foreach($targetPoints as $targetType => $targetPoint) {

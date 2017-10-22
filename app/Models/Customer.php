@@ -132,10 +132,12 @@ class Customer extends Model
      */
     public function addOrUpdateCustomer($customer, $customerId = 0, $returnObj = false)
     {
+        $giveUserPoints = true;
         $customerObj = new $this();
         if($customerId > 0) {
             $customerObj = $this->where('id', $customerId)
                                 ->first();
+            $giveUserPoints = false;
             //Customer not found
             if(is_null($customerObj)) {
                 return $customerObj;
@@ -201,6 +203,13 @@ class Customer extends Model
             $customerObj->region_id = $customer['region_id'];
         }
         $customerObj->save();
+
+        //Give user points
+        if($giveUserPoints) {
+            $userPointsModel = new UserPoint();
+            $userPointsModel->insertUserPoints($customer['user_id'], TargetPoint::ADD_CUSTOMER);
+        }
+
         //Image upload
         if(array_key_exists('images', $customer)) {
             $images = [];

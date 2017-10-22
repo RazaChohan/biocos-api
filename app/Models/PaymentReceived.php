@@ -68,10 +68,12 @@ class PaymentReceived extends Model
      */
     public function addOrUpdatePaymentReceived($paymentReceived)
     {
+        $giveUserPoints = true;
         $paymentReceivedObj = new $this();
         if(IsNullOrEmptyString($paymentReceived['uuid'])) {
             $paymentReceivedObj = $this->where('uuid', $paymentReceived['uuid'])
                                        ->first();
+            $giveUserPoints = false;
             //Payment Received not found
             if(is_null($paymentReceivedObj)) {
                 $paymentReceivedObj = new   $this();
@@ -109,6 +111,12 @@ class PaymentReceived extends Model
             $paymentReceivedObj->is_success = $paymentReceived['is_success'];
         }
         $paymentReceivedObj->save();
+
+        //Give user points
+        if($giveUserPoints) {
+            $userPointsModel = new UserPoint();
+            $userPointsModel->insertUserPoints($paymentReceived['user_id'], TargetPoint::PAYMENT_ADDED);
+        }
         //Image upload
         if(array_key_exists('images', $paymentReceived)) {
             $images = [];

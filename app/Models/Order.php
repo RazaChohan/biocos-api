@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
-use PhpParser\Builder;
 
 class Order extends Model
 {
@@ -77,11 +75,14 @@ class Order extends Model
      */
     public function addOrUpdateOrder($order, $orderId = 0)
     {
+        $giveUserPoints = true;
+        $userPointsModel = new UserPoint();
         $orderObj = new $this();
         if($orderId > 0) {
             $orderObj = $this->with('products')
                              ->where('id', $orderId)
                              ->first();
+            $giveUserPoints = false;
             //Order not found
             if(is_null($orderObj)) {
                 return $orderObj;
@@ -139,6 +140,11 @@ class Order extends Model
         }
         $orderObj->type       = $order['type'];
         $orderObj->save();
+
+        //Give user points
+        if($giveUserPoints) {
+            $userPointsModel->insertUserPoints($order['user_id'], TargetPoint::PLACE_ORDER);
+        }
 
         //Image upload
         if(array_key_exists('images', $order)) {
@@ -291,8 +297,13 @@ class Order extends Model
                         'updated_by' => $userId,
                         'status'     => $status
                       ];
+
         if(!is_null($remarks)) {
             $updateData['remarks'] = $remarks;
+            if(strtolower($status) === 'confirmed') {
+                $userPointModel = new UserPoint();
+                $userPointModel->insertUserPoints($userId, TargetPoint::ORDER_CONFIRM);
+            }
         }
         $this->where('id', $orderId)
              ->update($updateData);

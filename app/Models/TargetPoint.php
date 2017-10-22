@@ -21,7 +21,6 @@ class TargetPoint extends Model
     CONST CONFIRM_ORDER = 'confirm_order';
     CONST ADD_CUSTOMER = 'add_customer';
     CONST COMPLETE_JOB = 'complete_job';
-    CONST ORDER_CONFIRM = 'order_confirm';
     CONST PAYMENT_ADDED = 'payment_added';
 
     /**
@@ -52,6 +51,6 @@ class TargetPoint extends Model
     {
         $result = $this->where('type', $type)
                        ->first(['points']);
-        return is_null($result) ? $result->points : 0;
+        return !is_null($result) ? $result->points : 0;
     }
 }
