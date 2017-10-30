@@ -37,20 +37,27 @@ class UserPoint extends Model
      * @param $userId
      * @param $startDate
      * @param $endDate
+     * @param $sendDateWise
      *
      * @return integer $points
      */
-    public function getUserPoints($userId, $startDate, $endDate)
+    public function getUserPoints($userId, $startDate, $endDate, $sendDateWise)
     {
         $query = $this->where('user_id', $userId);
-        if(!is_null($startDate) && !is_null($endDate)) {
-            $query->whereBetween(DB::raw('DATE(date)'), [$startDate, $endDate]);
-        } else if(!is_null($startDate)) {
-            $query->where(DB::raw('DATE(date)'), '>=', $startDate);
-        } else if(!is_null($endDate)) {
-            $query->where(DB::raw('DATE(date)'), '<=', $endDate);
+        $result = null;
+        if(is_null($sendDateWise)) {
+            if (!is_null($startDate) && !is_null($endDate)) {
+                $query->whereBetween(DB::raw('DATE(date)'), [$startDate, $endDate]);
+            } else if (!is_null($startDate)) {
+                $query->where(DB::raw('DATE(date)'), '>=', $startDate);
+            } else if (!is_null($endDate)) {
+                $query->where(DB::raw('DATE(date)'), '<=', $endDate);
+            }
+            $result = $query->sum('points');
+        } else {
+            $result = DB::select("SELECT  date, (@totalPoints :=  points  + @totalPoints) AS points
+                                    FROM user_points, (SELECT @totalPoints:=0) c WHERE user_points.user_id = $userId;");
         }
-        $result = $query->sum('points');
         return !is_null($result) ? $result : 0;
     }
 

@@ -46,6 +46,8 @@ class TargetController extends BaseController
             $userId = $request->get('user_id');
             $startDate = $request->get('start_date');
             $endDate   = $request->get('end_date');
+            $sendDateWise = $request->get('date_wise');
+
             if(!is_null($startDate)) {
                 //$startDate = Carbon::parse($startDate)->toDateString();
                 //$endDate = Carbon::parse($endDate)->toDateString();
@@ -53,7 +55,7 @@ class TargetController extends BaseController
             if(IsNullOrEmptyString($userId)) {
                 $userId = $this->getUserIdFromToken($request);
             }
-            $points = $this->_userPointsModel->getUserPoints($userId, $startDate, $endDate);
+            $points = $this->_userPointsModel->getUserPoints($userId, $startDate, $endDate, $sendDateWise);
         }
         catch(Exception $e)
         {
